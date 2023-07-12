@@ -1,0 +1,184 @@
+[
+    {
+        "authorId": "64adf32150fd6c59424d557f",
+        "title": "Almond butter porridge",
+        "description": "Oatmeal with almond butter mixed in",
+        "type": ["Breakfast", "Brunch"],
+        "cuisine": "International",
+        "ingredients": [
+            {
+                "ingredientName": "Oatmeal",
+                "quantity": "1/3",
+                "unit": "cups"
+            },
+            {
+                "ingredientName": "Water",
+                "quantity": "2/3",
+                "unit": "cups"
+            },
+            {
+                "ingredientName": "Almond butter",
+                "quantity": "2",
+                "unit": "Tablespoons"
+            }
+        ],
+        "steps": [
+            { "stepNumber": 1, "content": "Combine oatmeal and water" },
+            {
+                "stepNumber": 2,
+                "content": "Heat on microwave in medium power for 3 mins"
+            },
+            {
+                "stepNumber": 3,
+                "content": "Remove from micorwave and stir in almond butter until smooth"
+            }
+        ]
+    },
+    {
+        "authorId": "64adf32150fd6c59424d557f",
+        "title": "Banana Pancakes",
+        "description": "Fluffy pancakes with sliced bananas",
+        "type": ["Breakfast", "Brunch"],
+        "cuisine": "International",
+        "ingredients": [
+            {
+                "ingredientName": "All-purpose flour",
+                "quantity": "1",
+                "unit": "cup"
+            },
+            {
+                "ingredientName": "Baking powder",
+                "quantity": "2",
+                "unit": "teaspoons"
+            },
+            {
+                "ingredientName": "Salt",
+                "quantity": "1/4",
+                "unit": "teaspoon"
+            },
+            {
+                "ingredientName": "Sugar",
+                "quantity": "2",
+                "unit": "tablespoons"
+            },
+            {
+                "ingredientName": "Milk",
+                "quantity": "1",
+                "unit": "cup"
+            },
+            {
+                "ingredientName": "Egg",
+                "quantity": "1",
+                "unit": ""
+            },
+            {
+                "ingredientName": "Butter",
+                "quantity": "2",
+                "unit": "tablespoons (melted)"
+            },
+            {
+                "ingredientName": "Ripe bananas",
+                "quantity": "2",
+                "unit": ""
+            }
+        ],
+        "steps": [
+            {
+                "stepNumber": 1,
+                "content": "In a bowl, whisk together the flour, baking powder, salt, and sugar"
+            },
+            {
+                "stepNumber": 2,
+                "content": "In a separate bowl, mash the bananas with a fork"
+            },
+            {
+                "stepNumber": 3,
+                "content": "Add the milk, egg, and melted butter to the mashed bananas and mix well"
+            },
+            {
+                "stepNumber": 4,
+                "content": "Pour the banana mixture into the bowl with the dry ingredients and stir until just combined"
+            },
+            {
+                "stepNumber": 5,
+                "content": "Heat a lightly greased non-stick skillet or griddle over medium heat"
+            },
+            {
+                "stepNumber": 6,
+                "content": "Pour 1/4 cup of batter onto the skillet for each pancake"
+            },
+            {
+                "stepNumber": 7,
+                "content": "Cook until bubbles form on the surface of the pancake, then flip and cook until golden brown"
+            },
+            { "stepNumber": 8, "content": "Repeat with the remaining batter" },
+            {
+                "stepNumber": 9,
+                "content": "Serve the pancakes warm, topped with sliced bananas and maple syrup"
+            }
+        ]
+    },
+    {
+        "authorId": "64adf31250fd6c59424d557e",
+        "title": "Cheesy Banana Sandwich",
+        "description": "A surprisingly delicious combination of cheese and banana in a sandwich",
+        "type": ["Snack"],
+        "cuisine": "Unconventional",
+        "ingredients": [
+            {
+                "ingredientName": "Bread slices",
+                "quantity": "2",
+                "unit": ""
+            },
+            {
+                "ingredientName": "Cheddar cheese",
+                "quantity": "2",
+                "unit": "slices"
+            },
+            {
+                "ingredientName": "Ripe banana",
+                "quantity": "1",
+                "unit": ""
+            },
+            {
+                "ingredientName": "Butter",
+                "quantity": "1",
+                "unit": "tablespoon"
+            }
+        ],
+        "steps": [
+            {
+                "stepNumber": 1,
+                "content": "Spread butter on one side of each bread slice"
+            },
+            {
+                "stepNumber": 2,
+                "content": "Place a slice of cheddar cheese on the unbuttered side of one bread slice"
+            },
+            {
+                "stepNumber": 3,
+                "content": "Peel and slice the banana, then place the banana slices on top of the cheese"
+            },
+            {
+                "stepNumber": 4,
+                "content": "Cover with the other bread slice, buttered side facing outwards"
+            },
+            {
+                "stepNumber": 5,
+                "content": "Heat a skillet over medium heat and place the sandwich on it"
+            },
+            {
+                "stepNumber": 6,
+                "content": "Cook until the bread is golden brown and the cheese is melted, flipping halfway through"
+            },
+            {
+                "stepNumber": 7,
+                "content": "Remove from heat, let it cool for a minute, and cut into halves or quarters"
+            },
+            {
+                "stepNumber": 8,
+                "content": "Enjoy the gooey and surprisingly tasty cheesy banana sandwich!"
+            }
+        ]
+    }
+]

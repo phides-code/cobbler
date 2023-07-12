@@ -24,7 +24,7 @@ const createUserInDb = async (req: Request, res: Response) => {
 
         const foundUser = await db
             .collection(collectionName)
-            .findOne({ _id: req.body.email });
+            .findOne({ email: req.body.email });
 
         if (foundUser) {
             console.log('User already in DB');
@@ -37,9 +37,9 @@ const createUserInDb = async (req: Request, res: Response) => {
             const resultOfInsert = await db
                 .collection(collectionName)
                 .insertOne({
-                    _id: req.body.email,
                     ...req.body,
-                    token: '',
+                    authoredRecipes: [],
+                    likedRecipes: [],
                 });
 
             console.log('got resultOfInsert: ');

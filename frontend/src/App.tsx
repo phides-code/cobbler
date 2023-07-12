@@ -5,7 +5,7 @@ import { LoginButton, LogoutButton } from './components/LoginLogoutButtons';
 import { BrowserRouter } from 'react-router-dom';
 
 const App = () => {
-    const { isAuthenticated } = useContext(UserContext);
+    const { isAuthenticated, isLoading } = useContext(UserContext);
 
     return (
         <div>
@@ -16,9 +16,7 @@ const App = () => {
                         <LogoutButton />
                     </>
                 ) : (
-                    <>
-                        <LoginButton />
-                    </>
+                    <>{!isLoading && <LoginButton />}</>
                 )}
             </BrowserRouter>
         </div>
