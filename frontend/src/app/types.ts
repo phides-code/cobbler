@@ -68,6 +68,7 @@ export interface Recipe {
     cuisine: Cuisine;
     ingredients: Ingredient[];
     steps: Step[];
+    likedBy: string[];
 }
 
 interface Ingredient {

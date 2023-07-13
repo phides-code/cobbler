@@ -39,7 +39,7 @@ const getRecipesByIds = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.log('getRecipesByIds caught error: ');
         console.log(error.message);
-        return res.status(500).json({ httpStatus: 500, data: error.message });
+        return res.status(500).json({ httpStatus: 500, error: error.message });
     } finally {
         client.close();
         console.log('Disconnected.');
