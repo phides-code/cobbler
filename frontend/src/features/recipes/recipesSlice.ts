@@ -21,46 +21,76 @@ const initialState: RecipesState = {
     error: undefined,
 };
 
-export const fetchRecipesByIds = createAsyncThunk(
-    'recipes/fetchRecipes',
-    async (recipeIds: string[]) => {
-        const rawFetchResponse = await fetch('/api/getRecipesByIds', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                recipeIds,
-            }),
-        });
+const fetchRecipes = async (recipeIds: string[]) => {
+    const rawFetchResponse = await fetch('/api/getRecipesByIds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            recipeIds,
+        }),
+    });
 
-        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
+    const fetchResponse: FetchResponseType = await rawFetchResponse.json();
 
-        return fetchResponse;
-    }
+    return fetchResponse;
+};
+
+export const fetchLikedRecipesByIds = createAsyncThunk(
+    'likedRecipes/fetchLikedRecipesByIds',
+    fetchRecipes
 );
 
-const recipesSlice = createSlice({
-    name: 'recipes',
+export const fetchAuthoredRecipesByIds = createAsyncThunk(
+    'authoredRecipes/fetchAuthoredRecipesByIds',
+    fetchRecipes
+);
+
+export const authoredRecipesSlice = createSlice({
+    name: 'authoredRecipes',
     initialState,
     reducers: {},
     extraReducers(builder) {
         builder
-            .addCase(fetchRecipesByIds.pending, (state) => {
+            .addCase(fetchAuthoredRecipesByIds.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchRecipesByIds.fulfilled, (state, action) => {
+            .addCase(fetchAuthoredRecipesByIds.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.recipes = action.payload.recipes;
             })
-            .addCase(fetchRecipesByIds.rejected, (state, action) => {
+            .addCase(fetchAuthoredRecipesByIds.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });
     },
 });
 
-export const selectRecipes = createSelector(
-    (state: RootState) => state.recipes,
-    (recipes) => recipes
+export const likedRecipesSlice = createSlice({
+    name: 'likedRecipes',
+    initialState,
+    reducers: {},
+    extraReducers(builder) {
+        builder
+            .addCase(fetchLikedRecipesByIds.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchLikedRecipesByIds.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.recipes = action.payload.recipes;
+            })
+            .addCase(fetchLikedRecipesByIds.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
+    },
+});
+
+export const selectAuthoredRecipes = createSelector(
+    (state: RootState) => state.authoredRecipes,
+    (authoredRecipes) => authoredRecipes
 );
 
-export default recipesSlice.reducer;
+export const selectLikedRecipes = createSelector(
+    (state: RootState) => state.likedRecipes,
+    (likedRecipes) => likedRecipes
+);

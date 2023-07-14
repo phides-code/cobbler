@@ -4,6 +4,7 @@ import path from 'path';
 import createUserInDb from './handlers/createUserInDb';
 import getRecipesByIds from './handlers/getRecipesByIds';
 import getUserProfileById from './handlers/getUserProfileById';
+import getRecipeById from './handlers/getRecipeById';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.static(path.resolve(__dirname, '../../frontend/build')));
 
 app.post('/api/createUserInDb', createUserInDb);
 app.post('/api/getRecipesByIds', getRecipesByIds);
+app.post('/api/getRecipeById', getRecipeById);
 app.post('/api/getUserProfileById', getUserProfileById);
 
 app.get('*', (req: Request, res: Response) => {

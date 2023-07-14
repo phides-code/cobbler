@@ -5,7 +5,7 @@ import { LoginButton, LogoutButton } from './LoginLogoutButtons';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-    const { isAuthenticated, isLoading } = useContext(UserContext);
+    const { isAuthenticated, isLoading, user, myId } = useContext(UserContext);
 
     return (
         <Wrapper>
@@ -13,7 +13,7 @@ const Header = () => {
 
             {isAuthenticated ? (
                 <>
-                    <Link to='/myrecipes'>My recipes</Link>
+                    <Link to={`/user/${myId}`}>{user?.nickname}</Link>
                     <LogoutButton />
                 </>
             ) : (

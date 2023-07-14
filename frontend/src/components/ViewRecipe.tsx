@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../app/hooks';
-import {
-    fetchRecipesByIds,
-    selectRecipes,
-} from '../features/recipes/recipesSlice';
+
 import { useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../features/user/userSlice';
+import { fetchRecipeById, selectRecipe } from '../features/recipe/recipeSlice';
 
 const ViewRecipe = () => {
     const dispatch = useAppDispatch();
     const { recipeId } = useParams<{ recipeId: string }>();
 
-    const recipesState = useSelector(selectRecipes);
-    const recipe = recipesState.recipes?.find((element) => true);
+    const recipesState = useSelector(selectRecipe);
+    const recipe = recipesState.recipe;
 
     const userState = useSelector(selectUser);
     const author = userState.user;
@@ -23,7 +21,7 @@ const ViewRecipe = () => {
 
     useEffect(() => {
         if (recipeId) {
-            dispatch(fetchRecipesByIds([recipeId]));
+            dispatch(fetchRecipeById(recipeId));
         }
     }, [dispatch, recipeId]);
 
@@ -40,7 +38,7 @@ const ViewRecipe = () => {
             <div>{recipe?.title}</div>
             <div>{recipe?.description}</div>
             <div>
-                by <Link to='/'>{author?.nickname}</Link>
+                by <Link to={`/user/${author?._id}`}>{author?.nickname}</Link>
             </div>
         </div>
     );
