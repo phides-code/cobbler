@@ -25,6 +25,8 @@ const getRecipesByIds = async (req: Request, res: Response) => {
         await client.connect();
         const db = client.db(dbName);
         console.log('Connected to DB:' + dbName);
+        console.log('run getRecipesByIds: ');
+        console.log(recipeIds);
 
         const recipes = await db
             .collection(collectionName)
@@ -32,7 +34,7 @@ const getRecipesByIds = async (req: Request, res: Response) => {
             .toArray();
 
         if (recipes) {
-            return res.status(200).json({ httpStatus: 200, data: recipes });
+            return res.status(200).json({ httpStatus: 200, recipes });
         } else {
             throw new Error('Error finding recipes');
         }

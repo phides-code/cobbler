@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MongoClient, MongoClientOptions } from 'mongodb';
+import { MongoClient, MongoClientOptions, ObjectId } from 'mongodb';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,10 +11,10 @@ const options = {
     useUnifiedTopology: true,
 } as MongoClientOptions;
 
-const getRecipesByUserId = async (req: Request, res: Response) => {
+const getUserProfileById = async (req: Request, res: Response) => {
     const client = new MongoClient(MONGO_URI, options);
     const dbName = 'cobbler';
-    const collectionName = 'recipes';
+    const collectionName = 'users';
 
     const userId: string = req.body.userId;
 
@@ -22,25 +22,25 @@ const getRecipesByUserId = async (req: Request, res: Response) => {
         await client.connect();
         const db = client.db(dbName);
         console.log('Connected to DB:' + dbName);
+        console.log('run getUserProfileById: ' + userId);
 
-        const recipes = await db
+        const user = await db
             .collection(collectionName)
-            .find({ authorId: userId })
-            .toArray();
+            .findOne({ _id: new ObjectId(userId) });
 
-        if (recipes) {
-            return res.status(200).json({ httpStatus: 200, data: recipes });
+        if (user) {
+            return res.status(200).json({ httpStatus: 200, user });
         } else {
-            throw new Error('Error finding recipes');
+            throw new Error('Error finding users');
         }
     } catch (error: any) {
-        console.log('getRecipesByUserId caught error: ');
+        console.log('getUserProfileById caught error: ');
         console.log(error.message);
-        return res.status(500).json({ httpStatus: 500, data: error.message });
+        return res.status(500).json({ httpStatus: 500, error: error.message });
     } finally {
         client.close();
         console.log('Disconnected.');
     }
 };
 
-export default getRecipesByUserId;
+export default getUserProfileById;

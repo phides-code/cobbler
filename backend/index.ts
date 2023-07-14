@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 import createUserInDb from './handlers/createUserInDb';
 import getRecipesByIds from './handlers/getRecipesByIds';
-import getRecipesByUserId from './handlers/getRecipesByUserId';
+import getUserProfileById from './handlers/getUserProfileById';
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.use(express.static(path.resolve(__dirname, '../../frontend/build')));
 
 app.post('/api/createUserInDb', createUserInDb);
 app.post('/api/getRecipesByIds', getRecipesByIds);
-app.post('/api/getRecipesByUserId', getRecipesByUserId);
+app.post('/api/getUserProfileById', getUserProfileById);
 
 app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, '../../frontend/build', 'index.html'));

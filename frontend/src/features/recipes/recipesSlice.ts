@@ -51,13 +51,14 @@ const recipesSlice = createSlice({
                 state.status = 'idle';
                 state.recipes = action.payload.recipes;
             })
-            .addCase(fetchRecipesByIds.rejected, (state) => {
+            .addCase(fetchRecipesByIds.rejected, (state, action) => {
                 state.status = 'failed';
+                state.error = action.error.message;
             });
     },
 });
 
-export const selectFactions = createSelector(
+export const selectRecipes = createSelector(
     (state: RootState) => state.recipes,
     (recipes) => recipes
 );

@@ -1,16 +1,18 @@
-import { ReactNode, createContext, useEffect } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
 import { User, useAuth0 } from '@auth0/auth0-react';
 
 interface AuthState {
     user: User | undefined;
     isAuthenticated: boolean;
     isLoading: boolean;
+    myId: string | undefined;
 }
 
 const UserContext = createContext<AuthState>({
     user: undefined,
     isAuthenticated: false,
     isLoading: false,
+    myId: undefined,
 });
 
 interface UserProviderProps {
@@ -19,15 +21,22 @@ interface UserProviderProps {
 
 const UserProvider = ({ children }: UserProviderProps) => {
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const [myId, setMyId] = useState<string | undefined>();
 
     useEffect(() => {
         const createUserInDb = async () => {
-            await fetch('/api/createUserInDb', {
+            const rawResult = await fetch('/api/createUserInDb', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...user }),
             });
+
+            const result = await rawResult.json();
+
+            setMyId(result.data._id ? result.data._id : result.data.insertedId);
         };
+
+        console.log('run UserContext useEffect...');
 
         if (isAuthenticated) {
             createUserInDb();
@@ -38,6 +47,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
         user,
         isAuthenticated,
         isLoading,
+        myId,
     };
 
     return (

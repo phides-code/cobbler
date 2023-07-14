@@ -28,9 +28,11 @@ const createUserInDb = async (req: Request, res: Response) => {
 
         if (foundUser) {
             console.log('User already in DB');
-            return res
-                .status(200)
-                .json({ httpStatus: 200, data: 'User already in DB' });
+            return res.status(200).json({
+                httpStatus: 200,
+                // data: 'User already in DB'
+                data: foundUser,
+            });
         } else {
             console.log('Adding new user to DB...');
 
@@ -44,9 +46,11 @@ const createUserInDb = async (req: Request, res: Response) => {
 
             console.log('got resultOfInsert: ');
             console.log(resultOfInsert);
-            return res
-                .status(200)
-                .json({ httpStatus: 200, data: 'Adding new user to DB...' });
+            return res.status(200).json({
+                httpStatus: 200,
+                // data: 'Adding new user to DB...'
+                data: resultOfInsert,
+            });
         }
     } catch (error: any) {
         console.log('createUserInDb caught error: ');
