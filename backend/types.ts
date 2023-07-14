@@ -107,3 +107,9 @@ export interface User {
     likedRecipes?: string[];
     _id: ObjectId;
 }
+
+export interface LikeUnlikeRecipeProps {
+    recipeId: string;
+    type: 'like' | 'unlike';
+    userId: string;
+}

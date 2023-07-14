@@ -3,7 +3,7 @@ import {
     createSelector,
     createSlice,
 } from '@reduxjs/toolkit';
-import { Recipe } from '../../app/types';
+import { Recipe, LikeUnlikeRecipeProps } from '../../app/types';
 import { RootState } from '../../app/store';
 
 interface FetchResponseType {
@@ -11,11 +11,11 @@ interface FetchResponseType {
     error?: string;
 }
 
-interface Recipetate extends FetchResponseType {
+interface RecipeState extends FetchResponseType {
     status: 'idle' | 'loading' | 'failed';
 }
 
-const initialState: Recipetate = {
+const initialState: RecipeState = {
     recipe: undefined,
     status: 'idle',
     error: undefined,
@@ -29,6 +29,25 @@ export const fetchRecipeById = createAsyncThunk(
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 recipeId,
+            }),
+        });
+
+        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
+
+        return fetchResponse;
+    }
+);
+
+export const likeUnlikeRecipe = createAsyncThunk(
+    'recipe/likeUnlikeRecipe',
+    async ({ recipeId, type, userId }: LikeUnlikeRecipeProps) => {
+        const rawFetchResponse = await fetch('/api/likeUnlikeRecipe', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                recipeId,
+                type,
+                userId,
             }),
         });
 
@@ -52,6 +71,17 @@ const recipeSlice = createSlice({
                 state.recipe = action.payload.recipe;
             })
             .addCase(fetchRecipeById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(likeUnlikeRecipe.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(likeUnlikeRecipe.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.recipe = action.payload.recipe;
+            })
+            .addCase(likeUnlikeRecipe.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

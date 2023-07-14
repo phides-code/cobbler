@@ -5,6 +5,7 @@ import createUserInDb from './handlers/createUserInDb';
 import getRecipesByIds from './handlers/getRecipesByIds';
 import getUserProfileById from './handlers/getUserProfileById';
 import getRecipeById from './handlers/getRecipeById';
+import likeUnlikeRecipe from './handlers/likeUnlikeRecipe';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.post('/api/createUserInDb', createUserInDb);
 app.post('/api/getRecipesByIds', getRecipesByIds);
 app.post('/api/getRecipeById', getRecipeById);
 app.post('/api/getUserProfileById', getUserProfileById);
+app.put('/api/likeUnlikeRecipe', likeUnlikeRecipe);
 
 app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, '../../frontend/build', 'index.html'));
