@@ -1,20 +1,15 @@
 import styled from 'styled-components';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../app/hooks';
 import { useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../features/user/userSlice';
-import {
-    fetchRecipeById,
-    likeUnlikeRecipe,
-    selectRecipe,
-} from '../features/recipe/recipeSlice';
-import { UserContext } from '../app/UserContext';
+import { fetchRecipeById, selectRecipe } from '../features/recipe/recipeSlice';
+import LikeButton from './LikeButton';
 
 const ViewRecipe = () => {
     const dispatch = useAppDispatch();
     const { recipeId } = useParams<{ recipeId: string }>();
-    const { myId } = useContext(UserContext);
 
     const recipesState = useSelector(selectRecipe);
     const recipe = recipesState.recipe;
@@ -24,19 +19,6 @@ const ViewRecipe = () => {
 
     const isLoading =
         recipesState.status === 'loading' || userState.status === 'loading';
-
-    const likedByMe = recipe?.likedBy.includes(myId as string);
-
-    const handleLikeButton = async () => {
-        await dispatch(
-            likeUnlikeRecipe({
-                recipeId: recipeId as string,
-                type: likedByMe ? 'unlike' : 'like',
-                userId: myId as string,
-            })
-        );
-        await dispatch(fetchRecipeById(recipeId as string));
-    };
 
     useEffect(() => {
         if (recipeId) {
@@ -59,12 +41,12 @@ const ViewRecipe = () => {
             <Author>
                 by <Link to={`/user/${author?._id}`}>{author?.nickname}</Link>
             </Author>
-            <LikeCount>
-                {`${recipe?.likedBy.length} likes`}
-                <button onClick={handleLikeButton}>
-                    {likedByMe ? 'Unlike' : 'Like it!'}
-                </button>
-            </LikeCount>
+            {recipeId && recipe && (
+                <LikeButton
+                    recipeId={recipeId as string}
+                    recipeLikedBy={recipe?.likedBy as string[]}
+                />
+            )}
             <div>Ingredients:</div>
             <IngredientsContainer>
                 {recipe?.ingredients.map((ingredient, i) => (
@@ -102,11 +84,6 @@ const Description = styled.div`
 `;
 
 const Author = styled.div`
-    margin-bottom: 10px;
-`;
-
-const LikeCount = styled.div`
-    font-size: 14px;
     margin-bottom: 10px;
 `;
 

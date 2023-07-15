@@ -41,7 +41,7 @@ export const fetchRecipeById = createAsyncThunk(
 export const likeUnlikeRecipe = createAsyncThunk(
     'recipe/likeUnlikeRecipe',
     async ({ recipeId, type, userId }: LikeUnlikeRecipeProps) => {
-        const rawFetchResponse = await fetch('/api/likeUnlikeRecipe', {
+        await fetch('/api/likeUnlikeRecipe', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -51,9 +51,7 @@ export const likeUnlikeRecipe = createAsyncThunk(
             }),
         });
 
-        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
-
-        return fetchResponse;
+        return { type, userId };
     }
 );
 
@@ -74,16 +72,22 @@ const recipeSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             })
-            .addCase(likeUnlikeRecipe.pending, (state) => {
-                state.status = 'loading';
-            })
             .addCase(likeUnlikeRecipe.fulfilled, (state, action) => {
-                state.status = 'idle';
-                state.recipe = action.payload.recipe;
-            })
-            .addCase(likeUnlikeRecipe.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message;
+                const { type, userId } = action.payload;
+
+                if (state.recipe) {
+                    if (type === 'like') {
+                        if (!state.recipe.likedBy.includes(userId)) {
+                            state.recipe.likedBy.push(userId);
+                        }
+                    } else {
+                        if (state.recipe.likedBy.includes(userId)) {
+                            state.recipe.likedBy = state.recipe.likedBy.filter(
+                                (likedByUserId) => likedByUserId !== userId
+                            );
+                        }
+                    }
+                }
             });
     },
 });
