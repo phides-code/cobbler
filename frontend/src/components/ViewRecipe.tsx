@@ -17,8 +17,7 @@ const ViewRecipe = () => {
     const userState = useSelector(selectUser);
     const author = userState.user;
 
-    const isLoading =
-        recipesState.status === 'loading' || userState.status === 'loading';
+    const isLoading = recipesState.status === 'loading';
 
     useEffect(() => {
         if (recipeId) {
