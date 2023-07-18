@@ -8,6 +8,7 @@ import {
 } from '../features/recipes/recipesSlice';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PreviewCard from './PreviewCard';
 
 interface ListRecipesProps {
     type: 'liked' | 'authored';
@@ -26,11 +27,11 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
 
     useEffect(() => {
         if (recipeIds) {
-            dispatch(
-                type === 'liked'
-                    ? fetchLikedRecipesByIds(recipeIds)
-                    : fetchAuthoredRecipesByIds(recipeIds)
-            );
+            if (type === 'liked') {
+                dispatch(fetchLikedRecipesByIds(recipeIds));
+            } else if (type === 'authored') {
+                dispatch(fetchAuthoredRecipesByIds(recipeIds));
+            }
         }
     }, [dispatch, recipeIds, type]);
 
@@ -40,7 +41,9 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
         <div>
             {recipes?.map((recipe) => (
                 <div key={recipe._id.toString()}>
-                    <Link to={`/recipe/${recipe._id}`}>{recipe.title}</Link>
+                    <Link to={`/recipe/${recipe._id}`}>
+                        <PreviewCard recipe={recipe} />
+                    </Link>
                 </div>
             ))}
         </div>

@@ -6,6 +6,7 @@ import {
     likedRecipesSlice,
 } from '../features/recipes/recipesSlice';
 import userReducer from '../features/user/userSlice';
+import nicknameReducer from '../features/nickname/nicknameSlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         authoredRecipes: authoredRecipesSlice.reducer,
         likedRecipes: likedRecipesSlice.reducer,
         user: userReducer,
+        nickname: nicknameReducer,
     },
 });
 

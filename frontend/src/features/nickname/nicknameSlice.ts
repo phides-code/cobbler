@@ -7,24 +7,24 @@ import { User } from '../../app/types';
 import { RootState } from '../../app/store';
 
 interface FetchResponseType {
-    user?: User | null;
+    nickname?: User['nickname'] | null;
     error?: string | null;
 }
 
-interface UserState extends FetchResponseType {
+interface NicknameState extends FetchResponseType {
     status: 'idle' | 'loading' | 'failed';
 }
 
-const initialState: UserState = {
-    user: null,
+const initialState: NicknameState = {
+    nickname: null,
     status: 'idle',
     error: null,
 };
 
-export const fetchUser = createAsyncThunk(
-    'user/fetchUser',
+export const fetchNickname = createAsyncThunk(
+    'nickname/fetchNickname',
     async (userId: string) => {
-        const rawFetchResponse = await fetch('/api/getUserProfileById', {
+        const rawFetchResponse = await fetch('/api/getNicknameById', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -38,29 +38,29 @@ export const fetchUser = createAsyncThunk(
     }
 );
 
-const userSlice = createSlice({
-    name: 'user',
+const nicknameSlice = createSlice({
+    name: 'nickname',
     initialState,
     reducers: {},
     extraReducers(builder) {
         builder
-            .addCase(fetchUser.pending, (state) => {
+            .addCase(fetchNickname.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchUser.fulfilled, (state, action) => {
+            .addCase(fetchNickname.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.user = action.payload.user;
+                state.nickname = action.payload.nickname;
             })
-            .addCase(fetchUser.rejected, (state, action) => {
+            .addCase(fetchNickname.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message as string;
             });
     },
 });
 
-export const selectUser = createSelector(
-    (state: RootState) => state.user,
-    (user) => user
+export const selectNickname = createSelector(
+    (state: RootState) => state.nickname,
+    (nickname) => nickname
 );
 
-export default userSlice.reducer;
+export default nicknameSlice.reducer;

@@ -2,17 +2,17 @@ import { ReactNode, createContext, useEffect, useState } from 'react';
 import { User, useAuth0 } from '@auth0/auth0-react';
 
 interface AuthState {
-    user: User | undefined;
+    user: User | null;
     isAuthenticated: boolean;
     isLoading: boolean;
-    myId: string | undefined;
+    myId: string | null;
 }
 
 const UserContext = createContext<AuthState>({
-    user: undefined,
+    user: null,
     isAuthenticated: false,
     isLoading: false,
-    myId: undefined,
+    myId: null,
 });
 
 interface UserProviderProps {
@@ -21,7 +21,7 @@ interface UserProviderProps {
 
 const UserProvider = ({ children }: UserProviderProps) => {
     const { user, isAuthenticated, isLoading } = useAuth0();
-    const [myId, setMyId] = useState<string | undefined>();
+    const [myId, setMyId] = useState<string | null>();
 
     useEffect(() => {
         const createUserInDb = async () => {
@@ -44,10 +44,10 @@ const UserProvider = ({ children }: UserProviderProps) => {
     }, [isAuthenticated, user]);
 
     const UserContextValue: AuthState = {
-        user,
+        user: user as User,
         isAuthenticated,
         isLoading,
-        myId,
+        myId: myId as string,
     };
 
     return (

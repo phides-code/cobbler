@@ -24,10 +24,13 @@ const ViewProfile = () => {
         <div>
             <div>User: {user?.nickname}</div>
             <div>Authored recipes:</div>
-            <ListRecipes type='authored' recipeIds={authoredRecipeIds} />
-
+            {authoredRecipeIds && (
+                <ListRecipes type='authored' recipeIds={authoredRecipeIds} />
+            )}
             <div>Liked recipes:</div>
-            <ListRecipes type='liked' recipeIds={likedRecipeIds} />
+            {likedRecipeIds && (
+                <ListRecipes type='liked' recipeIds={likedRecipeIds} />
+            )}
         </div>
     );
 };

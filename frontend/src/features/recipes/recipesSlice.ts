@@ -7,8 +7,8 @@ import { Recipe } from '../../app/types';
 import { RootState } from '../../app/store';
 
 interface FetchResponseType {
-    recipes?: Recipe[];
-    error?: string;
+    recipes?: Recipe[] | null;
+    error?: string | null;
 }
 
 interface RecipesState extends FetchResponseType {
@@ -16,9 +16,9 @@ interface RecipesState extends FetchResponseType {
 }
 
 const initialState: RecipesState = {
-    recipes: undefined,
+    recipes: null,
     status: 'idle',
-    error: undefined,
+    error: null,
 };
 
 const fetchRecipes = async (recipeIds: string[]) => {

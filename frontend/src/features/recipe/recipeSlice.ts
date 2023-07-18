@@ -7,8 +7,8 @@ import { Recipe, LikeUnlikeRecipeProps } from '../../app/types';
 import { RootState } from '../../app/store';
 
 interface FetchResponseType {
-    recipe?: Recipe;
-    error?: string;
+    recipe?: Recipe | null;
+    error?: string | null;
 }
 
 interface RecipeState extends FetchResponseType {
@@ -16,9 +16,9 @@ interface RecipeState extends FetchResponseType {
 }
 
 const initialState: RecipeState = {
-    recipe: undefined,
+    recipe: null,
     status: 'idle',
-    error: undefined,
+    error: null,
 };
 
 export const fetchRecipeById = createAsyncThunk(
