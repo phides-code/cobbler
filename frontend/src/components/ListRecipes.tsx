@@ -5,33 +5,46 @@ import {
     fetchAuthoredRecipesByIds,
     selectAuthoredRecipes,
     selectLikedRecipes,
+    selectAllRecipes,
+    fetchAllRecipes,
 } from '../features/recipes/recipesSlice';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PreviewCard from './PreviewCard';
 
 interface ListRecipesProps {
-    type: 'liked' | 'authored';
-    recipeIds: string[];
+    type: 'liked' | 'authored' | 'all';
+    recipeIds?: string[];
 }
 
 const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
     const dispatch = useAppDispatch();
 
     const recipesState = useSelector(
-        type === 'liked' ? selectLikedRecipes : selectAuthoredRecipes
+        type && type === 'liked'
+            ? selectLikedRecipes
+            : type === 'authored'
+            ? selectAuthoredRecipes
+            : selectAllRecipes
     );
 
     const recipes = recipesState.recipes;
     const isLoading = recipesState.status === 'loading';
 
     useEffect(() => {
-        if (recipeIds) {
-            if (type === 'liked') {
-                dispatch(fetchLikedRecipesByIds(recipeIds));
-            } else if (type === 'authored') {
-                dispatch(fetchAuthoredRecipesByIds(recipeIds));
+        if (recipeIds && type) {
+            switch (type) {
+                case 'liked':
+                    dispatch(fetchLikedRecipesByIds(recipeIds));
+                    break;
+                case 'authored':
+                    dispatch(fetchAuthoredRecipesByIds(recipeIds));
+                    break;
+
+                default:
             }
+        } else if (type === 'all') {
+            dispatch(fetchAllRecipes());
         }
     }, [dispatch, recipeIds, type]);
 
@@ -39,13 +52,14 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
 
     return (
         <div>
-            {recipes?.map((recipe) => (
-                <div key={recipe._id.toString()}>
-                    <Link to={`/recipe/${recipe._id}`}>
-                        <PreviewCard recipe={recipe} />
-                    </Link>
-                </div>
-            ))}
+            {recipes &&
+                recipes?.map((recipe) => (
+                    <div key={recipe._id.toString()}>
+                        <Link to={`/recipe/${recipe._id}`}>
+                            <PreviewCard recipe={recipe} />
+                        </Link>
+                    </div>
+                ))}
         </div>
     );
 };

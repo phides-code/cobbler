@@ -21,7 +21,18 @@ const initialState: RecipesState = {
     error: null,
 };
 
-const fetchRecipes = async (recipeIds: string[]) => {
+export const fetchAllRecipes = createAsyncThunk(
+    'allRecipes/fetchAllRecipes',
+    async () => {
+        const rawFetchResponse = await fetch('/api/getAllRecipes');
+
+        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
+
+        return fetchResponse;
+    }
+);
+
+const fetchRecipesByIds = async (recipeIds: string[]) => {
     const rawFetchResponse = await fetch('/api/getRecipesByIds', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,13 +48,33 @@ const fetchRecipes = async (recipeIds: string[]) => {
 
 export const fetchLikedRecipesByIds = createAsyncThunk(
     'likedRecipes/fetchLikedRecipesByIds',
-    fetchRecipes
+    fetchRecipesByIds
 );
 
 export const fetchAuthoredRecipesByIds = createAsyncThunk(
     'authoredRecipes/fetchAuthoredRecipesByIds',
-    fetchRecipes
+    fetchRecipesByIds
 );
+
+export const allRecipesSlice = createSlice({
+    name: 'allRecipes',
+    initialState,
+    reducers: {},
+    extraReducers(builder) {
+        builder
+            .addCase(fetchAllRecipes.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchAllRecipes.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.recipes = action.payload.recipes;
+            })
+            .addCase(fetchAllRecipes.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
+    },
+});
 
 export const authoredRecipesSlice = createSlice({
     name: 'authoredRecipes',
@@ -84,6 +115,11 @@ export const likedRecipesSlice = createSlice({
             });
     },
 });
+
+export const selectAllRecipes = createSelector(
+    (state: RootState) => state.allRecipes,
+    (allRecipes) => allRecipes
+);
 
 export const selectAuthoredRecipes = createSelector(
     (state: RootState) => state.authoredRecipes,

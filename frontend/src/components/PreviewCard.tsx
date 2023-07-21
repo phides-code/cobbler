@@ -3,7 +3,7 @@ import { Recipe } from '../app/types';
 import { useEffect } from 'react';
 import {
     fetchNickname,
-    selectNickname,
+    selectNicknames,
 } from '../features/nickname/nicknameSlice';
 import { useAppDispatch } from '../app/hooks';
 import { useSelector } from 'react-redux';
@@ -17,8 +17,8 @@ const PreviewCard = ({ recipe }: PreviewCardProps) => {
 
     const { title, description, authorId, likedBy, type } = recipe;
     const likes = likedBy.length;
-    const nicknameState = useSelector(selectNickname);
-    const nickname = nicknameState.nickname;
+    const nicknameState = useSelector(selectNicknames);
+    const nickname = nicknameState.nickNameIdPairs[authorId as string];
 
     useEffect(() => {
         if (authorId) {

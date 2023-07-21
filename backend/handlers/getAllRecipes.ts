@@ -11,32 +11,26 @@ const options = {
     useUnifiedTopology: true,
 } as MongoClientOptions;
 
-const getNicknameById = async (req: Request, res: Response) => {
+const getAllRecipes = async (req: Request, res: Response) => {
     const client = new MongoClient(MONGO_URI, options);
     const dbName = 'cobbler';
-    const collectionName = 'users';
-
-    const userId: string = req.body.userId;
+    const collectionName = 'recipes';
 
     try {
         await client.connect();
         const db = client.db(dbName);
         console.log('Connected to DB:' + dbName);
-        console.log('run getNicknameById: ' + userId);
+        console.log('run getAllRecipes: ');
 
-        const user = await db
-            .collection(collectionName)
-            .findOne({ _id: new ObjectId(userId) });
+        const recipes = await db.collection(collectionName).find().toArray();
 
-        if (user) {
-            return res
-                .status(200)
-                .json({ httpStatus: 200, nickname: user.nickname, userId });
+        if (recipes) {
+            return res.status(200).json({ httpStatus: 200, recipes });
         } else {
-            throw new Error('Error finding nickname');
+            throw new Error('Error finding recipes');
         }
     } catch (error: any) {
-        console.log('getNicknameById caught error: ');
+        console.log('getAllRecipes caught error: ');
         console.log(error.message);
         return res.status(500).json({ httpStatus: 500, error: error.message });
     } finally {
@@ -45,4 +39,4 @@ const getNicknameById = async (req: Request, res: Response) => {
     }
 };
 
-export default getNicknameById;
+export default getAllRecipes;

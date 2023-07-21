@@ -11,7 +11,7 @@ interface LikeButtonProps {
 
 const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
     const dispatch = useAppDispatch();
-    const { myId } = useContext(UserContext);
+    const { myId, isAuthenticated } = useContext(UserContext);
 
     const likedByMe = recipeLikedBy.includes(myId as string);
 
@@ -27,9 +27,11 @@ const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
     return (
         <LikeCount>
             {`${recipeLikedBy.length} likes`}
-            <button onClick={handleLikeButton}>
-                {likedByMe ? 'Unlike' : 'Like it!'}
-            </button>
+            {isAuthenticated && (
+                <button onClick={handleLikeButton}>
+                    {likedByMe ? 'Unlike' : 'Like it!'}
+                </button>
+            )}
         </LikeCount>
     );
 };

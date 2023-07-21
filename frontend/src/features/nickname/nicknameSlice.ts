@@ -7,16 +7,19 @@ import { User } from '../../app/types';
 import { RootState } from '../../app/store';
 
 interface FetchResponseType {
+    userId?: string;
     nickname?: User['nickname'] | null;
     error?: string | null;
 }
 
-interface NicknameState extends FetchResponseType {
+interface NicknameState {
+    error: string | null;
+    nickNameIdPairs: Record<string, User['nickname']>;
     status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: NicknameState = {
-    nickname: null,
+    nickNameIdPairs: {},
     status: 'idle',
     error: null,
 };
@@ -49,7 +52,10 @@ const nicknameSlice = createSlice({
             })
             .addCase(fetchNickname.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.nickname = action.payload.nickname;
+
+                const userId = action.payload.userId as string;
+                state.nickNameIdPairs[userId] = action.payload
+                    .nickname as string;
             })
             .addCase(fetchNickname.rejected, (state, action) => {
                 state.status = 'failed';
@@ -58,7 +64,7 @@ const nicknameSlice = createSlice({
     },
 });
 
-export const selectNickname = createSelector(
+export const selectNicknames = createSelector(
     (state: RootState) => state.nickname,
     (nickname) => nickname
 );
