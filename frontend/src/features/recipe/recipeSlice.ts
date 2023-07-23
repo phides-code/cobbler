@@ -21,6 +21,23 @@ const initialState: RecipeState = {
     error: null,
 };
 
+export const createRecipe = createAsyncThunk(
+    'recipe/createRecipe',
+    async (newRecipe: Partial<Recipe>) => {
+        const rawFetchResponse = await fetch('/api/createRecipe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                newRecipe,
+            }),
+        });
+
+        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
+
+        return fetchResponse;
+    }
+);
+
 export const fetchRecipeById = createAsyncThunk(
     'recipe/fetchRecipeById',
     async (recipeId: string) => {
@@ -88,6 +105,17 @@ const recipeSlice = createSlice({
                         }
                     }
                 }
+            })
+            .addCase(createRecipe.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(createRecipe.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.recipe = action.payload.recipe;
+            })
+            .addCase(createRecipe.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
             });
     },
 });

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-const cuisines = [
+export const cuisines = [
     'Portuguese',
     'Mexican',
     'Italian',
@@ -34,7 +34,6 @@ const cuisines = [
     'Irish',
     'Indonesian',
     'Israeli',
-    'Mexican',
     'Nigerian',
     'Polish',
     'Scottish',
@@ -43,7 +42,7 @@ const cuisines = [
     'Unconventional',
 ];
 
-const foodTypes = [
+export const foodTypes = [
     'Main',
     'Side',
     'Snack',
@@ -71,13 +70,13 @@ export interface Recipe {
     likedBy: string[];
 }
 
-interface Ingredient {
+export interface Ingredient {
     ingredientName: string;
     quantity: string;
     unit: string;
 }
 
-interface Step {
+export interface Step {
     stepNumber: number;
     content: string;
 }

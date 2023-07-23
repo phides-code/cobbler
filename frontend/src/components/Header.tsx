@@ -13,6 +13,7 @@ const Header = () => {
 
             {isAuthenticated ? (
                 <>
+                    <Link to='/create'>Create a recipe</Link>
                     <Link to={`/user/${myId}`}>{user?.nickname}</Link>
                     <LogoutButton />
                 </>

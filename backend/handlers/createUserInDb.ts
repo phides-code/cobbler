@@ -30,7 +30,6 @@ const createUserInDb = async (req: Request, res: Response) => {
             console.log('User already in DB');
             return res.status(200).json({
                 httpStatus: 200,
-                // data: 'User already in DB'
                 data: foundUser,
             });
         } else {
@@ -48,7 +47,6 @@ const createUserInDb = async (req: Request, res: Response) => {
             console.log(resultOfInsert);
             return res.status(200).json({
                 httpStatus: 200,
-                // data: 'Adding new user to DB...'
                 data: resultOfInsert,
             });
         }
