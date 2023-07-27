@@ -11,13 +11,11 @@ interface ListStepsProps {
 const ListSteps = ({ steps, setRecipe }: ListStepsProps) => {
     const renderStep = useCallback(
         (step: Step, index: number) => {
-            const reorderStepNumbers = (steps: Step[]) => {
-                return steps.map((step, i) => ({
-                    id: step.id,
-                    content: step.content,
+            const reorderStepNumbers = (steps: Step[]) =>
+                steps.map((step, i) => ({
+                    ...step,
                     stepNumber: i + 1,
                 }));
-            };
 
             const moveStep = (dragIndex: number, hoverIndex: number) => {
                 setRecipe((prevRecipe) => {
