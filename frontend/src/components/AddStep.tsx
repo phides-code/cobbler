@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Step, Recipe } from '../app/types';
+import { v4 as uuidv4 } from 'uuid';
 
 interface AddStepProps {
     setRecipe: React.Dispatch<React.SetStateAction<Partial<Recipe>>>;
@@ -8,6 +9,7 @@ interface AddStepProps {
 
 const AddStep = ({ setRecipe, numberOfSteps }: AddStepProps) => {
     const initialStepState: Step = {
+        id: '',
         stepNumber: 0,
         content: '',
     };
@@ -18,10 +20,11 @@ const AddStep = ({ setRecipe, numberOfSteps }: AddStepProps) => {
     const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
         const { value } = ev.target;
 
-        setNewStep({
+        setNewStep((prevNewStep) => ({
+            ...prevNewStep,
             content: value,
             stepNumber: numberOfSteps + 1,
-        });
+        }));
     };
 
     const handleAddStep = (
@@ -31,7 +34,10 @@ const AddStep = ({ setRecipe, numberOfSteps }: AddStepProps) => {
 
         setRecipe((prevRecipe) => ({
             ...prevRecipe,
-            steps: [...(prevRecipe.steps as Step[]), newStep],
+            steps: [
+                ...(prevRecipe.steps as Step[]),
+                { ...newStep, id: uuidv4() },
+            ],
         }));
 
         setNewStep(initialStepState);

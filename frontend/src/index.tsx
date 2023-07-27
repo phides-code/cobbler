@@ -6,6 +6,8 @@ import App from './App';
 import './index.css';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { UserProvider } from './app/UserContext';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN as string;
 const AUTH0_CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID as string;
@@ -21,7 +23,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         >
             <Provider store={store}>
                 <UserProvider>
-                    <App />
+                    <DndProvider backend={HTML5Backend}>
+                        <App />
+                    </DndProvider>
                 </UserProvider>
             </Provider>
         </Auth0Provider>

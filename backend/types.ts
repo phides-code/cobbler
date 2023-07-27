@@ -71,12 +71,14 @@ export interface Recipe {
 }
 
 export interface Ingredient {
+    id: string;
     ingredientName: string;
     quantity: string;
     unit: string;
 }
 
 export interface Step {
+    id: string;
     stepNumber: number;
     content: string;
 }

@@ -8,12 +8,12 @@ import {
     cuisines,
     foodTypes,
 } from '../app/types';
-import AddIngredient from './AddIngredient';
-import AddStep from './AddStep';
 import { UserContext } from '../app/UserContext';
 import { useAppDispatch } from '../app/hooks';
 import { createRecipe } from '../features/recipe/recipeSlice';
 import { useNavigate } from 'react-router-dom';
+import ListIngredients from './ListIngredients';
+import ListSteps from './ListSteps';
 
 const CreateRecipe = () => {
     const dispatch = useAppDispatch();
@@ -61,18 +61,16 @@ const CreateRecipe = () => {
 
     const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
-        setLoading(true);
 
         const newRecipe = {
             ...recipe,
             authorId: myId,
         } as Partial<Recipe>;
 
+        setLoading(true);
         await dispatch(createRecipe(newRecipe));
-
         setRecipe(initialRecipeState);
         setLoading(false);
-
         navigate(`/user/${myId}`);
     };
 
@@ -81,28 +79,9 @@ const CreateRecipe = () => {
         recipe.title === '' ||
         recipe.description === '' ||
         recipe.type?.length === 0 ||
+        recipe.ingredients?.length === 0 ||
+        recipe.steps?.length === 0 ||
         loading;
-
-    const handleRemoveIngredient = (ingredientToRemove: Ingredient) => {
-        setRecipe((prevRecipe) => ({
-            ...prevRecipe,
-            ingredients: prevRecipe.ingredients?.filter(
-                (ingredient) => ingredient !== ingredientToRemove
-            ),
-        }));
-    };
-
-    const handleRemoveStep = (stepToRemove: Step) => {
-        setRecipe((prevRecipe) => ({
-            ...prevRecipe,
-            steps: prevRecipe.steps
-                ?.filter((step) => step !== stepToRemove)
-                .map((step, i) => ({
-                    content: step.content,
-                    stepNumber: i + 1,
-                })),
-        }));
-    };
 
     return (
         <div>
@@ -159,50 +138,15 @@ const CreateRecipe = () => {
                     </select>
                 </div>
 
-                <div>
-                    <label>Ingredients:</label>
-                    <ul>
-                        {recipe.ingredients?.map((ingredient, i) => (
-                            <li key={ingredient.ingredientName + i}>
-                                {`${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredientName} `}
-                                <button
-                                    type='button'
-                                    onClick={() =>
-                                        handleRemoveIngredient(ingredient)
-                                    }
-                                >
-                                    X
-                                </button>
-                            </li>
-                        ))}
-                        <li>
-                            <AddIngredient setRecipe={setRecipe} />
-                        </li>
-                    </ul>
-                </div>
+                <ListIngredients
+                    ingredients={recipe.ingredients as Ingredient[]}
+                    setRecipe={setRecipe}
+                />
 
-                <div>
-                    <label>Steps:</label>
-                    <ol>
-                        {recipe.steps?.map((step, i) => (
-                            <li key={step.stepNumber + i}>
-                                {`${step.content} `}
-                                <button
-                                    type='button'
-                                    onClick={() => handleRemoveStep(step)}
-                                >
-                                    X
-                                </button>
-                            </li>
-                        ))}
-                        <li>
-                            <AddStep
-                                setRecipe={setRecipe}
-                                numberOfSteps={recipe.steps?.length as number}
-                            />
-                        </li>
-                    </ol>
-                </div>
+                <ListSteps
+                    setRecipe={setRecipe}
+                    steps={recipe.steps as Step[]}
+                />
 
                 <button type='submit' disabled={disableSubmit}>
                     Submit

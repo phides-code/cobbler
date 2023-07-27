@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Ingredient, Recipe } from '../app/types';
+import { v4 as uuidv4 } from 'uuid';
 
 interface AddIngredientProps {
     setRecipe: React.Dispatch<React.SetStateAction<Partial<Recipe>>>;
@@ -7,6 +8,7 @@ interface AddIngredientProps {
 
 const AddIngredient = ({ setRecipe }: AddIngredientProps) => {
     const initialIngredientState: Ingredient = {
+        id: '',
         quantity: '',
         unit: '',
         ingredientName: '',
@@ -38,7 +40,7 @@ const AddIngredient = ({ setRecipe }: AddIngredientProps) => {
             ...prevRecipe,
             ingredients: [
                 ...(prevRecipe.ingredients as Ingredient[]),
-                newIngredient,
+                { ...newIngredient, id: uuidv4() },
             ],
         }));
 
