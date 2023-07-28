@@ -2,17 +2,10 @@ import type { Identifier, XYCoord } from 'dnd-core';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import styled from 'styled-components';
 
 export const ItemTypes = {
     CARD: 'card',
-};
-
-const style = {
-    border: '1px dashed gray',
-    padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: 'white',
-    cursor: 'move',
 };
 
 export interface CardProps {
@@ -92,7 +85,7 @@ export const Card: FC<CardProps> = ({ id, content, index, moveCard }) => {
         },
     });
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{ isDragging }, drag, preview] = useDrag({
         type: ItemTypes.CARD,
         item: () => {
             return { id, index };
@@ -102,15 +95,23 @@ export const Card: FC<CardProps> = ({ id, content, index, moveCard }) => {
         }),
     });
 
-    const opacity = isDragging ? 0 : 1;
+    const opacity = isDragging ? 0.5 : 1;
+
     drag(drop(ref));
+
     return (
-        <div
-            ref={ref}
-            style={{ ...style, opacity }}
-            data-handler-id={handlerId}
-        >
-            {content}
-        </div>
+        <Wrapper style={{ opacity }} data-handler-id={handlerId}>
+            <div ref={preview}>{content}</div>
+            <Handle ref={ref}>≣</Handle>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    display: flex;
+`;
+
+const Handle = styled.div`
+    margin-left: 0.2rem;
+    cursor: grab;
+`;
