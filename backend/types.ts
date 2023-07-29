@@ -40,7 +40,7 @@ export const cuisines = [
     'Tunisian',
     'International',
     'Unconventional',
-];
+] as const;
 
 export const foodTypes = [
     'Main',
@@ -52,11 +52,15 @@ export const foodTypes = [
     'Dinner',
     'Breakfast',
     'Brunch',
-];
+] as const;
+
+export const recipeListType = ['AUTHORED', 'LIKED', 'ALL'] as const;
 
 export type Cuisine = (typeof cuisines)[number];
 
 export type FoodType = (typeof foodTypes)[number];
+
+export type RecipeListType = (typeof recipeListType)[number];
 
 export interface Recipe {
     _id: ObjectId;

@@ -5,7 +5,7 @@ const Home = () => {
         <div>
             <div>Recent recipes</div>
             <div>
-                <ListRecipes type='all' />
+                <ListRecipes type='ALL' />
             </div>
         </div>
     );

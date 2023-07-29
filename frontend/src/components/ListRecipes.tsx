@@ -11,9 +11,10 @@ import {
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PreviewCard from './PreviewCard';
+import { RecipeListType } from '../app/types';
 
 interface ListRecipesProps {
-    type: 'liked' | 'authored' | 'all';
+    type: RecipeListType;
     recipeIds?: string[];
 }
 
@@ -21,9 +22,9 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
     const dispatch = useAppDispatch();
 
     const recipesState = useSelector(
-        type && type === 'liked'
+        type && type === 'LIKED'
             ? selectLikedRecipes
-            : type === 'authored'
+            : type === 'AUTHORED'
             ? selectAuthoredRecipes
             : selectAllRecipes
     );
@@ -34,16 +35,16 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
     useEffect(() => {
         if (recipeIds && type) {
             switch (type) {
-                case 'liked':
+                case 'LIKED':
                     dispatch(fetchLikedRecipesByIds(recipeIds));
                     break;
-                case 'authored':
+                case 'AUTHORED':
                     dispatch(fetchAuthoredRecipesByIds(recipeIds));
                     break;
 
                 default:
             }
-        } else if (type === 'all') {
+        } else if (type === 'ALL') {
             dispatch(fetchAllRecipes());
         }
     }, [dispatch, recipeIds, type]);

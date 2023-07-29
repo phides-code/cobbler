@@ -41,7 +41,8 @@ const createRecipe = async (req: Request, res: Response) => {
                 { _id: new ObjectId(newRecipe.authorId) },
                 {
                     $push: {
-                        ['authoredRecipes']: resultOfInsert.insertedId,
+                        ['authoredRecipes']:
+                            resultOfInsert.insertedId.toString(),
                     },
                 }
             );
