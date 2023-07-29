@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import {
-    Cuisine,
     FoodType,
     Ingredient,
     Recipe,
@@ -22,16 +21,13 @@ const CreateRecipe = () => {
         title: '',
         description: '',
         type: [],
-        cuisine: '',
+        cuisine: undefined,
         ingredients: [],
         steps: [],
     };
 
     const [recipe, setRecipe] = useState<Partial<Recipe>>(initialRecipeState);
     const [loading, setLoading] = useState<boolean>(false);
-
-    const foodTypeOptions: FoodType[] = foodTypes;
-    const cuisineOptions: Cuisine[] = cuisines;
 
     const { myId } = useContext(UserContext);
 
@@ -75,7 +71,7 @@ const CreateRecipe = () => {
     };
 
     const disableSubmit: boolean =
-        recipe.cuisine === '' ||
+        !recipe.cuisine ||
         recipe.title === '' ||
         recipe.description === '' ||
         recipe.type?.length === 0 ||
@@ -108,7 +104,7 @@ const CreateRecipe = () => {
 
                 <div>
                     <label>Type:</label>
-                    {foodTypeOptions.map((foodType) => (
+                    {foodTypes.map((foodType) => (
                         <label key={foodType}>
                             <input
                                 type='checkbox'
@@ -130,7 +126,7 @@ const CreateRecipe = () => {
                         onChange={handleInputChange}
                     >
                         <option value=''>Select Cuisine</option>
-                        {cuisineOptions.map((option) => (
+                        {cuisines.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
