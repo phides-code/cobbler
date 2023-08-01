@@ -43,6 +43,7 @@ export const cuisines = [
 ] as const;
 
 export const foodTypes = [
+    'Entree',
     'Main',
     'Side',
     'Snack',

@@ -16,7 +16,7 @@ const PreviewCard = ({ recipe }: PreviewCardProps) => {
     const dispatch = useAppDispatch();
 
     const { title, description, authorId, likedBy, type } = recipe;
-    const likes = likedBy.length;
+    const likes = likedBy?.length;
     const nicknameState = useSelector(selectNicknames);
     const nickname = nicknameState.nickNameIdPairs[authorId as string];
 
