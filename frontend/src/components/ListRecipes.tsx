@@ -51,6 +51,8 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
 
     if (isLoading) return <div>...</div>;
 
+    if (recipes?.length === 0) return <div>No recipes to show</div>;
+
     return (
         <div>
             {recipes &&

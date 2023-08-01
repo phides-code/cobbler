@@ -13,7 +13,9 @@ const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
     const dispatch = useAppDispatch();
     const { myId, isAuthenticated } = useContext(UserContext);
 
-    const likedByMe = recipeLikedBy.includes(myId as string);
+    const likedByMe = recipeLikedBy?.includes(myId as string);
+
+    const likeCount = recipeLikedBy?.length | 0;
 
     const handleLikeButton = async () => {
         dispatch(
@@ -26,7 +28,7 @@ const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
     };
     return (
         <LikeCount>
-            {`${recipeLikedBy.length} likes`}
+            {`${likeCount} likes`}
             {isAuthenticated && (
                 <button onClick={handleLikeButton}>
                     {likedByMe ? 'Unlike' : 'Like it!'}

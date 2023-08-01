@@ -94,14 +94,15 @@ const recipeSlice = createSlice({
 
                 if (state.recipe) {
                     if (type === 'like') {
-                        if (!state.recipe.likedBy.includes(userId)) {
-                            state.recipe.likedBy.push(userId);
+                        if (!state.recipe?.likedBy?.includes(userId)) {
+                            state.recipe?.likedBy?.push(userId);
                         }
                     } else {
-                        if (state.recipe.likedBy.includes(userId)) {
-                            state.recipe.likedBy = state.recipe.likedBy.filter(
-                                (likedByUserId) => likedByUserId !== userId
-                            );
+                        if (state.recipe?.likedBy?.includes(userId)) {
+                            state.recipe.likedBy =
+                                state.recipe?.likedBy?.filter(
+                                    (likedByUserId) => likedByUserId !== userId
+                                );
                         }
                     }
                 }

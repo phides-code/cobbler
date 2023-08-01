@@ -36,8 +36,6 @@ const UserProvider = ({ children }: UserProviderProps) => {
             setMyId(result.data._id ? result.data._id : result.data.insertedId);
         };
 
-        console.log('run UserContext useEffect...');
-
         if (isAuthenticated) {
             createUserInDb();
         }
