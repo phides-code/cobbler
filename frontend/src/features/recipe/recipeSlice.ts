@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import { Recipe, LikeUnlikeRecipeProps } from '../../app/types';
 import { RootState } from '../../app/store';
+import { DeleteResult } from 'mongodb';
 
 interface FetchResponseType {
     recipe?: Recipe | null;
@@ -20,6 +21,23 @@ const initialState: RecipeState = {
     status: 'idle',
     error: null,
 };
+
+export const deleteRecipe = createAsyncThunk(
+    'recipe/deleteRecipe',
+    async (recipeToDelete: Partial<Recipe>) => {
+        const rawfetchResponse = await fetch('/api/deleteRecipe', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                recipeToDelete,
+            }),
+        });
+
+        const fetchResponse: DeleteResult = await rawfetchResponse.json();
+
+        return fetchResponse;
+    }
+);
 
 export const createRecipe = createAsyncThunk(
     'recipe/createRecipe',
@@ -115,6 +133,16 @@ const recipeSlice = createSlice({
                 state.recipe = action.payload.recipe;
             })
             .addCase(createRecipe.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(deleteRecipe.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteRecipe.fulfilled, (state) => {
+                state.status = 'idle';
+            })
+            .addCase(deleteRecipe.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

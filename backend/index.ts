@@ -9,6 +9,7 @@ import likeUnlikeRecipe from './handlers/likeUnlikeRecipe';
 import getNicknameById from './handlers/getNicknameById';
 import getAllRecipes from './handlers/getAllRecipes';
 import createRecipe from './handlers/createRecipe';
+import deleteRecipe from './handlers/deleteRecipe';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.post('/api/getNicknameById', getNicknameById);
 app.put('/api/likeUnlikeRecipe', likeUnlikeRecipe);
 app.get('/api/getAllRecipes', getAllRecipes);
 app.post('/api/createRecipe', createRecipe);
+app.delete('/api/deleteRecipe', deleteRecipe);
 
 app.get('*', (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, '../../frontend/build', 'index.html'));

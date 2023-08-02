@@ -1,14 +1,19 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../app/hooks';
 import { useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../features/user/userSlice';
 import { fetchRecipeById, selectRecipe } from '../features/recipe/recipeSlice';
 import LikeButton from './LikeButton';
+import { UserContext } from '../app/UserContext';
+import DeleteRecipeButton from './DeleteRecipeButton';
+import { Recipe } from '../app/types';
 
 const ViewRecipe = () => {
     const dispatch = useAppDispatch();
+
+    const { myId } = useContext(UserContext);
     const { recipeId } = useParams<{ recipeId: string }>();
 
     const recipesState = useSelector(selectRecipe);
@@ -18,6 +23,8 @@ const ViewRecipe = () => {
     const author = userState.user;
 
     const isLoading = recipesState.status === 'loading';
+
+    const myRecipe = author?._id.toString() === (myId as string);
 
     useEffect(() => {
         if (recipeId) {
@@ -62,6 +69,7 @@ const ViewRecipe = () => {
                     </StepItem>
                 ))}
             </StepsContainer>
+            {myRecipe && <DeleteRecipeButton recipe={recipe as Recipe} />}
         </RecipeContainer>
     );
 };
