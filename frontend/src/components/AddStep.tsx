@@ -72,17 +72,14 @@ const Wrapper = styled.div`
     padding-top: 1rem;
 `;
 
-const StepContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
+const StepContainer = styled.div``;
 
 const Input = styled.input`
     padding: 0.5rem;
     border: 0.06rem solid #ccc;
     border-radius: 0.3rem;
     margin-bottom: 0.6rem;
-    width: 100%;
+    width: calc(100% - 1.2rem);
 `;
 
 const AddButton = styled.button`

@@ -86,7 +86,6 @@ const ListIngredients = ({ ingredients, setRecipe }: ListIngredientsProps) => {
 
 const ItemWrapper = styled.div`
     display: flex;
-    width: 100%;
     justify-content: space-between;
 `;
 
@@ -98,7 +97,6 @@ const IngredientsList = styled.ul`
 const IngredientItem = styled.li`
     color: #555;
     margin-bottom: 0.3rem;
-    width: 100%;
 `;
 
 const RemoveButton = styled.button`

@@ -96,7 +96,6 @@ const Wrapper = styled.div`
 
 const IngredientContainer = styled.div`
     display: flex;
-    justify-content: space-between;
 `;
 
 const InputLabel = styled.label`

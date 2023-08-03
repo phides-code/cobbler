@@ -91,12 +91,10 @@ const Label = styled.label`
 const StepItem = styled.li`
     color: #555;
     margin-bottom: 0.3rem;
-    width: 100%;
 `;
 
 const StepWrapper = styled.div`
     display: flex;
-    width: 100%;
     justify-content: space-between;
 `;
 
