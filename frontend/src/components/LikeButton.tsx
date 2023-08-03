@@ -39,8 +39,9 @@ const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
 };
 
 const LikeCount = styled.div`
-    font-size: 14px;
-    margin-bottom: 10px;
+    font-size: 0.9rem;
+
+    margin-bottom: 0.6rem;
 `;
 
 export default LikeButton;

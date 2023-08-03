@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PreviewCard from './PreviewCard';
 import { RecipeListType } from '../app/types';
+import styled from 'styled-components';
 
 interface ListRecipesProps {
     type: RecipeListType;
@@ -54,7 +55,7 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
     if (recipes?.length === 0) return <div>No recipes to show</div>;
 
     return (
-        <div>
+        <Wrapper>
             {recipes &&
                 recipes?.map((recipe) => (
                     <div key={recipe._id.toString()}>
@@ -63,8 +64,13 @@ const ListRecipes = ({ type, recipeIds }: ListRecipesProps) => {
                         </Link>
                     </div>
                 ))}
-        </div>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`;
 
 export default ListRecipes;

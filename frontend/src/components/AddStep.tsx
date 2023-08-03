@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Step, Recipe } from '../app/types';
 import { v4 as uuidv4 } from 'uuid';
+import styled from 'styled-components';
 
 interface AddStepProps {
     setRecipe: React.Dispatch<React.SetStateAction<Partial<Recipe>>>;
@@ -44,21 +45,64 @@ const AddStep = ({ setRecipe, numberOfSteps }: AddStepProps) => {
     };
 
     return (
-        <>
-            <div>
-                <input
+        <Wrapper>
+            <StepContainer>
+                <Input
                     type='text'
                     name='content'
                     value={newStep.content}
                     onChange={handleInputChange}
                 />
-            </div>
+            </StepContainer>
 
-            <button onClick={handleAddStep} disabled={disableAdd}>
-                Add
-            </button>
-        </>
+            <StepContainer>
+                <AddButton onClick={handleAddStep} disabled={disableAdd}>
+                    Add
+                </AddButton>
+            </StepContainer>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.3rem;
+    border-top: 0.06rem solid #555;
+    padding-top: 1rem;
+`;
+
+const StepContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const Input = styled.input`
+    padding: 0.5rem;
+    border: 0.06rem solid #ccc;
+    border-radius: 0.3rem;
+    margin-bottom: 0.6rem;
+    width: 100%;
+`;
+
+const AddButton = styled.button`
+    padding: 0.6rem 1.3rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    position: relative;
+    right: 1.2rem;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+`;
 
 export default AddStep;

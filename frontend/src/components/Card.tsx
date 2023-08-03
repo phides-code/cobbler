@@ -101,7 +101,7 @@ export const Card: FC<CardProps> = ({ id, content, index, moveCard }) => {
 
     return (
         <Wrapper style={{ opacity }} data-handler-id={handlerId}>
-            <div ref={preview}>{content}</div>
+            <Content ref={preview}>{content}</Content>
             <Handle ref={ref}>≣</Handle>
         </Wrapper>
     );
@@ -109,6 +109,10 @@ export const Card: FC<CardProps> = ({ id, content, index, moveCard }) => {
 
 const Wrapper = styled.div`
     display: flex;
+`;
+
+const Content = styled.div`
+    width: 100%;
 `;
 
 const Handle = styled.div`

@@ -76,40 +76,41 @@ const ViewRecipe = () => {
 
 const RecipeContainer = styled.div`
     background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 1.3rem;
+    border-radius: 0.6rem;
 `;
 
 const Title = styled.div`
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
 `;
 
 const Description = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 0.6rem;
 `;
 
 const Author = styled.div`
-    margin-bottom: 10px;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
 `;
 
 const IngredientsContainer = styled.div`
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
 `;
 
 const IngredientItem = styled.div`
-    margin-bottom: 5px;
+    margin-bottom: 0.3rem;
 `;
 
 const StepsContainer = styled.div`
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
 `;
 
 const StepItem = styled.div`
-    margin-bottom: 5px;
+    margin-bottom: 0.3rem;
 `;
 
 export default ViewRecipe;

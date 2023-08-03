@@ -44,7 +44,6 @@ const App = () => {
             <div>
                 <BrowserRouter>
                     <Header />
-                    {isMobile ? 'mobile' : 'desktop'}
                     <Routes>
                         <Route path='/' element={<Home />} />
                         <Route

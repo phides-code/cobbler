@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Recipe, Step } from '../app/types';
 import AddStep from './AddStep';
 import { Card } from './Card';
+import styled from 'styled-components';
 
 interface ListStepsProps {
     steps: Step[];
@@ -47,15 +48,17 @@ const ListSteps = ({ steps, setRecipe }: ListStepsProps) => {
                     index={index}
                     id={step.id}
                     content={
-                        <li>
-                            {`${step.content} `}
-                            <button
-                                type='button'
-                                onClick={() => handleRemoveStep(step)}
-                            >
-                                X
-                            </button>
-                        </li>
+                        <StepItem>
+                            <StepWrapper>
+                                {`${step.content} `}
+                                <RemoveButton
+                                    type='button'
+                                    onClick={() => handleRemoveStep(step)}
+                                >
+                                    X
+                                </RemoveButton>
+                            </StepWrapper>
+                        </StepItem>
                     }
                     moveCard={moveStep}
                 />
@@ -66,18 +69,53 @@ const ListSteps = ({ steps, setRecipe }: ListStepsProps) => {
 
     return (
         <div>
-            <label>Steps:</label>
-            <ol>
+            <Label>Steps:</Label>
+            <StepsList>
                 {steps.map((step, i) => renderStep(step, i))}
-                <li>
+                <StepItem>
                     <AddStep
                         setRecipe={setRecipe}
                         numberOfSteps={steps.length as number}
                     />
-                </li>
-            </ol>
+                </StepItem>
+            </StepsList>
         </div>
     );
 };
+
+const Label = styled.label`
+    color: #555;
+    margin-bottom: 0.3rem;
+`;
+
+const StepItem = styled.li`
+    color: #555;
+    margin-bottom: 0.3rem;
+    width: 100%;
+`;
+
+const StepWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`;
+
+const RemoveButton = styled.button`
+    padding: 0.3rem 0.6rem;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #c82333;
+    }
+`;
+
+const StepsList = styled.ol`
+    padding: 0;
+    margin-left: 1.2rem;
+`;
 
 export default ListSteps;

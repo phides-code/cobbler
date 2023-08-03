@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { useContext, useState } from 'react';
 import {
     FoodType,
@@ -80,47 +81,50 @@ const CreateRecipe = () => {
         loading;
 
     return (
-        <div>
-            <div>Create</div>
+        <CoolForm>
+            <Title>Create Recipe</Title>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
-                    <input
+                <FormGroup>
+                    <Label htmlFor='title'>Title:</Label>
+                    <Input
                         type='text'
+                        id='title'
                         name='title'
                         value={recipe.title}
                         onChange={handleInputChange}
                     />
-                </div>
+                </FormGroup>
 
-                <div>
-                    <label>Description:</label>
-                    <textarea
+                <FormGroup>
+                    <Label htmlFor='description'>Description:</Label>
+                    <Textarea
+                        id='description'
                         name='description'
                         value={recipe.description}
                         onChange={handleInputChange}
                     />
-                </div>
+                </FormGroup>
 
-                <div>
-                    <label>Type:</label>
+                <FormGroup>
+                    <Label>Type:</Label>
                     {foodTypes.map((foodType) => (
-                        <label key={foodType}>
-                            <input
+                        <CheckboxContainer key={foodType}>
+                            <CheckboxInput
                                 type='checkbox'
                                 name='type'
                                 value={foodType}
                                 checked={recipe.type?.includes(foodType)}
                                 onChange={handleInputChange}
                             />
-                            {foodType}
-                        </label>
+                            <CheckboxLabel>{foodType}</CheckboxLabel>
+                        </CheckboxContainer>
                     ))}
-                </div>
+                </FormGroup>
 
-                <div>
-                    <label>Cuisine:</label>
-                    <select
+                <FormGroup>
+                    <Label htmlFor='cuisine'>Cuisine:</Label>
+                    <Select
+                        id='cuisine'
                         name='cuisine'
                         value={recipe.cuisine}
                         onChange={handleInputChange}
@@ -131,9 +135,8 @@ const CreateRecipe = () => {
                                 {option}
                             </option>
                         ))}
-                    </select>
-                </div>
-
+                    </Select>
+                </FormGroup>
                 <ListIngredients
                     ingredients={recipe.ingredients as Ingredient[]}
                     setRecipe={setRecipe}
@@ -144,12 +147,88 @@ const CreateRecipe = () => {
                     steps={recipe.steps as Step[]}
                 />
 
-                <button type='submit' disabled={disableSubmit}>
+                <SubmitButton type='submit' disabled={disableSubmit}>
                     Submit
-                </button>
+                </SubmitButton>
             </form>
-        </div>
+        </CoolForm>
     );
 };
+
+const CoolForm = styled.div`
+    max-width: 31.25rem;
+    margin: 0 auto;
+    padding: 1.3rem;
+    border-radius: 0.5rem;
+    background-color: #f9f9f9;
+    box-shadow: 0rem 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+    color: #333;
+    margin-bottom: 1.3rem;
+`;
+
+const FormGroup = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.3rem;
+`;
+
+const Label = styled.label`
+    color: #555;
+    margin-bottom: 0.3rem;
+`;
+
+const Input = styled.input`
+    padding: 0.5rem;
+    border: 0.06rem solid #ccc;
+    border-radius: 0.3rem;
+`;
+
+const Textarea = styled.textarea`
+    padding: 0.5rem;
+    border: 0.06rem solid #ccc;
+    border-radius: 0.3rem;
+    resize: vertical;
+`;
+
+const CheckboxContainer = styled.label`
+    display: flex;
+    align-items: center;
+    margin-right: 0.6rem;
+`;
+
+const CheckboxInput = styled.input`
+    margin-right: 0.3rem;
+`;
+
+const CheckboxLabel = styled.span`
+    color: #555;
+`;
+
+const Select = styled.select`
+    padding: 0.5rem;
+    border: 0.06rem solid #ccc;
+    border-radius: 0.3rem;
+`;
+
+const SubmitButton = styled.button`
+    padding: 0.6rem 1.3rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+`;
 
 export default CreateRecipe;

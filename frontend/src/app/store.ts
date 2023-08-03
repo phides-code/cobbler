@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import recipeReducer from '../features/recipe/recipeSlice';
 import {
     authoredRecipesSlice,
@@ -11,7 +10,6 @@ import nicknameReducer from '../features/nickname/nicknameSlice';
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
         recipe: recipeReducer,
         authoredRecipes: authoredRecipesSlice.reducer,
         likedRecipes: likedRecipesSlice.reducer,
