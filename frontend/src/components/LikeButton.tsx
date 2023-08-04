@@ -62,11 +62,11 @@ const LikeCount = styled.div`
 `;
 
 const LikeButtonStyled = styled.button<LikeButtonStyledProps>`
-    padding: 8px 16px;
+    padding: 0.3rem 0.5rem;
     font-size: 0.9rem;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.3rem;
     cursor: pointer;
     background-color: ${(props) => props.backgroundcolor};
 

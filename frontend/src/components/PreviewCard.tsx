@@ -41,7 +41,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 18.75rem;
-    padding: 1.3rem;
+    padding-left: 1rem;
     margin: 0.2rem;
     border-radius: 0.6rem;
     background-color: #fff;
@@ -53,9 +53,11 @@ const Wrapper = styled.div`
     }
 `;
 
-const Title = styled.h2`
+const Title = styled.div`
     margin-bottom: 0.6rem;
     color: #333;
+    font-weight: bold;
+    font-size: 1.2rem;
 `;
 
 const Cuisine = styled.div`

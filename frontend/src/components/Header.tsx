@@ -28,13 +28,13 @@ const HeaderContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 8px;
+    padding: 0.4rem 0.5rem;
     background-color: #333;
     color: #fff;
 `;
 
 const LogoLink = styled(Link)`
-    font-size: 24px;
+    font-size: 1.5rem;
     text-decoration: none;
     color: #fff;
     margin-right: 0.6rem;
@@ -44,13 +44,13 @@ const Navigation = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 1rem;
 `;
 
 const NavLink = styled(Link)`
     text-decoration: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.9rem;
 
     &:hover {
         opacity: 0.8;

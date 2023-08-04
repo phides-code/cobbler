@@ -32,7 +32,6 @@ const ViewProfile = () => {
         }
     }, [dispatch, userId]);
 
-    console.log(user);
     return (
         <Wrapper>
             <UserInfo>
@@ -85,17 +84,16 @@ const Nickname = styled.h2`
 const RecipeListTypeSwitch = styled.div`
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
 `;
 
 const SwitchLink = styled(Link)<SwitchLinkProps>`
-    font-size: 16px;
     text-decoration: none;
     color: ${(props) => (props.active === 'true' ? '#007bff' : '#333')};
-    padding-bottom: 4px;
-    border-bottom: 2px solid
+    padding-bottom: 0.3rem;
+    border-bottom: 0.13rem solid
         ${(props) => (props.active === 'true' ? '#007bff' : 'transparent')};
-    margin-right: 16px;
+    margin-right: 1rem;
     cursor: pointer;
 
     &:last-child {

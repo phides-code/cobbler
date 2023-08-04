@@ -42,11 +42,11 @@ export const SignupButton = () => {
 };
 
 const Button = styled.button`
-    padding: 4px 8px;
-    font-size: 0.9rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.3rem;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 
@@ -56,7 +56,7 @@ const Button = styled.button`
 
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px #007bff;
+        box-shadow: 0 0 0 0.13rem #007bff;
     }
 `;
 
@@ -68,6 +68,6 @@ const StyledButton = styled(Button)`
     }
 
     &:focus {
-        box-shadow: 0 0 0 2px #007bff;
+        box-shadow: 0 0 0 0.13rem #007bff;
     }
 `;

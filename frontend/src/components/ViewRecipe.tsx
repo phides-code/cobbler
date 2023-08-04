@@ -80,15 +80,17 @@ const ViewRecipe = () => {
 
 const RecipeContainer = styled.div`
     background-color: #f9f9f9;
-    padding: 1.5rem;
+    padding-left: 1.5rem;
+    padding-top: 1.2rem;
     border-radius: 1rem;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0rem 0.13rem 0.3rem rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h2`
-    font-weight: bold;
-    margin-bottom: 0.8rem;
+const Title = styled.div`
+    margin-bottom: 0.6rem;
     color: #333;
+    font-weight: bold;
+    font-size: 1.4rem;
 `;
 
 const Description = styled.p`
