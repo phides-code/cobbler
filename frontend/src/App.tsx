@@ -9,6 +9,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const App = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -41,7 +42,7 @@ const App = () => {
 
     return (
         <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
-            <div>
+            <Wrapper>
                 <BrowserRouter>
                     <Header />
                     <Routes>
@@ -54,9 +55,11 @@ const App = () => {
                         <Route path='/create' element={<CreateRecipe />} />
                     </Routes>
                 </BrowserRouter>
-            </div>
+            </Wrapper>
         </DndProvider>
     );
 };
+
+const Wrapper = styled.div``;
 
 export default App;

@@ -13,7 +13,7 @@ const Header = () => {
 
             {isAuthenticated ? (
                 <Navigation>
-                    <NavLink to='/create'>Create a recipe</NavLink>
+                    <NavLink to='/create'>Create</NavLink>
                     <NavLink to={`/user/${myId}`}>{user?.nickname}</NavLink>
                     <LogoutButton />
                 </Navigation>
@@ -37,12 +37,13 @@ const LogoLink = styled(Link)`
     font-size: 24px;
     text-decoration: none;
     color: #fff;
+    margin-right: 0.6rem;
 `;
 
 const Navigation = styled.nav`
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     gap: 16px;
 `;
 

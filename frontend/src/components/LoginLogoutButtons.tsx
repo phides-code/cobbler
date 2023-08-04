@@ -42,7 +42,7 @@ export const SignupButton = () => {
 };
 
 const Button = styled.button`
-    padding: 8px 16px;
+    padding: 4px 8px;
     font-size: 0.9rem;
     color: #fff;
     border: none;
