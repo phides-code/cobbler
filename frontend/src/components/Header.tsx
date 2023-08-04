@@ -14,7 +14,9 @@ const Header = () => {
             {isAuthenticated ? (
                 <Navigation>
                     <NavLink to='/create'>Create</NavLink>
-                    <NavLink to={`/user/${myId}`}>{user?.nickname}</NavLink>
+                    {myId && (
+                        <NavLink to={`/user/${myId}`}>{user?.nickname}</NavLink>
+                    )}
                     <LogoutButton />
                 </Navigation>
             ) : (
