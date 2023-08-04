@@ -9,6 +9,11 @@ interface LikeButtonProps {
     recipeLikedBy: string[];
 }
 
+interface LikeButtonStyledProps {
+    backgroundcolor: string;
+    hovercolor: string;
+}
+
 const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
     const dispatch = useAppDispatch();
     const { myId, isAuthenticated } = useContext(UserContext);
@@ -26,22 +31,53 @@ const LikeButton = ({ recipeId, recipeLikedBy }: LikeButtonProps) => {
             })
         );
     };
+
     return (
-        <LikeCount>
-            {`${likeCount} likes`}
+        <LikeContainer>
+            <LikeCount>{`${likeCount} likes`}</LikeCount>
             {isAuthenticated && (
-                <button onClick={handleLikeButton}>
+                <LikeButtonStyled
+                    onClick={handleLikeButton}
+                    backgroundcolor={likedByMe ? '#dc3545' : '#007bff'}
+                    hovercolor={likedByMe ? '#c82333' : '#0056b3'}
+                    disabled={!isAuthenticated}
+                >
                     {likedByMe ? 'Unlike' : 'Like it!'}
-                </button>
+                </LikeButtonStyled>
             )}
-        </LikeCount>
+        </LikeContainer>
     );
 };
 
+const LikeContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+`;
+
 const LikeCount = styled.div`
     font-size: 0.9rem;
+    color: #888;
+    margin-right: 1rem;
+`;
 
-    margin-bottom: 0.6rem;
+const LikeButtonStyled = styled.button<LikeButtonStyledProps>`
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: ${(props) => props.backgroundcolor};
+
+    &:hover {
+        background-color: ${(props) => props.hovercolor};
+    }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 `;
 
 export default LikeButton;

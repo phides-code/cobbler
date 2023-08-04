@@ -7,6 +7,10 @@ import ListRecipes from './ListRecipes';
 import { RecipeListType } from '../app/types';
 import styled from 'styled-components';
 
+interface SwitchLinkProps {
+    active: string;
+}
+
 const ViewProfile = () => {
     const dispatch = useAppDispatch();
     const { userId } = useParams<{ userId: string }>();
@@ -28,38 +32,79 @@ const ViewProfile = () => {
         }
     }, [dispatch, userId]);
 
+    console.log(user);
     return (
-        <div>
-            <div>User: {user?.nickname}</div>
+        <Wrapper>
+            <UserInfo>
+                <StyledAvatar src={user?.picture} />
+                <Nickname>{user?.nickname}</Nickname>
+            </UserInfo>
             <RecipeListTypeSwitch>
-                <Link
+                <SwitchLink
                     to='#'
-                    onClick={() => {
-                        setRecipeListType('AUTHORED');
-                    }}
+                    active={(recipeListType === 'AUTHORED').toString()}
+                    onClick={() => setRecipeListType('AUTHORED')}
                 >
                     Authored recipes
-                </Link>
-                <Link
+                </SwitchLink>
+                <SwitchLink
                     to='#'
-                    onClick={() => {
-                        setRecipeListType('LIKED');
-                    }}
+                    active={(recipeListType === 'LIKED').toString()}
+                    onClick={() => setRecipeListType('LIKED')}
                 >
                     Liked recipes
-                </Link>
+                </SwitchLink>
             </RecipeListTypeSwitch>
 
             {recipeIds && (
                 <ListRecipes type={recipeListType} recipeIds={recipeIds} />
             )}
-        </div>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div``;
+
+const UserInfo = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const StyledAvatar = styled.img`
+    max-height: 2rem;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+`;
+
+const Nickname = styled.h2`
+    font-weight: bold;
+    color: #333;
+`;
 
 const RecipeListTypeSwitch = styled.div`
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 16px;
+`;
+
+const SwitchLink = styled(Link)<SwitchLinkProps>`
+    font-size: 16px;
+    text-decoration: none;
+    color: ${(props) => (props.active === 'true' ? '#007bff' : '#333')};
+    padding-bottom: 4px;
+    border-bottom: 2px solid
+        ${(props) => (props.active === 'true' ? '#007bff' : 'transparent')};
+    margin-right: 16px;
+    cursor: pointer;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &:hover {
+        color: #007bff;
+    }
 `;
 
 export default ViewProfile;

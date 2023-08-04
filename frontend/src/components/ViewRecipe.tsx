@@ -43,17 +43,21 @@ const ViewRecipe = () => {
     return (
         <RecipeContainer>
             <Title>{recipe?.title}</Title>
-            <Description>{recipe?.description}</Description>
             <Author>
                 by <Link to={`/user/${author?._id}`}>{author?.nickname}</Link>
             </Author>
+            <TypeAndCuisine>
+                <Type>Type: {recipe?.type.join(', ')}</Type>
+                <Cuisine>Cuisine: {recipe?.cuisine}</Cuisine>
+            </TypeAndCuisine>
+            <Description>{recipe?.description}</Description>
             {recipeId && recipe && (
                 <LikeButton
                     recipeId={recipeId as string}
                     recipeLikedBy={recipe?.likedBy as string[]}
                 />
             )}
-            <div>Ingredients:</div>
+            <SectionTitle>Ingredients:</SectionTitle>
             <IngredientsContainer>
                 {recipe?.ingredients.map((ingredient, i) => (
                     <IngredientItem key={ingredient.ingredientName + i}>
@@ -61,7 +65,7 @@ const ViewRecipe = () => {
                     </IngredientItem>
                 ))}
             </IngredientsContainer>
-            <div>Steps:</div>
+            <SectionTitle>Steps:</SectionTitle>
             <StepsContainer>
                 {recipe?.steps.map((step) => (
                     <StepItem key={step.stepNumber}>
@@ -75,42 +79,72 @@ const ViewRecipe = () => {
 };
 
 const RecipeContainer = styled.div`
-    background-color: #f2f2f2;
-    padding: 1.3rem;
-    border-radius: 0.6rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.div`
-    font-size: 1.5rem;
+const Title = styled.h2`
     font-weight: bold;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
+    color: #333;
 `;
 
-const Description = styled.div`
-    margin-bottom: 0.6rem;
+const Description = styled.p`
+    color: #555;
+    margin-bottom: 1rem;
 `;
 
-const Author = styled.div`
-    font-size: 0.9rem;
-    margin-bottom: 0.6rem;
+const Author = styled.p`
+    color: #888;
+    margin-bottom: 1rem;
+`;
+
+const TypeAndCuisine = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+`;
+
+const Type = styled.div`
+    color: #555;
+    background-color: #f2f2f2;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+`;
+
+const Cuisine = styled.div`
+    color: #555;
+    background-color: #f2f2f2;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
 `;
 
 const IngredientsContainer = styled.div`
-    margin-top: 0.6rem;
-    margin-bottom: 0.6rem;
+    margin-top: 1rem;
 `;
 
 const IngredientItem = styled.div`
-    margin-bottom: 0.3rem;
-`;
-
-const StepsContainer = styled.div`
-    margin-top: 0.6rem;
+    color: #555;
     margin-bottom: 0.6rem;
 `;
 
+const StepsContainer = styled.div`
+    margin-top: 1rem;
+`;
+
 const StepItem = styled.div`
-    margin-bottom: 0.3rem;
+    color: #555;
+    margin-bottom: 0.6rem;
+`;
+
+const SectionTitle = styled.div`
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
 `;
 
 export default ViewRecipe;
