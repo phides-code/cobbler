@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useContext, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../app/hooks';
 import { useSelector } from 'react-redux';
 import { fetchUser, selectUser } from '../features/user/userSlice';
@@ -12,6 +12,7 @@ import { Recipe } from '../app/types';
 
 const ViewRecipe = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const { myId } = useContext(UserContext);
     const { recipeId } = useParams<{ recipeId: string }>();
@@ -73,17 +74,29 @@ const ViewRecipe = () => {
                     </StepItem>
                 ))}
             </StepsContainer>
-            {myRecipe && <DeleteRecipeButton recipe={recipe as Recipe} />}
+            {myRecipe && recipe && (
+                <OwnerButtons>
+                    <DeleteRecipeButton recipe={recipe as Recipe} />
+                    <EditButton
+                        onClick={() => {
+                            navigate(`/edit/${recipe._id.toString()}`);
+                        }}
+                    >
+                        Edit recipe
+                    </EditButton>
+                </OwnerButtons>
+            )}
         </RecipeContainer>
     );
 };
 
 const RecipeContainer = styled.div`
+    max-width: 31.25rem;
+    margin: 0 auto;
+    padding: 1.3rem;
+    border-radius: 0.5rem;
     background-color: #f9f9f9;
-    padding-left: 1.5rem;
-    padding-top: 1.2rem;
-    border-radius: 1rem;
-    box-shadow: 0rem 0.13rem 0.3rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0rem 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.div`
@@ -147,6 +160,29 @@ const SectionTitle = styled.div`
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
+`;
+
+const EditButton = styled.button`
+    padding: 0.6rem 1.3rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+`;
+
+const OwnerButtons = styled.div`
+    display: flex;
+    justify-content: space-evenly;
 `;
 
 export default ViewRecipe;

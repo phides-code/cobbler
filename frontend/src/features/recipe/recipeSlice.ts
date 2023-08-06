@@ -90,6 +90,23 @@ export const likeUnlikeRecipe = createAsyncThunk(
     }
 );
 
+export const updateRecipe = createAsyncThunk(
+    'recipe/updateRecipe',
+    async (updatedRecipe: Recipe) => {
+        const rawFetchResponse = await fetch('/api/updateRecipe', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                updatedRecipe,
+            }),
+        });
+
+        const fetchResponse: FetchResponseType = await rawFetchResponse.json();
+
+        return fetchResponse;
+    }
+);
+
 const recipeSlice = createSlice({
     name: 'recipe',
     initialState,
@@ -143,6 +160,17 @@ const recipeSlice = createSlice({
                 state.status = 'idle';
             })
             .addCase(deleteRecipe.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(updateRecipe.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateRecipe.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.recipe = action.payload.recipe;
+            })
+            .addCase(updateRecipe.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

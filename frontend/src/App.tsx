@@ -10,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import EditRecipe from './components/EditRecipe';
 
 const App = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -53,6 +54,10 @@ const App = () => {
                         />
                         <Route path='/user/:userId' element={<ViewProfile />} />
                         <Route path='/create' element={<CreateRecipe />} />
+                        <Route
+                            path='/edit/:recipeId'
+                            element={<EditRecipe />}
+                        />
                     </Routes>
                 </BrowserRouter>
             </Wrapper>

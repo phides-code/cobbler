@@ -3,6 +3,7 @@ import { Recipe } from '../app/types';
 import { deleteRecipe } from '../features/recipe/recipeSlice';
 import { useAppDispatch } from '../app/hooks';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface DeleteRecipeButtonProps {
     recipe: Recipe;
@@ -21,10 +22,22 @@ const DeleteRecipeButton = ({ recipe }: DeleteRecipeButtonProps) => {
     };
 
     return (
-        <button disabled={isLoading} onClick={handleDelete}>
+        <DeleteButton disabled={isLoading} onClick={handleDelete}>
             Delete this recipe
-        </button>
+        </DeleteButton>
     );
 };
 
+const DeleteButton = styled.button`
+    padding: 0.6rem 1.3rem;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #c82333;
+    }
+`;
 export default DeleteRecipeButton;

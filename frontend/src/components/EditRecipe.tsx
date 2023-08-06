@@ -1,5 +1,14 @@
-import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch } from '../app/hooks';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../app/UserContext';
+import { useSelector } from 'react-redux';
+import {
+    fetchRecipeById,
+    selectRecipe,
+    updateRecipe,
+} from '../features/recipe/recipeSlice';
+import { fetchUser, selectUser } from '../features/user/userSlice';
 import {
     FoodType,
     Ingredient,
@@ -8,31 +17,29 @@ import {
     cuisines,
     foodTypes,
 } from '../app/types';
-import { UserContext } from '../app/UserContext';
-import { useAppDispatch } from '../app/hooks';
-import { createRecipe } from '../features/recipe/recipeSlice';
-import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import ListIngredients from './ListIngredients';
 import ListSteps from './ListSteps';
 
-const CreateRecipe = () => {
+const EditRecipe = () => {
     const dispatch = useAppDispatch();
-
-    const initialRecipeState: Partial<Recipe> = {
-        title: '',
-        description: '',
-        type: [],
-        cuisine: undefined,
-        ingredients: [],
-        steps: [],
-    };
-
-    const [recipe, setRecipe] = useState<Partial<Recipe>>(initialRecipeState);
-    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const { myId } = useContext(UserContext);
+    const { recipeId } = useParams<{ recipeId: string }>();
 
-    const navigate = useNavigate();
+    const recipesState = useSelector(selectRecipe);
+    const recipe = recipesState.recipe as Recipe;
+
+    const userState = useSelector(selectUser);
+    const author = userState.user;
+
+    const isLoading = recipesState.status === 'loading';
+
+    const myRecipe = author?._id.toString() === (myId as string);
+
+    const [editedRecipe, setEditedRecipe] = useState<Partial<Recipe>>(recipe);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleInputChange = (
         event: React.ChangeEvent<
@@ -46,43 +53,61 @@ const CreateRecipe = () => {
             const checked = inputElement.checked; // Get the "checked" property from the inputElement
 
             const updatedType = checked
-                ? [...(recipe.type as FoodType[]), value] // Add the selected value to the array
-                : recipe.type?.filter((item) => item !== value); // Remove the unselected value from the array
+                ? [...(editedRecipe.type as FoodType[]), value] // Add the selected value to the array
+                : editedRecipe.type?.filter((item) => item !== value); // Remove the unselected value from the array
 
-            setRecipe((prevRecipe) => ({ ...prevRecipe, [name]: updatedType }));
+            setEditedRecipe((prevRecipe) => ({
+                ...prevRecipe,
+                [name]: updatedType,
+            }));
         } else {
             // For other inputs, directly set the value in the state
-            setRecipe((prevRecipe) => ({ ...prevRecipe, [name]: value }));
+            setEditedRecipe((prevRecipe) => ({ ...prevRecipe, [name]: value }));
         }
     };
 
-    const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
 
-        const newRecipe = {
-            ...recipe,
+        const newEditedRecipe = {
+            ...editedRecipe,
             authorId: myId,
-        } as Partial<Recipe>;
+        } as Recipe;
 
         setLoading(true);
-        await dispatch(createRecipe(newRecipe));
-        setRecipe(initialRecipeState);
+        dispatch(updateRecipe(newEditedRecipe));
         setLoading(false);
-        navigate(`/user/${myId}`);
+        navigate(`/recipe/${newEditedRecipe._id.toString()}`);
     };
 
     const disableSubmit: boolean =
-        !recipe.cuisine ||
-        recipe.title === '' ||
-        recipe.description === '' ||
-        recipe.type?.length === 0 ||
-        recipe.ingredients?.length === 0 ||
-        recipe.steps?.length === 0 ||
+        !editedRecipe.cuisine ||
+        editedRecipe.title === '' ||
+        editedRecipe.description === '' ||
+        editedRecipe.type?.length === 0 ||
+        editedRecipe.ingredients?.length === 0 ||
+        editedRecipe.steps?.length === 0 ||
         loading;
+
+    useEffect(() => {
+        if (recipeId) {
+            dispatch(fetchRecipeById(recipeId));
+        }
+    }, [dispatch, recipeId]);
+
+    useEffect(() => {
+        if (recipe) {
+            dispatch(fetchUser(recipe.authorId));
+        }
+    }, [dispatch, recipe]);
+
+    if (isLoading) return <div>...</div>;
+
+    if (!myRecipe) return <div>Unable to edit</div>;
 
     return (
         <Wrapper>
-            <Title>Create Recipe</Title>
+            <Title>Edit Recipe</Title>
             <form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Label htmlFor='title'>Title:</Label>
@@ -90,7 +115,7 @@ const CreateRecipe = () => {
                         type='text'
                         id='title'
                         name='title'
-                        value={recipe.title}
+                        value={editedRecipe.title}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -100,7 +125,7 @@ const CreateRecipe = () => {
                     <Textarea
                         id='description'
                         name='description'
-                        value={recipe.description}
+                        value={editedRecipe.description}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -113,7 +138,7 @@ const CreateRecipe = () => {
                                 type='checkbox'
                                 name='type'
                                 value={foodType}
-                                checked={recipe.type?.includes(foodType)}
+                                checked={editedRecipe.type?.includes(foodType)}
                                 onChange={handleInputChange}
                             />
                             <CheckboxLabel>{foodType}</CheckboxLabel>
@@ -126,7 +151,7 @@ const CreateRecipe = () => {
                     <Select
                         id='cuisine'
                         name='cuisine'
-                        value={recipe.cuisine}
+                        value={editedRecipe.cuisine}
                         onChange={handleInputChange}
                     >
                         <option value=''>Select Cuisine</option>
@@ -138,18 +163,28 @@ const CreateRecipe = () => {
                     </Select>
                 </FormGroup>
                 <ListIngredients
-                    ingredients={recipe.ingredients as Ingredient[]}
-                    setRecipe={setRecipe}
+                    ingredients={editedRecipe.ingredients as Ingredient[]}
+                    setRecipe={setEditedRecipe}
                 />
 
                 <ListSteps
-                    setRecipe={setRecipe}
-                    steps={recipe.steps as Step[]}
+                    setRecipe={setEditedRecipe}
+                    steps={editedRecipe.steps as Step[]}
                 />
 
-                <SubmitButton type='submit' disabled={disableSubmit}>
-                    Submit
-                </SubmitButton>
+                <SaveCancelButtons>
+                    <SubmitButton type='submit' disabled={disableSubmit}>
+                        Save
+                    </SubmitButton>
+                    <CancelButton
+                        type='button'
+                        onClick={() => {
+                            navigate(`/recipe/${recipe._id.toString()}`);
+                        }}
+                    >
+                        Cancel
+                    </CancelButton>
+                </SaveCancelButtons>
             </form>
         </Wrapper>
     );
@@ -231,4 +266,22 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default CreateRecipe;
+const CancelButton = styled.button`
+    padding: 0.6rem 1.3rem;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #c82333;
+    }
+`;
+
+const SaveCancelButtons = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+`;
+
+export default EditRecipe;
