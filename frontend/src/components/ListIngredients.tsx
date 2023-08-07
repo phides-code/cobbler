@@ -70,17 +70,21 @@ const ListIngredients = ({ ingredients, setRecipe }: ListIngredientsProps) => {
     );
 
     return (
-        <div>
-            <Label>Ingredients:</Label>
-            <IngredientsList>
-                {ingredients.map((ingredient, i) =>
-                    renderIngredient(ingredient, i)
-                )}
-                <li>
-                    <AddIngredient setRecipe={setRecipe} />
-                </li>
-            </IngredientsList>
-        </div>
+        <>
+            {ingredients && (
+                <div>
+                    <Label>Ingredients:</Label>
+                    <IngredientsList>
+                        {ingredients.map((ingredient, i) =>
+                            renderIngredient(ingredient, i)
+                        )}
+                        <li>
+                            <AddIngredient setRecipe={setRecipe} />
+                        </li>
+                    </IngredientsList>
+                </div>
+            )}
+        </>
     );
 };
 

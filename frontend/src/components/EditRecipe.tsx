@@ -81,12 +81,12 @@ const EditRecipe = () => {
     };
 
     const disableSubmit: boolean =
-        !editedRecipe.cuisine ||
-        editedRecipe.title === '' ||
-        editedRecipe.description === '' ||
-        editedRecipe.type?.length === 0 ||
-        editedRecipe.ingredients?.length === 0 ||
-        editedRecipe.steps?.length === 0 ||
+        !editedRecipe?.cuisine ||
+        editedRecipe?.title === '' ||
+        editedRecipe?.description === '' ||
+        editedRecipe?.type?.length === 0 ||
+        editedRecipe?.ingredients?.length === 0 ||
+        editedRecipe?.steps?.length === 0 ||
         loading;
 
     useEffect(() => {
@@ -115,7 +115,7 @@ const EditRecipe = () => {
                         type='text'
                         id='title'
                         name='title'
-                        value={editedRecipe.title}
+                        value={editedRecipe?.title}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -125,7 +125,7 @@ const EditRecipe = () => {
                     <Textarea
                         id='description'
                         name='description'
-                        value={editedRecipe.description}
+                        value={editedRecipe?.description}
                         onChange={handleInputChange}
                     />
                 </FormGroup>
@@ -138,7 +138,7 @@ const EditRecipe = () => {
                                 type='checkbox'
                                 name='type'
                                 value={foodType}
-                                checked={editedRecipe.type?.includes(foodType)}
+                                checked={editedRecipe?.type?.includes(foodType)}
                                 onChange={handleInputChange}
                             />
                             <CheckboxLabel>{foodType}</CheckboxLabel>
@@ -151,7 +151,7 @@ const EditRecipe = () => {
                     <Select
                         id='cuisine'
                         name='cuisine'
-                        value={editedRecipe.cuisine}
+                        value={editedRecipe?.cuisine}
                         onChange={handleInputChange}
                     >
                         <option value=''>Select Cuisine</option>
@@ -163,13 +163,13 @@ const EditRecipe = () => {
                     </Select>
                 </FormGroup>
                 <ListIngredients
-                    ingredients={editedRecipe.ingredients as Ingredient[]}
+                    ingredients={editedRecipe?.ingredients as Ingredient[]}
                     setRecipe={setEditedRecipe}
                 />
 
                 <ListSteps
                     setRecipe={setEditedRecipe}
-                    steps={editedRecipe.steps as Step[]}
+                    steps={editedRecipe?.steps as Step[]}
                 />
 
                 <SaveCancelButtons>

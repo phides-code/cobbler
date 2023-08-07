@@ -68,18 +68,22 @@ const ListSteps = ({ steps, setRecipe }: ListStepsProps) => {
     );
 
     return (
-        <div>
-            <Label>Steps:</Label>
-            <StepsList>
-                {steps.map((step, i) => renderStep(step, i))}
-                <StepItem>
-                    <AddStep
-                        setRecipe={setRecipe}
-                        numberOfSteps={steps.length as number}
-                    />
-                </StepItem>
-            </StepsList>
-        </div>
+        <>
+            {steps && (
+                <div>
+                    <Label>Steps:</Label>
+                    <StepsList>
+                        {steps.map((step, i) => renderStep(step, i))}
+                        <StepItem>
+                            <AddStep
+                                setRecipe={setRecipe}
+                                numberOfSteps={steps.length as number}
+                            />
+                        </StepItem>
+                    </StepsList>
+                </div>
+            )}
+        </>
     );
 };
 

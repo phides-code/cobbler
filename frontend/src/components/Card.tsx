@@ -116,6 +116,7 @@ const Content = styled.div`
 `;
 
 const Handle = styled.div`
+    font-size: 1.4rem;
     margin-left: 0.2rem;
     cursor: grab;
 `;
