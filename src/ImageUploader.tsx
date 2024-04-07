@@ -7,15 +7,28 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
+    const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
+
     const removeFileFromList = async (
         ev: React.MouseEvent<HTMLButtonElement, MouseEvent>,
         fileToRemove: ImageSource
     ) => {
         ev.preventDefault();
 
+        const body = JSON.stringify({
+            fileList: [fileToRemove.uuidName],
+        });
+
         try {
-            // await remove({ key: fileToRemove.uuidName });
+            const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
+                method: 'DELETE',
+                body,
+            });
+
+            const response = await rawFetchResponse.json();
+
             console.log('remove file:', fileToRemove);
+            console.log('response:', response);
         } catch {
             console.log('removeFileFromList caught error');
         }
@@ -39,23 +52,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
         uploadFile(file);
     };
 
-    // const getFileUrl = (filename: string): string => {
-    //     const s3BucketName = 'shopshopimagestorage220533-main';
-    //     const s3Region = 'ca-central-1';
-    //     return (
-    //         'https://' +
-    //         s3BucketName +
-    //         '.s3.' +
-    //         s3Region +
-    //         '.amazonaws.com/public/' +
-    //         filename
-    //     );
-    // };
-
     const uploadFile = async (file: File) => {
-        const IMAGE_SERVICE_URL = import.meta.env
-            .VITE_IMAGE_SERVICE_URL as string;
-
         const originalName: string = file?.name as string;
         const fileExtension: string = originalName.split('.').pop() as string;
 
@@ -101,13 +98,15 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     };
 
     const UploadedFileList = () => {
+        const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
+
         return (
             <ul>
                 {recipe.imageSources.map((file) => {
                     return (
                         <StyledLi key={file.uuidName}>
                             <StyledImg
-                                src={file.uuidName}
+                                src={`${URL_PREFIX}${file.uuidName}`}
                                 alt={file.originalName}
                             />
                             <BottomText>
