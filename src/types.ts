@@ -12,7 +12,7 @@ export interface Step {
 export interface ImageSource {
     originalName: string;
     uuidName: string;
-    url: string;
+    // url: string;
 }
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
