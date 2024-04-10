@@ -106,7 +106,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     return (
                         <StyledLi key={file.uuidName}>
                             <StyledImg
-                                src={`${URL_PREFIX}${file.uuidName}`}
+                                src={`${URL_PREFIX}assets/${file.uuidName}`}
                                 alt={file.originalName}
                             />
                             <BottomText>
@@ -130,9 +130,9 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
         <div>
             <label>Recipe Images:</label>
             <UploadedFileList />
-            <input
+            <StyledInput
                 type='file'
-                // id='hide-upload-default-text'
+                id='hide-upload-default-text'
                 onChange={handleFileChange}
             />
         </div>
@@ -163,5 +163,7 @@ const BottomText = styled.div`
 const FileName = styled.span`
     margin-right: 0.5rem;
 `;
+
+const StyledInput = styled.input``;
 
 export default ImageUploader;
