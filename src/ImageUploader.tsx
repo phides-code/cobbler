@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import type { ImageSource, Recipe } from './types';
+import type { Recipe } from './types';
+import { useState } from 'react';
+import UploadedImage from '../UploadedImage';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -9,37 +11,7 @@ interface ImageUploaderProps {
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
 
-    const removeFileFromList = async (
-        ev: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        fileToRemove: ImageSource
-    ) => {
-        ev.preventDefault();
-
-        const body = JSON.stringify({
-            fileList: [fileToRemove.uuidName],
-        });
-
-        try {
-            const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
-                method: 'DELETE',
-                body,
-            });
-
-            const response = await rawFetchResponse.json();
-
-            console.log('remove file:', fileToRemove);
-            console.log('response:', response);
-        } catch {
-            console.log('removeFileFromList caught error');
-        }
-
-        setRecipe((recipe) => ({
-            ...recipe,
-            imageSources: recipe.imageSources.filter(
-                (file) => file.uuidName !== fileToRemove.uuidName
-            ),
-        }));
-    };
+    const [isUploading, setIsUploading] = useState<boolean>(false);
 
     const handleFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const files: FileList = ev.target.files as FileList;
@@ -67,6 +39,8 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 fileExt: fileExtension,
             });
 
+            setIsUploading(true);
+
             try {
                 const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
                     method: 'POST',
@@ -84,53 +58,38 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                         imageSources: recipe.imageSources.concat({
                             originalName,
                             uuidName,
-                            // url: getFileUrl(uuidName),
                         }),
                     }));
                 } else {
                     console.log('upload failed');
                 }
             } catch (error) {
-                console.error('Error uploading file:', error);
-                alert('An error occurred while uploading the file.');
+                console.error('uploadFile caught error:', error);
+            } finally {
+                setIsUploading(false);
             }
         };
     };
 
-    const UploadedFileList = () => {
-        const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
-
-        return (
-            <ul>
-                {recipe.imageSources.map((file) => {
-                    return (
-                        <StyledLi key={file.uuidName}>
-                            <StyledImg
-                                src={`${URL_PREFIX}assets/${file.uuidName}`}
-                                alt={file.originalName}
-                            />
-                            <BottomText>
-                                <FileName>{file.originalName}</FileName>
-                                <button
-                                    onClick={(ev) => {
-                                        removeFileFromList(ev, file);
-                                    }}
-                                >
-                                    remove
-                                </button>
-                            </BottomText>
-                        </StyledLi>
-                    );
-                })}
-            </ul>
-        );
-    };
+    const UploadedFileList = () => (
+        <ul>
+            {recipe.imageSources.map((imageSource) => (
+                <UploadedImage
+                    key={imageSource.uuidName}
+                    imageSource={imageSource}
+                    setRecipe={setRecipe}
+                />
+            ))}
+            {isUploading && <li>...</li>}
+        </ul>
+    );
 
     return (
         <div>
             <label>Recipe Images:</label>
             <UploadedFileList />
             <StyledInput
+                disabled={isUploading}
                 type='file'
                 id='hide-upload-default-text'
                 onChange={handleFileChange}
@@ -143,26 +102,6 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
 //     color: deepskyblue;
 //     text-decoration: none;
 // `;
-
-const StyledLi = styled.li`
-    display: flex;
-    flex-direction: column;
-`;
-
-const StyledImg = styled.img`
-    max-width: 8rem;
-    height: auto;
-    width: auto;
-    border-radius: 10px;
-`;
-
-const BottomText = styled.div`
-    display: flex;
-`;
-
-const FileName = styled.span`
-    margin-right: 0.5rem;
-`;
 
 const StyledInput = styled.input``;
 
