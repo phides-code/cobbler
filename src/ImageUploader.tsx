@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import type { Recipe } from './types';
 import { useState } from 'react';
-import UploadedImage from '../UploadedImage';
+import UploadedImage from './UploadedImage';
 
 interface ImageUploaderProps {
     recipe: Recipe;

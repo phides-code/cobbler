@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import type { ImageSource, Recipe } from './src/types';
+import type { ImageSource, Recipe } from './types';
 import { useState } from 'react';
 
 interface UploadedImageProps {
@@ -51,7 +51,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     return (
         <StyledLi>
             <StyledImg
-                src={`${URL_PREFIX}/assets/${imageSource.uuidName}`}
+                src={`${URL_PREFIX}assets/${imageSource.uuidName}`}
                 alt={imageSource.originalName}
             />
             <BottomText>
