@@ -62,7 +62,7 @@ const AddRecipe = () => {
 
     return (
         <FormContainer>
-            <h3>Add a Recipe</h3>
+            <h3>Add a Recipe:</h3>
             <form onSubmit={handleSubmit}>
                 <FormGroup>
                     <label>Title:</label>

@@ -51,7 +51,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     return (
         <StyledLi>
             <StyledImg
-                src={`${URL_PREFIX}assets/${imageSource.uuidName}`}
+                src={`${URL_PREFIX}/assets/${imageSource.uuidName}`}
                 alt={imageSource.originalName}
             />
             <BottomText>
