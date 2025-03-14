@@ -17,5 +17,8 @@
     "bugs": {
         "url": "https://github.com/phides-code/cobbler/issues"
     },
-    "homepage": "https://github.com/phides-code/cobbler#readme"
+    "homepage": "https://github.com/phides-code/cobbler#readme",
+    "engines": {
+        "node": ">=18"
+    }
 }
