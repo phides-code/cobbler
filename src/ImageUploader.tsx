@@ -42,7 +42,13 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
             setIsUploading(true);
 
             try {
+                const API_KEY = import.meta.env
+                    .VITE_IMAGE_SERVICE_API_KEY as string;
                 const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
                     method: 'POST',
                     body,
                 });
