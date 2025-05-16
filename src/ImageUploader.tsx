@@ -61,10 +61,10 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
 
                     setRecipe((recipe) => ({
                         ...recipe,
-                        imageSources: recipe.imageSources.concat({
+                        imageSource: {
                             originalName,
                             uuidName,
-                        }),
+                        },
                     }));
                 } else {
                     console.log('upload failed');
@@ -77,37 +77,25 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
         };
     };
 
-    const UploadedFileList = () => (
-        <ul>
-            {recipe.imageSources.map((imageSource) => (
-                <UploadedImage
-                    key={imageSource.uuidName}
-                    imageSource={imageSource}
-                    setRecipe={setRecipe}
-                />
-            ))}
-            {isUploading && <li>...</li>}
-        </ul>
-    );
-
     return (
         <div>
-            <label>Recipe Images:</label>
-            <UploadedFileList />
-            <StyledInput
-                disabled={isUploading}
-                type='file'
-                id='hide-upload-default-text'
-                onChange={handleFileChange}
-            />
+            <label>Recipe Imags:</label>
+            {recipe.imageSource.uuidName ? (
+                <UploadedImage
+                    imageSource={recipe.imageSource}
+                    setRecipe={setRecipe}
+                />
+            ) : (
+                <StyledInput
+                    disabled={isUploading}
+                    type='file'
+                    id='hide-upload-default-text'
+                    onChange={handleFileChange}
+                />
+            )}
         </div>
     );
 };
-
-// const StyledLink = styled(Link)`
-//     color: deepskyblue;
-//     text-decoration: none;
-// `;
 
 const StyledInput = styled.input``;
 

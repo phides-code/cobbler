@@ -40,18 +40,18 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
 
             console.log('remove file:', fileToRemove);
             console.log('response:', response);
+            setRecipe((recipe) => ({
+                ...recipe,
+                imageSource: {
+                    originalName: '',
+                    uuidName: '',
+                },
+            }));
         } catch {
             console.log('removeFileFromList caught error');
         } finally {
             setIsRemoving(false);
         }
-
-        setRecipe((recipe) => ({
-            ...recipe,
-            imageSources: recipe.imageSources.filter(
-                (file) => file.uuidName !== fileToRemove.uuidName
-            ),
-        }));
     };
 
     return (

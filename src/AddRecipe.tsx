@@ -5,20 +5,15 @@ import ImageUploader from './ImageUploader';
 
 const AddRecipe = () => {
     const initialRecipeState: Recipe = {
-        authorId: 'abc123',
+        author: 'abc123',
         title: '',
         description: '',
         tags: [],
         ingredients: [],
         steps: [],
-        likedBy: [],
+        likes: 0,
         prepTime: '',
-        cookingTime: '',
-        portions: 0,
-        allergens: [],
-        difficulty: 'medium',
-        ratings: [],
-        imageSources: [],
+        imageSource: {} as ImageSource,
     };
 
     const [recipe, setRecipe] = useState<Recipe>(initialRecipeState);
@@ -30,8 +25,10 @@ const AddRecipe = () => {
                 return true; // Return true if any string field is empty or whitespace
             }
 
-            const imageSources = recipe.imageSources as ImageSource[];
-            if (imageSources.length === 0) {
+            if (
+                recipe.imageSource.originalName === '' ||
+                recipe.imageSource.uuidName === ''
+            ) {
                 return true;
             }
             return false;
@@ -42,11 +39,7 @@ const AddRecipe = () => {
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
         field: keyof Recipe
     ) => {
-        if (field === 'portions') {
-            setRecipe({ ...recipe, [field]: parseInt(event.target.value) });
-        } else {
-            setRecipe({ ...recipe, [field]: event.target.value });
-        }
+        setRecipe({ ...recipe, [field]: event.target.value });
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -95,7 +88,7 @@ const AddRecipe = () => {
                     {/* {errorState && (
                         <ErrorMessage>something went wrong</ErrorMessage>
                     )}
-                    {selectedProduct && (
+                    {successState && (
                         <SuccessMessage>
                             successfully added {selectedProduct.name}
                         </SuccessMessage>
@@ -135,8 +128,6 @@ const FormGroup = styled.div`
 
     input,
     select {
-        background-color: black;
-        color: white;
         width: 100%;
         padding: 8px;
         border-radius: 4px;
