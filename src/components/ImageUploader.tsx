@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import type { Recipe } from './types';
 import { useState } from 'react';
+import type { Recipe } from '../types';
 import UploadedImage from './UploadedImage';
 
 interface ImageUploaderProps {
@@ -86,7 +85,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     setRecipe={setRecipe}
                 />
             ) : (
-                <StyledInput
+                <input
                     disabled={isUploading}
                     type='file'
                     id='hide-upload-default-text'
@@ -96,7 +95,5 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
         </div>
     );
 };
-
-const StyledInput = styled.input``;
 
 export default ImageUploader;

@@ -3,8 +3,6 @@ export interface ImageSource {
     uuidName: string;
 }
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
-
 export interface Recipe {
     id?: string;
     author: string;

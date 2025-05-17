@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import type { ImageSource, Recipe } from './types';
 import { useState } from 'react';
+import type { ImageSource, Recipe } from '../types';
 
 interface UploadedImageProps {
     imageSource: ImageSource;
@@ -55,13 +54,13 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     };
 
     return (
-        <StyledLi>
-            <StyledImg
+        <li>
+            <img
                 src={`${URL_PREFIX}/assets/${imageSource.uuidName}`}
                 alt={imageSource.originalName}
             />
-            <BottomText>
-                <FileName>{imageSource.originalName}</FileName>
+            <div>
+                <span>{imageSource.originalName}</span>
                 <button
                     disabled={isRemoving}
                     onClick={(ev) => {
@@ -70,29 +69,9 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 >
                     remove
                 </button>
-            </BottomText>
-        </StyledLi>
+            </div>
+        </li>
     );
 };
-
-const StyledLi = styled.li`
-    display: flex;
-    flex-direction: column;
-`;
-
-const StyledImg = styled.img`
-    max-width: 8rem;
-    height: auto;
-    width: auto;
-    border-radius: 10px;
-`;
-
-const BottomText = styled.div`
-    display: flex;
-`;
-
-const FileName = styled.span`
-    margin-right: 0.5rem;
-`;
 
 export default UploadedImage;
