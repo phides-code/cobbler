@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import type { ImageSource, Recipe } from '../types';
+import { useContext, useState } from 'react';
+import type { ImageServiceAPIResponse, ImageSource, Recipe } from '../types';
+import { ErrorContext } from '../context/ErrorContext';
 
 interface UploadedImageProps {
     imageSource: ImageSource;
@@ -10,6 +11,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
     const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
     const [isRemoving, setIsRemoving] = useState<boolean>(false);
+    const { setShowError } = useContext(ErrorContext);
 
     const removeFileFromList = async (
         ev: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -17,37 +19,45 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     ) => {
         ev.preventDefault();
 
-        const body = JSON.stringify({
-            fileList: [fileToRemove.uuidName],
-        });
-
         setIsRemoving(true);
 
         try {
             const API_KEY = import.meta.env
                 .VITE_IMAGE_SERVICE_API_KEY as string;
-            const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': API_KEY,
-                },
-                method: 'DELETE',
-                body,
-            });
+            const rawFetchResponse = await fetch(
+                IMAGE_SERVICE_URL + '/' + fileToRemove.uuidName,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY,
+                    },
+                    method: 'DELETE',
+                }
+            );
 
-            const response = await rawFetchResponse.json();
+            const response: ImageServiceAPIResponse =
+                await rawFetchResponse.json();
 
-            console.log('remove file:', fileToRemove);
-            console.log('response:', response);
-            setRecipe((recipe) => ({
-                ...recipe,
-                imageSource: {
-                    originalName: '',
-                    uuidName: '',
-                },
-            }));
-        } catch {
-            console.log('removeFileFromList caught error');
+            if (response.errorMessage) {
+                throw new Error(response.errorMessage);
+            }
+
+            if ((response.data as string).includes(fileToRemove.uuidName)) {
+                console.log('File removed successfully');
+                setShowError(false);
+                setRecipe((recipe) => ({
+                    ...recipe,
+                    imageSource: {
+                        originalName: '',
+                        uuidName: '',
+                    },
+                }));
+            } else {
+                throw new Error('delete failed');
+            }
+        } catch (error) {
+            setShowError(true);
+            console.error('removeFileFromList caught error: ', error);
         } finally {
             setIsRemoving(false);
         }

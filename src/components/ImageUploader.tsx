@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import type { Recipe } from '../types';
+import { useContext, useState } from 'react';
+import type { ImageServiceAPIResponse, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
+import { ErrorContext } from '../context/ErrorContext';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -11,6 +12,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
 
     const [isUploading, setIsUploading] = useState<boolean>(false);
+    const { setShowError } = useContext(ErrorContext);
 
     const handleFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const files: FileList = ev.target.files as FileList;
@@ -52,11 +54,17 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     body,
                 });
 
-                const response = await rawFetchResponse.json();
+                const response: ImageServiceAPIResponse =
+                    await rawFetchResponse.json();
 
-                if (!response.error && response.data.includes(fileExtension)) {
+                if (response.errorMessage) {
+                    throw new Error(response.errorMessage);
+                }
+
+                if ((response.data as string).includes(fileExtension)) {
                     console.log('File uploaded successfully');
-                    const uuidName = response.data;
+                    setShowError(false);
+                    const uuidName = response.data as string;
 
                     setRecipe((recipe) => ({
                         ...recipe,
@@ -66,9 +74,10 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                         },
                     }));
                 } else {
-                    console.log('upload failed');
+                    throw new Error('upload failed');
                 }
             } catch (error) {
+                setShowError(true);
                 console.error('uploadFile caught error:', error);
             } finally {
                 setIsUploading(false);

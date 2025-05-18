@@ -5,7 +5,7 @@ import ImageUploader from './ImageUploader';
 
 const AddRecipe = () => {
     const initialRecipeState: Recipe = {
-        author: 'abc123',
+        author: '',
         title: '',
         description: '',
         tags: [],

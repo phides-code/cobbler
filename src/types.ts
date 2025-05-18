@@ -15,3 +15,8 @@ export interface Recipe {
     prepTime: string;
     imageSource: ImageSource;
 }
+
+export interface ImageServiceAPIResponse {
+    data: string | null;
+    errorMessage: string | null;
+}
