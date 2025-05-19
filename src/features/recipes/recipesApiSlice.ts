@@ -31,6 +31,9 @@ export const recipesApiSlice = createApi({
         getRecipes: build.query<RecipesApiResponse, void>({
             query: () => '',
         }),
+        getRecipeById: build.query<RecipeApiResponse, string>({
+            query: (id) => `/${id}`,
+        }),
         postRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (newRecipe) => ({
                 url: '',
@@ -56,6 +59,7 @@ export const recipesApiSlice = createApi({
 
 export const {
     useGetRecipesQuery,
+    useGetRecipeByIdQuery,
     usePostRecipeMutation,
     useDeleteRecipeMutation,
     usePutRecipeMutation,
