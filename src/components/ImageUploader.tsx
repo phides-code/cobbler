@@ -1,7 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import type { ImageServiceAPIResponse, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
-import { ErrorContext } from '../context/ErrorContext';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -10,9 +9,10 @@ interface ImageUploaderProps {
 
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
+    const API_KEY = import.meta.env.VITE_IMAGE_SERVICE_API_KEY as string;
 
     const [isUploading, setIsUploading] = useState<boolean>(false);
-    const { setShowError } = useContext(ErrorContext);
+    const [uploadError, setUploadError] = useState<boolean>(false);
 
     const handleFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const files: FileList = ev.target.files as FileList;
@@ -43,8 +43,6 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
             setIsUploading(true);
 
             try {
-                const API_KEY = import.meta.env
-                    .VITE_IMAGE_SERVICE_API_KEY as string;
                 const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -63,7 +61,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
 
                 if ((response.data as string).includes(fileExtension)) {
                     console.log('File uploaded successfully');
-                    setShowError(false);
+                    setUploadError(false);
                     const uuidName = response.data as string;
 
                     setRecipe((recipe) => ({
@@ -77,7 +75,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     throw new Error('upload failed');
                 }
             } catch (error) {
-                setShowError(true);
+                setUploadError(true);
                 console.error('uploadFile caught error:', error);
             } finally {
                 setIsUploading(false);
@@ -87,7 +85,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
 
     return (
         <div>
-            <label>Recipe Imags:</label>
+            <label>Recipe Image (optional):</label>
             {recipe.imageSource.uuidName ? (
                 <UploadedImage
                     imageSource={recipe.imageSource}
@@ -101,6 +99,14 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     onChange={handleFileChange}
                 />
             )}
+            <>
+                {uploadError && (
+                    <div>
+                        Something went wrong while uploading the image. Please
+                        try again.
+                    </div>
+                )}
+            </>
         </div>
     );
 };

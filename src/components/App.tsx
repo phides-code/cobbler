@@ -1,41 +1,32 @@
 import { Route, Routes } from 'react-router';
 import AddRecipe from './AddRecipe';
 import RecipeList from './RecipeList';
-import { useContext } from 'react';
-import { ErrorContext } from '../context/ErrorContext';
+import { useState } from 'react';
 
 const App = () => {
-    const { showError, setShowError } = useContext(ErrorContext);
+    const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
     return (
         <div className='App'>
+            <div>Cobbler</div>
+
+            {showSuccess && (
+                <div>
+                    <div>Recipe added successfully!</div>
+                    <button onClick={() => setShowSuccess(false)}>X</button>
+                </div>
+            )}
+
             <div>
                 <Routes>
                     <Route path='/' element={<RecipeList />} />
-                    <Route path='/add-recipe' element={<AddRecipe />} />
+                    <Route
+                        path='/add-recipe'
+                        element={<AddRecipe setShowSuccess={setShowSuccess} />}
+                    />
                 </Routes>
-            </div>
-            <div>
-                {showError && (
-                    <div
-                        className='error'
-                        style={{
-                            color: 'red',
-                        }}
-                    >
-                        Something went wrong. Please try again later.
-                        <button
-                            onClick={() => {
-                                setShowError(false);
-                            }}
-                        >
-                            X
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );
 };
-
 export default App;

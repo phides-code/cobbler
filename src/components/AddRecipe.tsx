@@ -2,8 +2,16 @@ import { useState } from 'react';
 import type { ImageSource, Recipe } from '../types';
 import { useNavigate } from 'react-router';
 import ImageUploader from './ImageUploader';
+import {
+    useGetRecipesQuery,
+    usePostRecipeMutation,
+} from '../features/recipes/recipesApiSlice';
 
-const AddRecipe = () => {
+interface AddRecipeProps {
+    setShowSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
     const initialRecipeState: Recipe = {
         author: '',
         title: '',
@@ -13,31 +21,35 @@ const AddRecipe = () => {
         steps: [],
         likes: 0,
         prepTime: '',
-        imageSource: {} as ImageSource,
+        imageSource: {
+            originalName: '',
+            uuidName: '',
+        } as ImageSource,
     };
 
-    const [recipe, setRecipe] = useState<Recipe>(initialRecipeState);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [newRecipe, setNewRecipe] = useState<Recipe>(initialRecipeState);
     const [newTag, setNewTag] = useState<string>('');
     const [newIngredient, setNewIngredient] = useState<string>('');
     const [newStep, setNewStep] = useState<string>('');
 
+    const [postRecipe, { isLoading: isPostLoading, isError }] =
+        usePostRecipeMutation();
+    const { refetch, isFetching: isGetFetching } = useGetRecipesQuery();
+
+    const isLoading = isPostLoading || isGetFetching;
+
     const navigate = useNavigate();
 
     const isFormIncomplete = () => {
-        return Object.values(recipe).some((value) => {
+        return Object.values(newRecipe).some((value) => {
             if (typeof value === 'string' && value.trim() === '') {
                 return true;
             }
+
             if (Array.isArray(value) && value.length === 0) {
                 return true;
             }
-            if (
-                recipe.imageSource.originalName === '' ||
-                recipe.imageSource.uuidName === ''
-            ) {
-                return true;
-            }
+
             return false;
         });
     };
@@ -48,7 +60,7 @@ const AddRecipe = () => {
         >,
         field: keyof Recipe
     ) => {
-        setRecipe({ ...recipe, [field]: event.target.value });
+        setNewRecipe({ ...newRecipe, [field]: event.target.value });
     };
 
     const handleArrayItemAdd = (
@@ -57,7 +69,7 @@ const AddRecipe = () => {
         field: 'tags' | 'ingredients' | 'steps'
     ) => {
         if (newItem.trim()) {
-            setRecipe((prev) => ({
+            setNewRecipe((prev) => ({
                 ...prev,
                 [field]: [...prev[field], newItem.trim()],
             }));
@@ -69,7 +81,7 @@ const AddRecipe = () => {
         index: number,
         field: 'tags' | 'ingredients' | 'steps'
     ) => {
-        setRecipe((prev) => ({
+        setNewRecipe((prev) => ({
             ...prev,
             [field]: prev[field].filter((_, i) => i !== index),
         }));
@@ -77,10 +89,21 @@ const AddRecipe = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        console.log('submit recipe:', recipe);
-        setIsSubmitting(true);
-        setRecipe(initialRecipeState);
-        setIsSubmitting(false);
+        console.log('submit recipe:', newRecipe);
+
+        try {
+            const postResult = await postRecipe(newRecipe).unwrap();
+
+            if (postResult.errorMessage) {
+                throw new Error(postResult.errorMessage);
+            }
+
+            await refetch();
+            setShowSuccess(true);
+            navigate('/');
+        } catch (err) {
+            console.error('Error creating new recipe: ', err);
+        }
     };
 
     return (
@@ -91,14 +114,14 @@ const AddRecipe = () => {
                     <label>Title:</label>
                     <input
                         type='text'
-                        value={recipe.title}
+                        value={newRecipe.title}
                         onChange={(e) => handleInputChange(e, 'title')}
                     />
                 </div>
                 <div>
                     <label>Description:</label>
                     <textarea
-                        value={recipe.description}
+                        value={newRecipe.description}
                         onChange={(e) => handleInputChange(e, 'description')}
                     />
                 </div>
@@ -107,7 +130,7 @@ const AddRecipe = () => {
                     <input
                         type='text'
                         placeholder='e.g., 30 minutes'
-                        value={recipe.prepTime}
+                        value={newRecipe.prepTime}
                         onChange={(e) => handleInputChange(e, 'prepTime')}
                     />
                 </div>
@@ -119,7 +142,7 @@ const AddRecipe = () => {
                             type='text'
                             value={newTag}
                             onChange={(e) => setNewTag(e.target.value)}
-                            placeholder='Add a tag, e.g., vegetarian, italian, etc.'
+                            placeholder='e.g., vegetarian, italian, etc.'
                         />
                         <button
                             type='button'
@@ -131,7 +154,7 @@ const AddRecipe = () => {
                         </button>
                     </div>
                     <div>
-                        {recipe.tags.map((tag, index) => (
+                        {newRecipe.tags.map((tag, index) => (
                             <span key={index}>
                                 {tag}
                                 <button
@@ -154,7 +177,7 @@ const AddRecipe = () => {
                             type='text'
                             value={newIngredient}
                             onChange={(e) => setNewIngredient(e.target.value)}
-                            placeholder='Add an ingredient'
+                            placeholder='e.g. 1 cup of flour'
                         />
                         <button
                             type='button'
@@ -170,7 +193,7 @@ const AddRecipe = () => {
                         </button>
                     </div>
                     <ul>
-                        {recipe.ingredients.map((ingredient, index) => (
+                        {newRecipe.ingredients.map((ingredient, index) => (
                             <li key={index}>
                                 {ingredient}
                                 <button
@@ -195,7 +218,7 @@ const AddRecipe = () => {
                         <textarea
                             value={newStep}
                             onChange={(e) => setNewStep(e.target.value)}
-                            placeholder='Add a step'
+                            placeholder='e.g. Preheat oven to 350°F'
                         />
                         <button
                             type='button'
@@ -207,7 +230,7 @@ const AddRecipe = () => {
                         </button>
                     </div>
                     <ul>
-                        {recipe.steps.map((step, index) => (
+                        {newRecipe.steps.map((step, index) => (
                             <li key={index}>
                                 {index + 1}. {step}
                                 <button
@@ -224,20 +247,44 @@ const AddRecipe = () => {
                 </div>
 
                 <div>
-                    <ImageUploader recipe={recipe} setRecipe={setRecipe} />
+                    <ImageUploader
+                        recipe={newRecipe}
+                        setRecipe={setNewRecipe}
+                    />
+                </div>
+
+                <div>
+                    <label>Your Name or Handle:</label>
+                    <input
+                        type='text'
+                        value={newRecipe.author}
+                        onChange={(e) => handleInputChange(e, 'author')}
+                    />
                 </div>
 
                 <div>
                     <button
-                        disabled={isFormIncomplete() || isSubmitting}
+                        disabled={isFormIncomplete() || isLoading}
                         type='submit'
                     >
-                        {isSubmitting ? '...' : 'Submit'}
+                        Submit
                     </button>
-                    <button type='button' onClick={() => navigate('/')}>
+                    <button
+                        type='button'
+                        onClick={() => navigate('/')}
+                        disabled={isLoading}
+                    >
                         Cancel
                     </button>
                 </div>
+                <>
+                    {isError && (
+                        <div>
+                            Something went wrong while creating the recipe.
+                            Please try again.
+                        </div>
+                    )}
+                </>
             </form>
         </div>
     );
