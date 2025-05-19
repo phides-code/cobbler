@@ -82,7 +82,7 @@ jobs:
               with:
                   args: >
                       --delete
-                      --exclude "*"
+                      --exclude "assets/*"
                       --include "assets/*.js"
                       --include "assets/*.css"
 
@@ -91,7 +91,7 @@ jobs:
               uses: jakejarvis/s3-sync-action@master
               with:
                   args: >
-                      --exclude "*"
+                      --exclude "assets/*"
                       --include "assets/*.js"
                       --include "assets/*.css"
 
