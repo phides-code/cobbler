@@ -15,13 +15,12 @@ const RecipeLinkCard = ({
 }: RecipeLinkCardProps) => {
     const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
 
-    const imgSrc =
-        src !== '' ? `${URL_PREFIX}/assets/${src}` : 'placeholder.png';
+    const imgSrc = src !== '' ? src : 'placeholder.jpg';
 
     return (
         <Link to={`/recipe/${id}`}>
             <img
-                src={imgSrc}
+                src={`${URL_PREFIX}/assets/${imgSrc}`}
                 alt={title}
                 style={{ width: '100px', height: 'auto' }}
             />
