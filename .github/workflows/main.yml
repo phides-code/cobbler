@@ -67,7 +67,7 @@ jobs:
                   name: dist
                   path: dist
 
-            # Step 1: Clean out old index.html
+            # Step 1: Clean out old index.html and placeholder.png
             - name: Sync index.html (clean outdated top-level files)
               uses: jakejarvis/s3-sync-action@master
               with:
@@ -75,6 +75,7 @@ jobs:
                       --delete
                       --exclude "*"
                       --include "index.html"
+                      --include "placeholder.png"
 
             # Step 2: Clean old JS/CSS assets (will delete ones not in current build)
             - name: Clean old CSS/JS assets

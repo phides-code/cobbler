@@ -21,11 +21,13 @@ const ViewRecipe = () => {
         <div>
             <h1>{recipe.title}</h1>
             <p>{recipe.description}</p>
-            <img
-                src={`${URL_PREFIX}/assets/${recipe.imageSource.uuidName}`}
-                alt={recipe.title}
-                style={{ width: '300px', height: 'auto' }}
-            />
+            {recipe.imageSource.uuidName !== '' && (
+                <img
+                    src={`${URL_PREFIX}/assets/${recipe.imageSource.uuidName}`}
+                    alt={recipe.title}
+                    style={{ width: '300px', height: 'auto' }}
+                />
+            )}
             <h2>Ingredients</h2>
             <ul>
                 {recipe.ingredients.map((ingredient, index) => (
