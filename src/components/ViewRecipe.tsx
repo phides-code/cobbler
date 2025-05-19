@@ -28,7 +28,7 @@ const ViewRecipe = () => {
                     style={{ width: '300px', height: 'auto' }}
                 />
             )}
-            <h2>Ingredients banana</h2>
+            <h2>Ingredients</h2>
             <ul>
                 {recipe.ingredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
