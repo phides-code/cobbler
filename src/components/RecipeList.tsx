@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import { useGetRecipesQuery } from '../features/recipes/recipesApiSlice';
 import type { Recipe } from '../types';
+import RecipeLinkCard from './RecipeLinkCard';
 
 const RecipeList = () => {
     const navigate = useNavigate();
@@ -30,13 +31,13 @@ const RecipeList = () => {
 
             <div>
                 {recipes.map((recipe) => (
-                    <div
+                    <RecipeLinkCard
                         key={recipe.id}
-                        onClick={() => navigate(`/recipe/${recipe.id}`)}
-                    >
-                        <h3>{recipe.title}</h3>
-                        <p>{recipe.description}</p>
-                    </div>
+                        id={recipe.id as string}
+                        src={recipe.imageSource.uuidName}
+                        title={recipe.title}
+                        description={recipe.description}
+                    />
                 ))}
             </div>
         </div>
