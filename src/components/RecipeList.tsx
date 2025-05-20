@@ -37,6 +37,7 @@ const RecipeList = () => {
                         src={recipe.imageSource.uuidName}
                         title={recipe.title}
                         description={recipe.description}
+                        likes={recipe.likes}
                     />
                 ))}
             </div>

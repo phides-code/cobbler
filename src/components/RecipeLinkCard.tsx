@@ -5,6 +5,7 @@ interface RecipeLinkCardProps {
     description: string;
     src: string;
     id: string;
+    likes: number;
 }
 
 const RecipeLinkCard = ({
@@ -12,6 +13,7 @@ const RecipeLinkCard = ({
     description,
     src,
     id,
+    likes,
 }: RecipeLinkCardProps) => {
     const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
 
@@ -25,6 +27,7 @@ const RecipeLinkCard = ({
                 style={{ width: '100px', height: 'auto' }}
             />
             <h2>{title}</h2>
+            <p>{likes} ❤️</p>
             <p>{description}</p>
         </Link>
     );

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router';
 import { useGetRecipeByIdQuery } from '../features/recipes/recipesApiSlice';
+import LikeButton from './LikeButton';
 
 const ViewRecipe = () => {
     const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
@@ -21,6 +22,7 @@ const ViewRecipe = () => {
         <div>
             <h1>{recipe.title}</h1>
             <p>{recipe.description}</p>
+            <LikeButton id={recipe.id as string} likes={recipe.likes} />
             {recipe.imageSource.uuidName !== '' && (
                 <img
                     src={`${URL_PREFIX}/assets/${recipe.imageSource.uuidName}`}
