@@ -82,8 +82,10 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     };
 
     return (
-        <div>
-            <label>Recipe Image (optional):</label>
+        <div className='image-uploader-container'>
+            <label className='image-uploader-label'>
+                Recipe Image (optional):
+            </label>
             {recipe.imageSource.uuidName ? (
                 <UploadedImage
                     imageSource={recipe.imageSource}
@@ -91,20 +93,19 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 />
             ) : (
                 <input
+                    className='image-uploader-input'
                     disabled={isUploading}
                     type='file'
                     id='hide-upload-default-text'
                     onChange={handleFileChange}
                 />
             )}
-            <>
-                {uploadError && (
-                    <div>
-                        Something went wrong while uploading the image. Please
-                        try again.
-                    </div>
-                )}
-            </>
+            {uploadError && (
+                <div className='image-uploader-error'>
+                    Something went wrong while uploading the image. Please try
+                    again.
+                </div>
+            )}
         </div>
     );
 };

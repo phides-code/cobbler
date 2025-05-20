@@ -9,12 +9,21 @@ const App = () => {
 
     return (
         <div className='App'>
-            <Link to={'/'}>Cobbler</Link>
+            <header className='app-header'>
+                <Link to={'/'} className='app-title'>
+                    Cobbler
+                </Link>
+            </header>
 
             {showSuccess && (
-                <div>
-                    <div>Recipe added successfully!</div>
-                    <button onClick={() => setShowSuccess(false)}>X</button>
+                <div className='success-message-container'>
+                    <span>✅ Recipe added successfully!</span>
+                    <button
+                        className='success-message-close-btn'
+                        onClick={() => setShowSuccess(false)}
+                    >
+                        X
+                    </button>
                 </div>
             )}
 

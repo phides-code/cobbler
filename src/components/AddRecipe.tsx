@@ -107,44 +107,48 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
     };
 
     return (
-        <div>
-            <h3>Add a Recipe:</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
+        <div className='add-recipe-container'>
+            <h3 className='add-recipe-title'>Add a Recipe:</h3>
+            <form className='add-recipe-form' onSubmit={handleSubmit}>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Title:</label>
                     <input
+                        className='add-recipe-input'
                         type='text'
                         value={newRecipe.title}
                         onChange={(e) => handleInputChange(e, 'title')}
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Description:</label>
                     <textarea
+                        className='add-recipe-textarea'
                         value={newRecipe.description}
                         onChange={(e) => handleInputChange(e, 'description')}
                     />
                 </div>
-                <div>
-                    <label>Prep Time:</label>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Prep Time:</label>
                     <input
+                        className='add-recipe-input'
                         type='text'
                         placeholder='e.g., 30 minutes'
                         value={newRecipe.prepTime}
                         onChange={(e) => handleInputChange(e, 'prepTime')}
                     />
                 </div>
-
-                <div>
-                    <label>Tags:</label>
-                    <div>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Tags:</label>
+                    <div className='add-recipe-inline'>
                         <input
+                            className='add-recipe-input'
                             type='text'
                             value={newTag}
                             onChange={(e) => setNewTag(e.target.value)}
                             placeholder='e.g., vegetarian, italian, etc.'
                         />
                         <button
+                            className='add-recipe-btn'
                             type='button'
                             onClick={() =>
                                 handleArrayItemAdd(newTag, setNewTag, 'tags')
@@ -153,11 +157,12 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                             Add Tag
                         </button>
                     </div>
-                    <div>
+                    <div className='add-recipe-tags'>
                         {newRecipe.tags.map((tag, index) => (
-                            <span key={index}>
+                            <span className='add-recipe-tag' key={index}>
                                 {tag}
                                 <button
+                                    className='add-recipe-tag-remove'
                                     type='button'
                                     onClick={() =>
                                         handleArrayItemRemove(index, 'tags')
@@ -169,17 +174,18 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                         ))}
                     </div>
                 </div>
-
-                <div>
-                    <label>Ingredients:</label>
-                    <div>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Ingredients:</label>
+                    <div className='add-recipe-inline'>
                         <input
+                            className='add-recipe-input'
                             type='text'
                             value={newIngredient}
                             onChange={(e) => setNewIngredient(e.target.value)}
                             placeholder='e.g. 1 cup of flour'
                         />
                         <button
+                            className='add-recipe-btn'
                             type='button'
                             onClick={() =>
                                 handleArrayItemAdd(
@@ -192,11 +198,12 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                             Add Ingredient
                         </button>
                     </div>
-                    <ul>
+                    <ul className='add-recipe-list'>
                         {newRecipe.ingredients.map((ingredient, index) => (
-                            <li key={index}>
+                            <li className='add-recipe-list-item' key={index}>
                                 {ingredient}
                                 <button
+                                    className='add-recipe-list-remove'
                                     type='button'
                                     onClick={() =>
                                         handleArrayItemRemove(
@@ -211,16 +218,17 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                         ))}
                     </ul>
                 </div>
-
-                <div>
-                    <label>Steps:</label>
-                    <div>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>Steps:</label>
+                    <div className='add-recipe-inline'>
                         <textarea
+                            className='add-recipe-textarea add-recipe-step-textarea'
                             value={newStep}
                             onChange={(e) => setNewStep(e.target.value)}
                             placeholder='e.g. Preheat oven to 350°F'
                         />
                         <button
+                            className='add-recipe-btn'
                             type='button'
                             onClick={() =>
                                 handleArrayItemAdd(newStep, setNewStep, 'steps')
@@ -229,11 +237,12 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                             Add Step
                         </button>
                     </div>
-                    <ul>
+                    <ul className='add-recipe-list'>
                         {newRecipe.steps.map((step, index) => (
-                            <li key={index}>
+                            <li className='add-recipe-list-item' key={index}>
                                 {index + 1}. {step}
                                 <button
+                                    className='add-recipe-list-remove'
                                     type='button'
                                     onClick={() =>
                                         handleArrayItemRemove(index, 'steps')
@@ -245,31 +254,33 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                         ))}
                     </ul>
                 </div>
-
-                <div>
+                <div className='add-recipe-section'>
                     <ImageUploader
                         recipe={newRecipe}
                         setRecipe={setNewRecipe}
                     />
                 </div>
-
-                <div>
-                    <label>Your Name or Handle:</label>
+                <div className='add-recipe-section'>
+                    <label className='add-recipe-label'>
+                        Your Name or Handle:
+                    </label>
                     <input
+                        className='add-recipe-input'
                         type='text'
                         value={newRecipe.author}
                         onChange={(e) => handleInputChange(e, 'author')}
                     />
                 </div>
-
-                <div>
+                <div className='add-recipe-actions'>
                     <button
+                        className='add-recipe-btn add-recipe-submit'
                         disabled={isFormIncomplete() || isLoading}
                         type='submit'
                     >
                         Submit
                     </button>
                     <button
+                        className='add-recipe-btn add-recipe-cancel'
                         type='button'
                         onClick={() => navigate('/')}
                         disabled={isLoading}
@@ -277,14 +288,12 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                         Cancel
                     </button>
                 </div>
-                <>
-                    {isError && (
-                        <div>
-                            Something went wrong while creating the recipe.
-                            Please try again.
-                        </div>
-                    )}
-                </>
+                {isError && (
+                    <div className='add-recipe-error'>
+                        Something went wrong while creating the recipe. Please
+                        try again.
+                    </div>
+                )}
             </form>
         </div>
     );

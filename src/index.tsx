@@ -5,7 +5,6 @@ import App from './components/App';
 import { store } from './app/store';
 import './index.css';
 import { BrowserRouter } from 'react-router';
-import { MobileProvider } from './context/MobileContext';
 
 const container = document.getElementById('root');
 
@@ -16,9 +15,7 @@ if (container) {
         <React.StrictMode>
             <Provider store={store}>
                 <BrowserRouter>
-                    <MobileProvider>
-                        <App />
-                    </MobileProvider>
+                    <App />
                 </BrowserRouter>
             </Provider>
         </React.StrictMode>

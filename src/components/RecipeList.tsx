@@ -31,14 +31,14 @@ const RecipeList = () => {
     if (recipes.length === 0) return <p>No recipes found</p>;
 
     return (
-        <div>
-            <div>
+        <div className='recipe-list-container'>
+            <div className='add-recipe-bar'>
                 <button type='button' onClick={() => navigate('/add-recipe')}>
                     Add a recipe
                 </button>
             </div>
 
-            <div>
+            <div className='recipe-grid'>
                 {recipes.map((recipe) => (
                     <RecipeLinkCard
                         key={recipe.id}

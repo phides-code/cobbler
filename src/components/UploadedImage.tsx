@@ -64,15 +64,18 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     };
 
     return (
-        <div>
+        <div className='uploaded-image-container'>
             <img
+                className='uploaded-image-preview'
                 src={`${URL_PREFIX}/assets/${imageSource.uuidName}`}
                 alt={imageSource.originalName}
-                style={{ height: '100px' }}
             />
-            <div>
-                <span>{imageSource.originalName}</span>
+            <div className='uploaded-image-info'>
+                <span className='uploaded-image-filename'>
+                    {imageSource.originalName}
+                </span>
                 <button
+                    className='uploaded-image-remove-btn'
                     disabled={isRemoving}
                     onClick={(ev) => {
                         removeFileFromList(ev, imageSource);
@@ -82,7 +85,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 </button>
             </div>
             {fileRemovalError && (
-                <p>
+                <p className='uploaded-image-error'>
                     Something went wrong while removing the image. Please try
                     again.
                 </p>

@@ -21,6 +21,8 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
     const [liked, setLiked] = useState(() => getLikedRecipeIds().includes(id));
     const [currentLikes, setCurrentLikes] = useState(likes);
 
+    const personOrPeople = currentLikes === 1 ? 'person' : 'people';
+
     const [putRecipe, { isLoading, isError }] = usePutRecipeMutation();
     const { refetch: refetchGetRecipes } = useGetRecipesQuery();
     const { refetch: refetchGetRecipeById } = useGetRecipeByIdQuery(id ?? '');
@@ -77,13 +79,22 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
     };
 
     return (
-        <div>
-            <button type='button' disabled={isLoading} onClick={handleClick}>
-                {liked ? '❤️ This' : '🤍 This'}
+        <div className='like-button-container'>
+            <button
+                type='button'
+                disabled={isLoading}
+                onClick={handleClick}
+                className={`like-btn${liked ? ' liked' : ''}`}
+            >
+                {liked ? '❤️' : '🤍'}
             </button>
-            <span>{currentLikes} people ❤️ this</span>
+            {currentLikes > 0 && (
+                <span className='like-count'>
+                    {`${currentLikes} ${personOrPeople} ❤️ed this`}
+                </span>
+            )}
             {isError && (
-                <p>
+                <p className='like-error'>
                     Something went wrong while ❤️ing the recipe. Please try
                     again later.
                 </p>
