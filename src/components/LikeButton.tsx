@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+    useGetRecipeByIdQuery,
     useGetRecipesQuery,
     usePutRecipeMutation,
 } from '../features/recipes/recipesApiSlice';
@@ -21,7 +22,8 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
     const [currentLikes, setCurrentLikes] = useState(likes);
 
     const [putRecipe, { isLoading, isError }] = usePutRecipeMutation();
-    const { refetch } = useGetRecipesQuery();
+    const { refetch: refetchGetRecipes } = useGetRecipesQuery();
+    const { refetch: refetchGetRecipeById } = useGetRecipeByIdQuery(id ?? '');
 
     const handleClick = async (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -66,7 +68,8 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
                 throw new Error(putResult.errorMessage);
             } else {
                 setLiked(!liked);
-                refetch();
+                refetchGetRecipes();
+                refetchGetRecipeById();
             }
         } catch (err) {
             console.error('Error liking recipe: ', err);
