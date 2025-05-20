@@ -13,6 +13,7 @@ const App = () => {
                 <Link to={'/'} className='app-title'>
                     Cobbler
                 </Link>
+                <div className='app-subtitle'>A Simple Recipe App</div>
             </header>
 
             {showSuccess && (
