@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import type { ImageServiceAPIResponse, ImageSource, Recipe } from '../types';
+import {
+    IMAGE_SERVICE_API_KEY,
+    IMAGE_SERVICE_URL,
+    URL_PREFIX,
+} from '../constants';
 
 interface UploadedImageProps {
     imageSource: ImageSource;
@@ -7,10 +12,6 @@ interface UploadedImageProps {
 }
 
 const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
-    const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
-    const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
-    const API_KEY = import.meta.env.VITE_IMAGE_SERVICE_API_KEY as string;
-
     const [isRemoving, setIsRemoving] = useState<boolean>(false);
     const [fileRemovalError, setFileRemovalError] = useState<boolean>(false);
 
@@ -28,7 +29,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
+                        'x-api-key': IMAGE_SERVICE_API_KEY,
                     },
                     method: 'DELETE',
                 }

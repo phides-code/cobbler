@@ -3,6 +3,7 @@ import {
     useGetRecipesQuery,
     usePutRecipeMutation,
 } from '../features/recipes/recipesApiSlice';
+import { LOCAL_STORAGE_KEY } from '../constants';
 
 interface LikeButtonProps {
     likes: number;
@@ -10,7 +11,13 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ id, likes }: LikeButtonProps) => {
-    const [liked, setLiked] = useState(false);
+    // Get liked recipes from localStorage
+    const getLikedRecipeIds = (): string[] => {
+        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    };
+
+    const [liked, setLiked] = useState(() => getLikedRecipeIds().includes(id));
     const [currentLikes, setCurrentLikes] = useState(likes);
 
     const [putRecipe, { isLoading, isError }] = usePutRecipeMutation();
@@ -19,9 +26,35 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
     const handleClick = async (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        const offset = liked ? -1 : 1;
-        setCurrentLikes((currentLikes) => currentLikes + offset);
         event.preventDefault();
+
+        let offset: number;
+        if (liked) {
+            // Remove from localStorage
+            const likedRecipeIds = getLikedRecipeIds().filter(
+                (recipeId) => recipeId !== id
+            );
+
+            localStorage.setItem(
+                LOCAL_STORAGE_KEY,
+                JSON.stringify(likedRecipeIds)
+            );
+
+            offset = -1;
+        } else {
+            // Add to localStorage
+            const likedRecipeIds = getLikedRecipeIds();
+            likedRecipeIds.push(id);
+
+            localStorage.setItem(
+                LOCAL_STORAGE_KEY,
+                JSON.stringify(likedRecipeIds)
+            );
+
+            offset = 1;
+        }
+
+        setCurrentLikes((currentLikes) => currentLikes + offset);
 
         try {
             const putResult = await putRecipe({
@@ -32,8 +65,8 @@ const LikeButton = ({ id, likes }: LikeButtonProps) => {
             if (putResult.errorMessage) {
                 throw new Error(putResult.errorMessage);
             } else {
-                refetch();
                 setLiked(!liked);
+                refetch();
             }
         } catch (err) {
             console.error('Error liking recipe: ', err);

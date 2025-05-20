@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ImageServiceAPIResponse, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
+import { IMAGE_SERVICE_API_KEY, IMAGE_SERVICE_URL } from '../constants';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -8,9 +9,6 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
-    const IMAGE_SERVICE_URL = import.meta.env.VITE_IMAGE_SERVICE_URL as string;
-    const API_KEY = import.meta.env.VITE_IMAGE_SERVICE_API_KEY as string;
-
     const [isUploading, setIsUploading] = useState<boolean>(false);
     const [uploadError, setUploadError] = useState<boolean>(false);
 
@@ -46,7 +44,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': API_KEY,
+                        'x-api-key': IMAGE_SERVICE_API_KEY,
                     },
                     method: 'POST',
                     body,

@@ -1,10 +1,9 @@
 import { useParams } from 'react-router';
 import { useGetRecipeByIdQuery } from '../features/recipes/recipesApiSlice';
 import LikeButton from './LikeButton';
+import { URL_PREFIX } from '../constants';
 
 const ViewRecipe = () => {
-    const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
-
     const { id } = useParams<{ id: string }>();
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id ?? '');
 

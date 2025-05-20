@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { URL_PREFIX } from '../constants';
 
 interface RecipeLinkCardProps {
     title: string;
@@ -6,6 +7,7 @@ interface RecipeLinkCardProps {
     src: string;
     id: string;
     likes: number;
+    isLikedByMe: boolean;
 }
 
 const RecipeLinkCard = ({
@@ -14,9 +16,8 @@ const RecipeLinkCard = ({
     src,
     id,
     likes,
+    isLikedByMe,
 }: RecipeLinkCardProps) => {
-    const URL_PREFIX = import.meta.env.VITE_URL_PREFIX as string;
-
     const imgSrc = src !== '' ? src : 'placeholder.jpg';
 
     return (
@@ -27,7 +28,9 @@ const RecipeLinkCard = ({
                 style={{ width: '100px', height: 'auto' }}
             />
             <h2>{title}</h2>
-            <p>{likes} ❤️</p>
+            <p>
+                {likes} {isLikedByMe ? '❤️' : '🤍'}
+            </p>
             <p>{description}</p>
         </Link>
     );
