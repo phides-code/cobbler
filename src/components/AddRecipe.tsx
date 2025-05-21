@@ -140,13 +140,15 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                 <div className='add-recipe-section'>
                     <label className='add-recipe-label'>Tags:</label>
                     <div className='add-recipe-inline'>
-                        <input
-                            className='add-recipe-input'
-                            type='text'
-                            value={newTag}
-                            onChange={(e) => setNewTag(e.target.value)}
-                            placeholder='e.g., vegetarian, italian, etc.'
-                        />
+                        <div className='add-recipe-input-container'>
+                            <input
+                                className='add-recipe-input'
+                                type='text'
+                                value={newTag}
+                                onChange={(e) => setNewTag(e.target.value)}
+                                placeholder='e.g., vegetarian, italian, etc.'
+                            />
+                        </div>
                         <button
                             className='add-recipe-btn'
                             type='button'
@@ -177,13 +179,17 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                 <div className='add-recipe-section'>
                     <label className='add-recipe-label'>Ingredients:</label>
                     <div className='add-recipe-inline'>
-                        <input
-                            className='add-recipe-input'
-                            type='text'
-                            value={newIngredient}
-                            onChange={(e) => setNewIngredient(e.target.value)}
-                            placeholder='e.g. 1 cup of flour'
-                        />
+                        <div className='add-recipe-input-container'>
+                            <input
+                                className='add-recipe-input'
+                                type='text'
+                                value={newIngredient}
+                                onChange={(e) =>
+                                    setNewIngredient(e.target.value)
+                                }
+                                placeholder='e.g. 1 cup of flour'
+                            />
+                        </div>
                         <button
                             className='add-recipe-btn'
                             type='button'
@@ -201,7 +207,7 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                     <ul className='add-recipe-list'>
                         {newRecipe.ingredients.map((ingredient, index) => (
                             <li className='add-recipe-list-item' key={index}>
-                                {ingredient}
+                                <span>{ingredient}</span>
                                 <button
                                     className='add-recipe-list-remove'
                                     type='button'
@@ -221,12 +227,14 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                 <div className='add-recipe-section'>
                     <label className='add-recipe-label'>Steps:</label>
                     <div className='add-recipe-inline'>
-                        <textarea
-                            className='add-recipe-textarea add-recipe-step-textarea'
-                            value={newStep}
-                            onChange={(e) => setNewStep(e.target.value)}
-                            placeholder='e.g. Preheat oven to 350°F'
-                        />
+                        <div className='add-recipe-input-container'>
+                            <textarea
+                                className='add-recipe-textarea add-recipe-step-textarea'
+                                value={newStep}
+                                onChange={(e) => setNewStep(e.target.value)}
+                                placeholder='e.g. Preheat oven to 350°F'
+                            />
+                        </div>
                         <button
                             className='add-recipe-btn'
                             type='button'
@@ -240,7 +248,9 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                     <ul className='add-recipe-list'>
                         {newRecipe.steps.map((step, index) => (
                             <li className='add-recipe-list-item' key={index}>
-                                {index + 1}. {step}
+                                <span>
+                                    {index + 1}. {step}
+                                </span>
                                 <button
                                     className='add-recipe-list-remove'
                                     type='button'
