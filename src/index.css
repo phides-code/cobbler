@@ -25,6 +25,22 @@ code {
     margin-bottom: 1rem;
     text-align: center;
 }
+
+.app-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .app-title {
     font-size: 3rem;
     font-family: 'Georgia', serif;
@@ -34,14 +50,30 @@ code {
     letter-spacing: 2px;
     display: inline-block;
     margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .app-subtitle {
     font-size: 1.2rem;
     font-family: 'Georgia', serif;
     color: #7c5c36;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    margin: 0;
+}
+
+.app-add-recipe-btn {
+    background: #7c5c36;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.app-add-recipe-btn:hover {
+    background: #a67c52;
 }
 
 /* Recipe List Container */

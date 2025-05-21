@@ -1,12 +1,9 @@
-import { useNavigate } from 'react-router';
 import { useGetRecipesQuery } from '../features/recipes/recipesApiSlice';
 import type { Recipe } from '../types';
 import RecipeLinkCard from './RecipeLinkCard';
 import { LOCAL_STORAGE_KEY } from '../constants';
 
 const RecipeList = () => {
-    const navigate = useNavigate();
-
     const { data, isLoading, isFetching, isError } = useGetRecipesQuery();
 
     // Get liked recipes from localStorage
@@ -32,12 +29,6 @@ const RecipeList = () => {
 
     return (
         <div className='recipe-list-container'>
-            <div className='add-recipe-bar'>
-                <button type='button' onClick={() => navigate('/add-recipe')}>
-                    Add a recipe
-                </button>
-            </div>
-
             <div className='recipe-grid'>
                 {recipes.map((recipe) => (
                     <RecipeLinkCard
