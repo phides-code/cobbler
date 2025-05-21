@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
     const navigate = useNavigate();
+    const { isDarkMode, toggleDarkMode } = useTheme();
 
     return (
         <header className='app-header'>
@@ -21,7 +23,11 @@ const Header = () => {
                     </button>
                     <div className='theme-switch-wrapper'>
                         <label className='theme-switch'>
-                            <input type='checkbox' />
+                            <input
+                                type='checkbox'
+                                checked={isDarkMode}
+                                onChange={toggleDarkMode}
+                            />
                             <div className='slider round'></div>
                         </label>
                         <span className='theme-switch-icon'>🌙</span>

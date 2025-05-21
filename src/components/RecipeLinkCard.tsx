@@ -8,6 +8,7 @@ interface RecipeLinkCardProps {
     id: string;
     likes: number;
     isLikedByMe: boolean;
+    author: string;
 }
 
 const RecipeLinkCard = ({
@@ -17,6 +18,7 @@ const RecipeLinkCard = ({
     id,
     likes,
     isLikedByMe,
+    author,
 }: RecipeLinkCardProps) => {
     const imgSrc = src !== '' ? src : 'placeholder.jpg';
 
@@ -38,6 +40,7 @@ const RecipeLinkCard = ({
                 <span className='likes-heart'>{isLikedByMe ? '❤️' : '🤍'}</span>
             </div>
             <p className='recipe-card-description'>{truncatedDescription}</p>
+            <p className='recipe-card-author'>By {author}</p>
         </Link>
     );
 };

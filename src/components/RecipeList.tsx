@@ -14,10 +14,11 @@ const RecipeList = () => {
 
     const likedRecipeIds = getLikedRecipeIds();
 
-    if (isLoading || isFetching) return <p>Loading recipes...</p>;
+    if (isLoading || isFetching)
+        return <p className='loading-text'>Loading recipes...</p>;
     if (isError)
         return (
-            <p>
+            <p className='error-text'>
                 Something went wrong while loading the recipes. Please try
                 again.
             </p>
@@ -25,7 +26,8 @@ const RecipeList = () => {
 
     const recipes = data?.data as Recipe[];
 
-    if (recipes.length === 0) return <p>No recipes found</p>;
+    if (recipes.length === 0)
+        return <p className='loading-text'>No recipes found</p>;
 
     return (
         <div className='recipe-list-container'>
@@ -41,6 +43,7 @@ const RecipeList = () => {
                         isLikedByMe={likedRecipeIds.includes(
                             recipe.id as string
                         )}
+                        author={recipe.author}
                     />
                 ))}
             </div>

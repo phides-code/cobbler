@@ -8,11 +8,11 @@ const ViewRecipe = () => {
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id ?? '');
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <p className='loading-text'>Loading...</p>;
     }
 
     if (isError || !data || !data.data) {
-        return <div>Recipe not found.</div>;
+        return <p className='error-text'>Recipe not found.</p>;
     }
 
     const recipe = data.data;
@@ -30,6 +30,7 @@ const ViewRecipe = () => {
             )}
             <h1 className='view-recipe-title'>{recipe.title}</h1>
             <p className='view-recipe-description'>{recipe.description}</p>
+            <p className='view-recipe-author'>By {recipe.author}</p>
             {recipe.tags && recipe.tags.length > 0 && (
                 <div className='view-recipe-tags'>
                     {recipe.tags.map((tag, idx) => (

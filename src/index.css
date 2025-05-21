@@ -30,7 +30,7 @@ code {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
+    padding: 0 1rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -61,6 +61,7 @@ code {
 }
 
 .app-add-recipe-btn {
+    margin-top: 0.5rem;
     background: #7c5c36;
     color: #fff;
     border: none;
@@ -180,6 +181,13 @@ code {
     margin: 0 0 0.2rem 0;
     flex: 1;
 }
+.recipe-card-author {
+    font-size: 0.85rem;
+    color: #7c5c36;
+    text-align: center;
+    margin: 0;
+    font-style: italic;
+}
 
 /* Responsive tweaks */
 @media (max-width: 600px) {
@@ -236,6 +244,13 @@ code {
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     text-align: center;
+}
+.view-recipe-author {
+    font-size: 0.9rem;
+    color: #7c5c36;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    font-style: italic;
 }
 .view-recipe-preptime {
     color: #7c5c36;
@@ -729,4 +744,249 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #1a1a1a;
+}
+
+.dark-mode .app-title {
+    color: #f5e6d3;
+}
+
+.dark-mode .app-subtitle {
+    color: #d4b483;
+}
+
+.dark-mode .app-add-recipe-btn {
+    background: #a67c52;
+    color: #1a1a1a;
+}
+
+.dark-mode .app-add-recipe-btn:hover {
+    background: #c49a6d;
+}
+
+.dark-mode .theme-switch-icon {
+    color: #f5e6d3;
+}
+
+.dark-mode .slider {
+    background-color: #4b2e13;
+}
+
+.dark-mode input:checked + .slider {
+    background-color: #a67c52;
+}
+
+.dark-mode .recipe-list-container {
+    background: #2a2a2a;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .recipe-link-card {
+    background: #333333;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    color: #f5e6d3;
+}
+
+.dark-mode .recipe-card-title {
+    color: #f5e6d3;
+}
+
+.dark-mode .recipe-card-description {
+    color: #d4b483;
+}
+
+.dark-mode .recipe-card-author {
+    color: #a67c52;
+}
+
+.dark-mode .recipe-card-image {
+    background: #2a2a2a;
+}
+
+.dark-mode .view-recipe-container {
+    background: #2a2a2a;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .view-recipe-title {
+    color: #f5e6d3;
+}
+
+.dark-mode .view-recipe-description {
+    color: #d4b483;
+}
+
+.dark-mode .view-recipe-author {
+    color: #a67c52;
+}
+
+.dark-mode .view-recipe-preptime {
+    color: #e2c49a;
+}
+
+.dark-mode .view-recipe-ingredients,
+.dark-mode .view-recipe-steps {
+    background: #333333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .view-recipe-ingredients h2,
+.dark-mode .view-recipe-steps h2 {
+    color: #f5e6d3;
+}
+
+.dark-mode .view-recipe-ingredients-list,
+.dark-mode .view-recipe-steps-list {
+    color: #d4b483;
+}
+
+.dark-mode .view-recipe-tag {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-container {
+    background: #2a2a2a;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .add-recipe-title {
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-label {
+    color: #d4b483;
+}
+
+.dark-mode .add-recipe-input,
+.dark-mode .add-recipe-textarea {
+    background: #333333;
+    border-color: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-input:focus,
+.dark-mode .add-recipe-textarea:focus {
+    border-color: #a67c52;
+}
+
+.dark-mode .add-recipe-btn {
+    background: #a67c52;
+    color: #1a1a1a;
+}
+
+.dark-mode .add-recipe-btn:hover:not(:disabled) {
+    background: #c49a6d;
+}
+
+.dark-mode .add-recipe-submit {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-submit:hover:not(:disabled) {
+    background: #7c5c36;
+}
+
+.dark-mode .add-recipe-cancel {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-cancel:hover:not(:disabled) {
+    background: #7c5c36;
+}
+
+.dark-mode .add-recipe-tag {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .add-recipe-tag-remove {
+    color: #e2c49a;
+}
+
+.dark-mode .add-recipe-list {
+    color: #d4b483;
+}
+
+.dark-mode .add-recipe-list-remove {
+    color: #e2c49a;
+}
+
+.dark-mode .image-uploader-container {
+    background: #333333;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .image-uploader-label {
+    color: #d4b483;
+}
+
+.dark-mode .image-uploader-input[type='file'] {
+    background: #2a2a2a;
+    border-color: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .uploaded-image-container {
+    background: #333333;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .uploaded-image-filename {
+    color: #d4b483;
+}
+
+.dark-mode .uploaded-image-remove-btn {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+
+.dark-mode .uploaded-image-remove-btn:hover:not(:disabled) {
+    background: #7c5c36;
+}
+
+.dark-mode .success-message-container {
+    background: #1a2e1a;
+    color: #81c784;
+    border-color: #2e7d32;
+    box-shadow: 0 2px 12px rgba(46, 125, 50, 0.15);
+}
+
+.dark-mode .success-message-close-btn {
+    color: #81c784;
+}
+
+.dark-mode .success-message-close-btn:hover {
+    color: #a5d6a7;
+}
+
+/* Loading States */
+.loading-text {
+    color: #7c5c36;
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.dark-mode .loading-text {
+    color: #d4b483;
+}
+
+.error-text {
+    color: #b94a48;
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.dark-mode .error-text {
+    color: #ef9a9a;
 }
