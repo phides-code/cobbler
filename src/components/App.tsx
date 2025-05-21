@@ -1,31 +1,16 @@
-import { Link, Route, Routes, useNavigate } from 'react-router';
+import { Route, Routes } from 'react-router';
 import AddRecipe from './AddRecipe';
 import RecipeList from './RecipeList';
 import { useState } from 'react';
 import ViewRecipe from './ViewRecipe';
+import Header from './Header';
 
 const App = () => {
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
-    const navigate = useNavigate();
 
     return (
         <div className='App'>
-            <header className='app-header'>
-                <div className='app-header-content'>
-                    <div className='app-title-container'>
-                        <Link to={'/'} className='app-title'>
-                            Cobbler
-                        </Link>
-                        <div className='app-subtitle'>A Simple Recipe App</div>
-                    </div>
-                    <button
-                        className='app-add-recipe-btn'
-                        onClick={() => navigate('/add-recipe')}
-                    >
-                        Add a recipe
-                    </button>
-                </div>
-            </header>
+            <Header />
 
             {showSuccess && (
                 <div className='success-message-container'>
