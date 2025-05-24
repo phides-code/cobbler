@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useSearchRecipesQuery } from '../features/recipes/recipesApiSlice';
 import { useDebounce } from '../app/hooks';
+import { Link } from 'react-router';
+import { truncateText } from '../utils/utils';
 
 const TypeaheadSearch = () => {
     const [query, setQuery] = useState('');
@@ -20,8 +22,15 @@ const TypeaheadSearch = () => {
             {isLoading && <p>Loading...</p>}
             {error && <p>Error fetching results.</p>}
             <ul>
-                {data?.data?.map((result) => (
-                    <li key={result.id}>{result.title}</li>
+                {data?.data?.map((recipe) => (
+                    <li key={recipe.id}>
+                        <div>
+                            <Link to={`/recipe/${recipe.id}`}>
+                                {recipe.title}
+                            </Link>
+                        </div>
+                        <div>{truncateText(recipe.description, 50)}</div>
+                    </li>
                 ))}
             </ul>
         </div>

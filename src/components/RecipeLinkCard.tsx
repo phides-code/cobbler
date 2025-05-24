@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { URL_PREFIX } from '../constants';
+import { truncateText } from '../utils/utils';
 
 interface RecipeLinkCardProps {
     title: string;
@@ -22,10 +23,7 @@ const RecipeLinkCard = ({
 }: RecipeLinkCardProps) => {
     const imgSrc = src !== '' ? src : 'placeholder.jpg';
 
-    const truncatedDescription =
-        description.length > 110
-            ? description.substring(0, 110) + '...'
-            : description;
+    const truncatedDescription = truncateText(description, 100);
 
     return (
         <Link to={`/recipe/${id}`} className='recipe-link-card'>
