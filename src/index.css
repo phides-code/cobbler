@@ -199,9 +199,25 @@ code {
         height: 120px;
     }
     .recipe-link-card {
-        /* min-height: 320px; */
         min-height: 280px;
         padding: 1rem 0.5rem;
+    }
+    .typeahead-search-container {
+        padding: 0 0.5rem;
+    }
+    .typeahead-search-input {
+        font-size: 1rem;
+        padding: 0.7rem 1rem;
+    }
+    .typeahead-search-result-title {
+        font-size: 1rem;
+    }
+    .typeahead-search-result-description {
+        font-size: 0.85rem;
+    }
+    .typeahead-search-results {
+        margin: 0.5rem 0.5rem 0 0.5rem;
+        width: calc(100% - 1rem);
     }
 }
 
@@ -989,4 +1005,137 @@ input:checked + .slider:before {
 
 .dark-mode .error-text {
     color: #ef9a9a;
+}
+
+/* Typeahead Search */
+.typeahead-search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 1rem auto;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.typeahead-search-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 1.1rem;
+    font-family: 'Georgia', serif;
+    border: 2px solid #e2d3c0;
+    border-radius: 12px;
+    background: #fff;
+    color: #3d2b1f;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+.typeahead-search-input:focus {
+    outline: none;
+    border-color: #7c5c36;
+    box-shadow: 0 2px 12px rgba(124, 92, 54, 0.15);
+}
+
+.typeahead-search-input::placeholder {
+    color: #a67c52;
+    opacity: 0.7;
+}
+
+.typeahead-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.typeahead-search-result-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e2d3c0;
+    text-decoration: none;
+    color: #3d2b1f;
+    display: block;
+    transition: background 0.2s ease;
+}
+
+.typeahead-search-result-item:last-child {
+    border-bottom: none;
+}
+
+.typeahead-search-result-item:hover {
+    background: #f7f3ed;
+}
+
+.typeahead-search-result-title {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4b2e13;
+    margin-bottom: 0.3rem;
+}
+
+.typeahead-search-result-description {
+    font-size: 0.9rem;
+    color: #7c5c36;
+}
+
+.typeahead-search-loading,
+.typeahead-search-error,
+.typeahead-search-no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #7c5c36;
+    font-family: 'Georgia', serif;
+}
+
+/* Dark Mode Styles for Typeahead */
+.dark-mode .typeahead-search-input {
+    background: #2a2a2a;
+    border-color: #4a4a4a;
+    color: #f5e6d3;
+}
+
+.dark-mode .typeahead-search-input:focus {
+    border-color: #a67c52;
+    box-shadow: 0 2px 12px rgba(166, 124, 82, 0.2);
+}
+
+.dark-mode .typeahead-search-input::placeholder {
+    color: #d4b483;
+    opacity: 0.7;
+}
+
+.dark-mode .typeahead-search-results {
+    background: #2a2a2a;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .typeahead-search-result-item {
+    border-bottom-color: #4a4a4a;
+    color: #f5e6d3;
+}
+
+.dark-mode .typeahead-search-result-item:hover {
+    background: #3a3a3a;
+}
+
+.dark-mode .typeahead-search-result-title {
+    color: #f5e6d3;
+}
+
+.dark-mode .typeahead-search-result-description {
+    color: #d4b483;
+}
+
+.dark-mode .typeahead-search-loading,
+.dark-mode .typeahead-search-error,
+.dark-mode .typeahead-search-no-results {
+    color: #d4b483;
 }
