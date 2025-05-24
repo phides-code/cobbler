@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router';
 import { useTheme } from '../context/ThemeContext';
+import TypeaheadSearch from './TypeaheadSearch';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -34,6 +35,8 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+
+            <TypeaheadSearch />
         </header>
     );
 };

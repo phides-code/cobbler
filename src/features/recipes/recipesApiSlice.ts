@@ -54,6 +54,11 @@ export const recipesApiSlice = createApi({
                 body: updatedRecipe,
             }),
         }),
+        searchRecipes: build.query<RecipesApiResponse, string>({
+            query: (searchText) => ({
+                url: `?q=${searchText}`,
+            }),
+        }),
     }),
 });
 
@@ -63,4 +68,5 @@ export const {
     usePostRecipeMutation,
     useDeleteRecipeMutation,
     usePutRecipeMutation,
+    useSearchRecipesQuery,
 } = recipesApiSlice;
