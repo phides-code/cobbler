@@ -42,26 +42,30 @@ const TypeaheadSearch = () => {
                             Error fetching results.
                         </div>
                     )}
-                    {!isLoading && !error && recipes.length === 0 && (
-                        <div className='typeahead-search-no-results'>
-                            No recipes found.
-                        </div>
-                    )}
-                    {recipes.map((recipe) => (
-                        <Link
-                            to={`/recipe/${recipe.id}`}
-                            className='typeahead-search-result-item'
-                            key={recipe.id}
-                            onClick={() => setQuery('')}
-                        >
-                            <div className='typeahead-search-result-title'>
-                                {recipe.title}
+                    {!isLoading &&
+                        !error &&
+                        recipes &&
+                        recipes.length === 0 && (
+                            <div className='typeahead-search-no-results'>
+                                No recipes found.
                             </div>
-                            <div className='typeahead-search-result-description'>
-                                {truncateText(recipe.description, 50)}
-                            </div>
-                        </Link>
-                    ))}
+                        )}
+                    {recipes &&
+                        recipes.map((recipe) => (
+                            <Link
+                                to={`/recipe/${recipe.id}`}
+                                className='typeahead-search-result-item'
+                                key={recipe.id}
+                                onClick={() => setQuery('')}
+                            >
+                                <div className='typeahead-search-result-title'>
+                                    {recipe.title}
+                                </div>
+                                <div className='typeahead-search-result-description'>
+                                    {truncateText(recipe.description, 50)}
+                                </div>
+                            </Link>
+                        ))}
                 </div>
             )}
         </div>
