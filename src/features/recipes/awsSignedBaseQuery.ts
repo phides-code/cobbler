@@ -93,7 +93,7 @@ export const createAwsSignedBaseQuery = ({
             const {
                 url,
                 method = 'GET',
-                body,
+                body = undefined,
             } = typeof args === 'string' ? { url: args } : args;
 
             // Build the full request URL
