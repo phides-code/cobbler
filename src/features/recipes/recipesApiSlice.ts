@@ -1,14 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { Recipe } from '../../types';
-
-const RECIPES_SERVICE_URL = import.meta.env.VITE_RECIPES_SERVICE_URL as string;
-const RECIPES_SERVICE_API_KEY = import.meta.env
-    .VITE_RECIPES_SERVICE_API_KEY as string;
-
-const prepareHeaders = (headers: Headers) => {
-    headers.set('x-api-key', RECIPES_SERVICE_API_KEY);
-    return headers;
-};
+import { createAwsSignedBaseQuery } from './awsSignedBaseQuery';
 
 interface RecipesApiResponse {
     data: Recipe[] | null;
@@ -21,9 +13,10 @@ interface RecipeApiResponse {
 }
 
 export const recipesApiSlice = createApi({
-    baseQuery: fetchBaseQuery({
-        baseUrl: RECIPES_SERVICE_URL,
-        prepareHeaders,
+    baseQuery: createAwsSignedBaseQuery({
+        baseUrl: import.meta.env.VITE_RECIPES_SERVICE_URL,
+        region: import.meta.env.VITE_AWS_REGION,
+        identityPoolId: import.meta.env.VITE_RECIPES_IDENTITY_POOL_ID,
     }),
 
     reducerPath: 'recipesApi',
