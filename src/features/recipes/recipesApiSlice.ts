@@ -25,7 +25,7 @@ export const recipesApiSlice = createApi({
             query: () => '',
         }),
         getRecipeById: build.query<RecipeApiResponse, string>({
-            query: (id) => `${id}`,
+            query: (id) => `recipes/${id}`,
         }),
         postRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (newRecipe) => ({
@@ -36,20 +36,20 @@ export const recipesApiSlice = createApi({
         }),
         deleteRecipe: build.mutation<RecipeApiResponse, string>({
             query: (id) => ({
-                url: `${id}`,
+                url: `recipes/${id}`,
                 method: 'DELETE',
             }),
         }),
         putRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (updatedRecipe) => ({
-                url: `${updatedRecipe.id}`,
+                url: `recipes/${updatedRecipe.id}`,
                 method: 'PUT',
                 body: updatedRecipe,
             }),
         }),
         searchRecipes: build.query<RecipesApiResponse, string>({
             query: (searchText) => ({
-                url: `?q=${searchText}`,
+                url: `recipes?q=${searchText}`,
             }),
         }),
     }),
