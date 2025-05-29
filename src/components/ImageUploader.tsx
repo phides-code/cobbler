@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import type { ImageServiceAPIResponse, Recipe } from '../types';
+import type { ImageDataPayload, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
-import { IMAGE_SERVICE_URL } from '../constants';
+import { useUploadImageMutation } from '../features/image/imageApiSlice';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -9,22 +8,19 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
-    const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [uploadError, setUploadError] = useState<boolean>(false);
+    const [uploadImage, { isError, isLoading }] = useUploadImageMutation();
 
-    const handleFileChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (
+        ev: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const files: FileList = ev.target.files as FileList;
         const file: File = files[0];
 
-        if (!file.type.includes('image/')) {
+        if (!file || !file.type.includes('image/')) {
             return;
         }
 
-        uploadFile(file);
-    };
-
-    const uploadFile = async (file: File) => {
-        const originalName: string = file?.name as string;
+        const originalName: string = file.name as string;
         const fileExtension: string = originalName.split('.').pop() as string;
 
         const reader = new FileReader();
@@ -33,33 +29,21 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
             const result = reader.result as string;
             const imageData = result.split(',')[1]; // Extract base64 data
 
-            const body = JSON.stringify({
+            const body: ImageDataPayload = {
                 image: imageData,
                 fileExt: fileExtension,
-            });
-
-            setIsUploading(true);
+            };
 
             try {
-                const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
-                    body,
-                });
+                const resultOfUpload = await uploadImage(body).unwrap();
 
-                const response: ImageServiceAPIResponse =
-                    await rawFetchResponse.json();
-
-                if (response.errorMessage) {
-                    throw new Error(response.errorMessage);
+                if (resultOfUpload.errorMessage) {
+                    throw new Error(resultOfUpload.errorMessage);
                 }
 
-                if ((response.data as string).includes(fileExtension)) {
+                if ((resultOfUpload.data as string).includes(fileExtension)) {
                     console.log('File uploaded successfully');
-                    setUploadError(false);
-                    const uuidName = response.data as string;
+                    const uuidName = resultOfUpload.data as string;
 
                     setRecipe((recipe) => ({
                         ...recipe,
@@ -72,10 +56,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                     throw new Error('upload failed');
                 }
             } catch (error) {
-                setUploadError(true);
                 console.error('uploadFile caught error:', error);
-            } finally {
-                setIsUploading(false);
             }
         };
     };
@@ -93,13 +74,13 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
             ) : (
                 <input
                     className='image-uploader-input'
-                    disabled={isUploading}
+                    disabled={isLoading}
                     type='file'
                     id='hide-upload-default-text'
                     onChange={handleFileChange}
                 />
             )}
-            {uploadError && (
+            {isError && (
                 <div className='image-uploader-error'>
                     Something went wrong while uploading the image. Please try
                     again.

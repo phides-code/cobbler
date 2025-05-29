@@ -73,8 +73,6 @@ export const createAwsSignedBaseQuery = ({
     unknown,
     FetchBaseQueryError
 > => {
-    // Parse the base URL for later use
-    const base = new URL(baseUrl);
     // Cache credentials to avoid unnecessary Cognito calls
     let cachedCredentials: CachedCredentials | null = null;
 
@@ -160,18 +158,8 @@ export const createAwsSignedBaseQuery = ({
                     headers = {},
                 } = typeof args === 'string' ? { url: args } : args;
 
-                console.log('Base URL:', baseUrl);
-                console.log('Request URL:', url);
-                console.log('Request method:', method);
-
                 // Build the full request URL
                 const target = new URL(url, baseUrl);
-                console.log('Final target URL:', target.toString());
-                console.log('Full request details:', {
-                    method,
-                    url: target.toString(),
-                    headers: headers,
-                });
 
                 // Get valid AWS credentials
                 // Force refresh credentials on retry attempts to handle expired credentials
@@ -249,13 +237,6 @@ export const createAwsSignedBaseQuery = ({
                     body: signedRequest.body,
                 });
 
-                console.log('ProtocolHttpRequest:', {
-                    hostname: protocolHttpRequest.hostname,
-                    port: protocolHttpRequest.port,
-                    path: protocolHttpRequest.path,
-                    protocol: protocolHttpRequest.protocol,
-                });
-
                 // Create an AbortController for timeout handling
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -270,13 +251,6 @@ export const createAwsSignedBaseQuery = ({
                     protocolHttpRequest.hostname = target.hostname;
                     protocolHttpRequest.port = parseInt(target.port, 10);
                     protocolHttpRequest.protocol = target.protocol;
-
-                    console.log('Modified ProtocolHttpRequest:', {
-                        hostname: protocolHttpRequest.hostname,
-                        port: protocolHttpRequest.port,
-                        path: protocolHttpRequest.path,
-                        protocol: protocolHttpRequest.protocol,
-                    });
 
                     const { response } =
                         await handler.handle(protocolHttpRequest);

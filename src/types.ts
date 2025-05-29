@@ -3,6 +3,11 @@ export interface ImageSource {
     uuidName: string;
 }
 
+export interface ImageDataPayload {
+    image: string;
+    fileExt: string;
+}
+
 export interface Recipe {
     id?: string;
     author: string;
@@ -14,9 +19,4 @@ export interface Recipe {
     likes: number;
     prepTime: string;
     imageSource: ImageSource;
-}
-
-export interface ImageServiceAPIResponse {
-    data: string | null;
-    errorMessage: string | null;
 }

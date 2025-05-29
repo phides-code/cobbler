@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import type { ImageServiceAPIResponse, ImageSource, Recipe } from '../types';
-import { IMAGE_SERVICE_URL, URL_PREFIX } from '../constants';
+import type { ImageSource, Recipe } from '../types';
+import { URL_PREFIX } from '../constants';
+import { useDeleteImageMutation } from '../features/image/imageApiSlice';
 
 interface UploadedImageProps {
     imageSource: ImageSource;
@@ -8,8 +8,7 @@ interface UploadedImageProps {
 }
 
 const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
-    const [isRemoving, setIsRemoving] = useState<boolean>(false);
-    const [fileRemovalError, setFileRemovalError] = useState<boolean>(false);
+    const [deleteImage, { isError, isLoading }] = useDeleteImageMutation();
 
     const removeFileFromList = async (
         ev: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -17,29 +16,20 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
     ) => {
         ev.preventDefault();
 
-        setIsRemoving(true);
-
         try {
-            const rawFetchResponse = await fetch(
-                IMAGE_SERVICE_URL + '/' + fileToRemove.uuidName,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'DELETE',
-                }
-            );
+            const resultOfDelete = await deleteImage(
+                fileToRemove.uuidName
+            ).unwrap();
 
-            const response: ImageServiceAPIResponse =
-                await rawFetchResponse.json();
-
-            if (response.errorMessage) {
-                throw new Error(response.errorMessage);
+            if (resultOfDelete.errorMessage) {
+                throw new Error(resultOfDelete.errorMessage);
             }
 
-            if ((response.data as string).includes(fileToRemove.uuidName)) {
+            if (
+                (resultOfDelete.data as string).includes(fileToRemove.uuidName)
+            ) {
                 console.log('File removed successfully');
-                setFileRemovalError(false);
+
                 setRecipe((recipe) => ({
                     ...recipe,
                     imageSource: {
@@ -51,10 +41,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 throw new Error('delete failed');
             }
         } catch (error) {
-            setFileRemovalError(true);
             console.error('removeFileFromList caught error: ', error);
-        } finally {
-            setIsRemoving(false);
         }
     };
 
@@ -71,7 +58,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 </span>
                 <button
                     className='uploaded-image-remove-btn'
-                    disabled={isRemoving}
+                    disabled={isLoading}
                     onClick={(ev) => {
                         removeFileFromList(ev, imageSource);
                     }}
@@ -79,7 +66,7 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                     remove
                 </button>
             </div>
-            {fileRemovalError && (
+            {isError && (
                 <p className='uploaded-image-error'>
                     Something went wrong while removing the image. Please try
                     again.
