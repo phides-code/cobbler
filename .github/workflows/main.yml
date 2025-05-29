@@ -22,10 +22,9 @@ jobs:
                   echo VITE_AWS_REGION=${{ secrets.AWS_REGION }} >> .env
 
                   echo VITE_IMAGE_SERVICE_URL=${{ secrets.IMAGE_SERVICE_URL }} >> .env
-                  echo VITE_IMAGE_SERVICE_API_KEY=${{ secrets.IMAGE_SERVICE_API_KEY }} >> .env
 
                   echo VITE_RECIPES_SERVICE_URL=${{ secrets.RECIPES_SERVICE_URL }} >> .env
-                  echo VITE_RECIPES_IDENTITY_POOL_ID=${{ secrets.RECIPES_IDENTITY_POOL_ID }} >> .env
+                  echo VITE_IDENTITY_POOL_ID=${{ secrets.IDENTITY_POOL_ID }} >> .env
 
             - name: Build
               run: npm run build

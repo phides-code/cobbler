@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import type { ImageServiceAPIResponse, ImageSource, Recipe } from '../types';
-import {
-    IMAGE_SERVICE_API_KEY,
-    IMAGE_SERVICE_URL,
-    URL_PREFIX,
-} from '../constants';
+import { IMAGE_SERVICE_URL, URL_PREFIX } from '../constants';
 
 interface UploadedImageProps {
     imageSource: ImageSource;
@@ -29,7 +25,6 @@ const UploadedImage = ({ imageSource, setRecipe }: UploadedImageProps) => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': IMAGE_SERVICE_API_KEY,
                     },
                     method: 'DELETE',
                 }

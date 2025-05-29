@@ -57,7 +57,7 @@ interface AwsSignedBaseQueryOptions {
  * 1. Obtains AWS credentials from Cognito Identity Pool
  * 2. Signs requests using AWS Signature V4
  * 3. Handles retries, timeouts, and error cases
- * 
+ *
  * @param options - Configuration options for the signed base query
  * @returns A configured baseQuery function for RTK Query
  */
@@ -160,6 +160,19 @@ export const createAwsSignedBaseQuery = ({
                     headers = {},
                 } = typeof args === 'string' ? { url: args } : args;
 
+                console.log('Base URL:', baseUrl);
+                console.log('Request URL:', url);
+                console.log('Request method:', method);
+
+                // Build the full request URL
+                const target = new URL(url, baseUrl);
+                console.log('Final target URL:', target.toString());
+                console.log('Full request details:', {
+                    method,
+                    url: target.toString(),
+                    headers: headers,
+                });
+
                 // Get valid AWS credentials
                 // Force refresh credentials on retry attempts to handle expired credentials
                 const creds = await getCredentials(retries > 0);
@@ -176,9 +189,6 @@ export const createAwsSignedBaseQuery = ({
                     },
                     sha256: Sha256, // Required crypto implementation
                 });
-
-                // Build the full request URL
-                const target = new URL(url, base.href);
 
                 // Prepare the body if it exists
                 const jsonBody = body ? JSON.stringify(body) : undefined;
@@ -239,15 +249,37 @@ export const createAwsSignedBaseQuery = ({
                     body: signedRequest.body,
                 });
 
+                console.log('ProtocolHttpRequest:', {
+                    hostname: protocolHttpRequest.hostname,
+                    port: protocolHttpRequest.port,
+                    path: protocolHttpRequest.path,
+                    protocol: protocolHttpRequest.protocol,
+                });
+
                 // Create an AbortController for timeout handling
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), timeout);
 
                 try {
                     // Send the request using FetchHttpHandler with timeout
-                    const { response } = await new FetchHttpHandler({
+                    const handler = new FetchHttpHandler({
                         requestTimeout: timeout,
-                    }).handle(protocolHttpRequest);
+                    });
+
+                    // Override the hostname to ensure port is preserved
+                    protocolHttpRequest.hostname = target.hostname;
+                    protocolHttpRequest.port = parseInt(target.port, 10);
+                    protocolHttpRequest.protocol = target.protocol;
+
+                    console.log('Modified ProtocolHttpRequest:', {
+                        hostname: protocolHttpRequest.hostname,
+                        port: protocolHttpRequest.port,
+                        path: protocolHttpRequest.path,
+                        protocol: protocolHttpRequest.protocol,
+                    });
+
+                    const { response } =
+                        await handler.handle(protocolHttpRequest);
 
                     // Clear the timeout
                     clearTimeout(timeoutId);

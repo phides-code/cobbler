@@ -16,20 +16,20 @@ export const recipesApiSlice = createApi({
     baseQuery: createAwsSignedBaseQuery({
         baseUrl: import.meta.env.VITE_RECIPES_SERVICE_URL,
         region: import.meta.env.VITE_AWS_REGION,
-        identityPoolId: import.meta.env.VITE_RECIPES_IDENTITY_POOL_ID,
+        identityPoolId: import.meta.env.VITE_IDENTITY_POOL_ID,
     }),
 
     reducerPath: 'recipesApi',
     endpoints: (build) => ({
         getRecipes: build.query<RecipesApiResponse, void>({
-            query: () => '',
+            query: () => 'recipes',
         }),
         getRecipeById: build.query<RecipeApiResponse, string>({
             query: (id) => `recipes/${id}`,
         }),
         postRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (newRecipe) => ({
-                url: '',
+                url: 'recipes',
                 method: 'POST',
                 body: newRecipe,
             }),

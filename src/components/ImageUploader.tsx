@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ImageServiceAPIResponse, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
-import { IMAGE_SERVICE_API_KEY, IMAGE_SERVICE_URL } from '../constants';
+import { IMAGE_SERVICE_URL } from '../constants';
 
 interface ImageUploaderProps {
     recipe: Recipe;
@@ -44,7 +44,6 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 const rawFetchResponse = await fetch(IMAGE_SERVICE_URL, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-api-key': IMAGE_SERVICE_API_KEY,
                     },
                     method: 'POST',
                     body,
