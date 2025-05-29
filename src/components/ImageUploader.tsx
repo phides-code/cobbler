@@ -1,14 +1,19 @@
 import type { ImageDataPayload, Recipe } from '../types';
 import UploadedImage from './UploadedImage';
 import { useUploadImageMutation } from '../features/image/imageApiSlice';
+import { useState } from 'react';
 
 interface ImageUploaderProps {
     recipe: Recipe;
     setRecipe: React.Dispatch<React.SetStateAction<Recipe>>;
 }
 
+const MAX_FILE_SIZE = 5; // 5MB
+
 const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
     const [uploadImage, { isError, isLoading }] = useUploadImageMutation();
+    const [unsupportedFileError, setUnsupportedFileError] =
+        useState<boolean>(false);
 
     const handleFileChange = async (
         ev: React.ChangeEvent<HTMLInputElement>
@@ -16,7 +21,12 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
         const files: FileList = ev.target.files as FileList;
         const file: File = files[0];
 
-        if (!file || !file.type.includes('image/')) {
+        if (
+            !file ||
+            !file.type.includes('image/') ||
+            file.size > MAX_FILE_SIZE * 1024 * 1024
+        ) {
+            setUnsupportedFileError(true);
             return;
         }
 
@@ -42,6 +52,7 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 }
 
                 if ((resultOfUpload.data as string).includes(fileExtension)) {
+                    setUnsupportedFileError(false);
                     console.log('File uploaded successfully');
                     const uuidName = resultOfUpload.data as string;
 
@@ -84,6 +95,12 @@ const ImageUploader = ({ recipe, setRecipe }: ImageUploaderProps) => {
                 <div className='image-uploader-error'>
                     Something went wrong while uploading the image. Please try
                     again.
+                </div>
+            )}
+            {unsupportedFileError && (
+                <div className='image-uploader-error'>
+                    Unsupported file type or file size exceeds {MAX_FILE_SIZE}
+                    MB. Please upload a valid image.
                 </div>
             )}
         </div>
