@@ -161,6 +161,12 @@ export const createAwsSignedBaseQuery = ({
                 // Build the full request URL
                 const target = new URL(url, baseUrl);
 
+                // Parse query string into an object for AWS SigV4
+                const queryParams: Record<string, string> = {};
+                target.searchParams.forEach((value, key) => {
+                    queryParams[key] = value;
+                });
+
                 // Get valid AWS credentials
                 // Force refresh credentials on retry attempts to handle expired credentials
                 const creds = await getCredentials(retries > 0);
@@ -220,7 +226,8 @@ export const createAwsSignedBaseQuery = ({
                     method,
                     protocol: target.protocol,
                     hostname: target.hostname,
-                    path: target.pathname + target.search,
+                    path: target.pathname,
+                    query: queryParams,
                     body: jsonBody,
                     headers: requestHeaders,
                 });
