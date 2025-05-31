@@ -107,10 +107,9 @@ export const createAwsSignedBaseQuery = ({
                 );
 
                 if (
-                    !Credentials ||
-                    !Credentials.AccessKeyId ||
-                    !Credentials.SecretKey ||
-                    !Credentials.SessionToken
+                    !Credentials?.AccessKeyId ||
+                    !Credentials?.SecretKey ||
+                    !Credentials?.SessionToken
                 ) {
                     throw new Error('Failed to retrieve AWS credentials');
                 }
@@ -122,7 +121,7 @@ export const createAwsSignedBaseQuery = ({
                     secretAccessKey: Credentials.SecretKey,
                     sessionToken: Credentials.SessionToken,
                     expiration: new Date(
-                        Credentials.Expiration || Date.now() + 3600 * 1000
+                        Credentials.Expiration ?? Date.now() + 3600 * 1000
                     ).getTime(),
                 };
             } catch (error) {
@@ -133,7 +132,7 @@ export const createAwsSignedBaseQuery = ({
             }
         }
 
-        return cachedCredentials!;
+        return cachedCredentials;
     }
 
     /**
@@ -141,9 +140,9 @@ export const createAwsSignedBaseQuery = ({
      * Handles request signing, sending, and processing responses
      * Implements retry logic for transient failures
      */
-    return async (args, _api, _extraOptions) => {
+    return async (args) => {
         let retries = 0;
-        let lastError: any = null;
+        let lastError: unknown = null;
 
         // Retry logic for handling transient failures
         // Will attempt up to maxRetries times with exponential backoff
@@ -246,7 +245,9 @@ export const createAwsSignedBaseQuery = ({
 
                 // Create an AbortController for timeout handling
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), timeout);
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                }, timeout);
 
                 try {
                     // Send the request using FetchHttpHandler with timeout
@@ -304,17 +305,31 @@ export const createAwsSignedBaseQuery = ({
                     clearTimeout(timeoutId);
                     throw fetchError;
                 }
-            } catch (error: any) {
+            } catch (error) {
                 lastError = error;
 
                 // Check if we should retry based on the error type
                 // We retry on timeouts, network errors, credential errors, and token expiration
                 if (
                     retries < maxRetries &&
-                    (error.name === 'AbortError' || // Timeout errors
-                        error.message?.includes('network') || // Network connectivity issues
-                        error.message?.includes('credential') || // AWS credential problems
-                        error.message?.includes('expired')) // Token expiration issues
+                    ((typeof error === 'object' &&
+                        error !== null &&
+                        'name' in error &&
+                        (error as { name: string }).name === 'AbortError') || // Timeout errors
+                        (typeof error === 'object' &&
+                            error !== null &&
+                            'message' in error &&
+                            typeof (error as { message: string }).message ===
+                                'string' &&
+                            ((error as { message: string }).message.includes(
+                                'network'
+                            ) || // Network connectivity issues
+                                (error as { message: string }).message.includes(
+                                    'credential'
+                                ) || // AWS credential problems
+                                (error as { message: string }).message.includes(
+                                    'expired'
+                                )))) // Token expiration issues
                 ) {
                     retries++;
                     // Implement exponential backoff with jitter to prevent thundering herd
@@ -332,7 +347,12 @@ export const createAwsSignedBaseQuery = ({
                 return {
                     error: {
                         status: 'FETCH_ERROR' as const,
-                        data: error?.message || error?.toString(),
+                        error:
+                            typeof error === 'object' &&
+                            error !== null &&
+                            'message' in error
+                                ? (error as { message: string }).message
+                                : error?.toString(),
                     } as FetchBaseQueryError,
                 };
             }
@@ -343,9 +363,12 @@ export const createAwsSignedBaseQuery = ({
         return {
             error: {
                 status: 'FETCH_ERROR' as const,
-                data:
-                    lastError?.message ||
-                    'Request failed after multiple retries',
+                error:
+                    (typeof lastError === 'object' &&
+                    lastError !== null &&
+                    'message' in lastError
+                        ? (lastError as { message?: string }).message
+                        : undefined) ?? 'Request failed after multiple retries',
             } as FetchBaseQueryError,
         };
     };
