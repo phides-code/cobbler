@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { createAwsSignedBaseQuery } from '../recipes/awsSignedBaseQuery';
+import { createAwsSignedBaseQuery } from '../../app/awsSignedBaseQuery';
 import type { ImageDataPayload } from '../../types';
 
 interface ImageApiResponse {

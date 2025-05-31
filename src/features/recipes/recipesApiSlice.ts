@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { Recipe } from '../../types';
-import { createAwsSignedBaseQuery } from './awsSignedBaseQuery';
+import { createAwsSignedBaseQuery } from '../../app/awsSignedBaseQuery';
 
 interface RecipesApiResponse {
     data: Recipe[] | null;
