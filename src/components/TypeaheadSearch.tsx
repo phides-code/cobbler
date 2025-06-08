@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useSearchRecipesQuery } from '../features/recipes/recipesApiSlice';
 import { useDebounce } from '../app/hooks';
-import { Link } from 'react-router';
-import { truncateText } from '../utils/utils';
 import type { Recipe } from '../types';
+import TypeaheadSearchResult from './TypeaheadSearchResult';
 
 const TypeaheadSearch = () => {
     const [query, setQuery] = useState('');
@@ -52,19 +51,10 @@ const TypeaheadSearch = () => {
                         )}
                     {recipes &&
                         recipes.map((recipe) => (
-                            <Link
-                                to={`/recipe/${recipe.id}`}
-                                className='typeahead-search-result-item'
-                                key={recipe.id}
-                                onClick={() => setQuery('')}
-                            >
-                                <div className='typeahead-search-result-title'>
-                                    {recipe.title}
-                                </div>
-                                <div className='typeahead-search-result-description'>
-                                    {truncateText(recipe.description, 50)}
-                                </div>
-                            </Link>
+                            <TypeaheadSearchResult
+                                recipe={recipe}
+                                setQuery={setQuery}
+                            />
                         ))}
                 </div>
             )}

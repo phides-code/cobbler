@@ -1063,6 +1063,7 @@ input:checked + .slider:before {
     color: #3d2b1f;
     display: block;
     transition: background 0.2s ease;
+    text-align: left;
 }
 
 .typeahead-search-result-item:last-child {
@@ -1093,6 +1094,33 @@ input:checked + .slider:before {
     text-align: center;
     color: #7c5c36;
     font-family: 'Georgia', serif;
+}
+
+.typeahead-search-result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+}
+.typeahead-search-result-tag {
+    background: #e2d3c0;
+    color: #7c5c36;
+    border-radius: 5px;
+    padding: 0.13rem 0.7rem 0.13rem 0.5rem;
+    font-size: 0.92rem;
+    font-family: 'Georgia', serif;
+    display: inline-block;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition:
+        background 0.18s,
+        color 0.18s;
+}
+.typeahead-search-result-no-tags {
+    color: #b9a07a;
+    font-size: 0.92rem;
+    font-style: italic;
 }
 
 /* Dark Mode Styles for Typeahead */
@@ -1138,4 +1166,15 @@ input:checked + .slider:before {
 .dark-mode .typeahead-search-error,
 .dark-mode .typeahead-search-no-results {
     color: #d4b483;
+}
+
+.dark-mode .typeahead-search-result-tags {
+    /* no background, just inherit */
+}
+.dark-mode .typeahead-search-result-tag {
+    background: #4b2e13;
+    color: #f5e6d3;
+}
+.dark-mode .typeahead-search-result-no-tags {
+    color: #a67c52;
 }
