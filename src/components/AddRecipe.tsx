@@ -153,7 +153,11 @@ const AddRecipe = ({ setShowSuccess }: AddRecipeProps) => {
                             className='add-recipe-btn'
                             type='button'
                             onClick={() =>
-                                handleArrayItemAdd(newTag, setNewTag, 'tags')
+                                handleArrayItemAdd(
+                                    newTag.toLowerCase(),
+                                    setNewTag,
+                                    'tags'
+                                )
                             }
                         >
                             Add Tag
