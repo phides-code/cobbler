@@ -16,13 +16,14 @@ const RecipeList = () => {
 
     if (isLoading || isFetching)
         return <p className='loading-text'>Loading recipes...</p>;
-    if (isError)
+    if (isError) {
         return (
             <p className='error-text'>
                 Something went wrong while loading the recipes. Please try
                 again.
             </p>
         );
+    }
 
     const recipes = data?.data as Recipe[];
 

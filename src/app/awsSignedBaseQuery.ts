@@ -22,6 +22,8 @@ import {
     GetCredentialsForIdentityCommand,
 } from '@aws-sdk/client-cognito-identity';
 
+const region = import.meta.env.VITE_AWS_REGION as string;
+
 /**
  * Interface for caching AWS credentials to minimize Cognito API calls
  * Stores temporary credentials and their expiration time
@@ -42,9 +44,11 @@ interface CachedCredentials {
  * @property timeout - Request timeout in milliseconds (default: 30000)
  * @property maxRetries - Maximum number of retry attempts (default: 3)
  */
+
+//NEXT STEP: remove region as a parameter
+
 interface AwsSignedBaseQueryOptions {
     baseUrl: string;
-    region: string;
     identityPoolId: string;
     service?: string;
     timeout?: number;
@@ -63,7 +67,6 @@ interface AwsSignedBaseQueryOptions {
  */
 export const createAwsSignedBaseQuery = ({
     baseUrl,
-    region,
     identityPoolId,
     service = 'execute-api',
     timeout = 30000,

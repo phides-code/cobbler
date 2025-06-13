@@ -3,10 +3,11 @@ import { combineSlices, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { recipesApiSlice } from '../features/recipes/recipesApiSlice';
 import { imageApiSlice } from '../features/image/imageApiSlice';
+import { tagsApiSlice } from '../features/tags/tagsApiSlice';
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(recipesApiSlice, imageApiSlice);
+const rootReducer = combineSlices(recipesApiSlice, imageApiSlice, tagsApiSlice);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -20,7 +21,8 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         middleware: (getDefaultMiddleware) => {
             return getDefaultMiddleware()
                 .concat(recipesApiSlice.middleware)
-                .concat(imageApiSlice.middleware);
+                .concat(imageApiSlice.middleware)
+                .concat(tagsApiSlice.middleware);
         },
         preloadedState,
     });

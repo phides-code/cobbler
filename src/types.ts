@@ -20,3 +20,8 @@ export interface Recipe {
     prepTime: string;
     imageSource: ImageSource;
 }
+
+export interface Tag {
+    name: string;
+    count: number;
+}
