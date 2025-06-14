@@ -1,29 +1,77 @@
-import { Link } from 'react-router';
-import { useGetTagsQuery } from '../features/tags/tagsApiSlice';
-import type { Tag } from '../types';
+import { useMemo } from 'react';
+import type { Recipe, Tag } from '../types';
 
-const TagsList = () => {
-    const { data, isError } = useGetTagsQuery();
-    if (isError) {
-        return (
-            <p className='error-text'>
-                Something went wrong while loading the recipes. Please try
-                again.
-            </p>
+interface TagsListProps {
+    recipes: Recipe[];
+    selectedTags: string[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const TagsList = ({
+    recipes,
+    selectedTags,
+    setSelectedTags,
+}: TagsListProps) => {
+    const tags = useMemo(() => {
+        const maxTags = 6;
+
+        const tagCountMap: Record<string, number> = {};
+        recipes.forEach((recipe) => {
+            recipe.tags.forEach((tag) => {
+                tagCountMap[tag] = (tagCountMap[tag] || 0) + 1;
+            });
+        });
+        let tagsArr: Tag[] = Object.entries(tagCountMap).map(
+            ([name, count]) => ({
+                name,
+                count,
+            })
         );
-    }
+        tagsArr.sort(
+            (a, b) => b.count - a.count || a.name.localeCompare(b.name)
+        );
+        return tagsArr.slice(0, maxTags);
+    }, [recipes]);
 
-    const tags = data?.data as Tag[];
+    const handleChange = (tagName: string) => {
+        setSelectedTags((prev) =>
+            prev.includes(tagName)
+                ? prev.filter((t) => t !== tagName)
+                : [...prev, tagName]
+        );
+    };
 
     return (
         <div className='tags-list'>
-            {tags &&
-                tags.map((tag) => (
-                    <Link to='#' key={tag.name} className='tags-list-link'>
-                        {tag.name}{' '}
-                        <span className='tags-list-count'>({tag.count})</span>
-                    </Link>
-                ))}
+            {tags.length > 0 &&
+                tags.map((tag) => {
+                    const checked = selectedTags.includes(tag.name);
+                    return (
+                        <label
+                            key={tag.name}
+                            className={`tags-list-checkbox${checked ? ' checked' : ''}`}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <input
+                                type='checkbox'
+                                checked={checked}
+                                onChange={() => handleChange(tag.name)}
+                                style={{
+                                    position: 'absolute',
+                                    opacity: 0,
+                                    pointerEvents: 'none',
+                                    width: 0,
+                                    height: 0,
+                                }}
+                                tabIndex={-1}
+                            />
+                            {tag.name}{' '}
+                            <span className='tags-list-count'>
+                                ({tag.count})
+                            </span>
+                        </label>
+                    );
+                })}
         </div>
     );
 };

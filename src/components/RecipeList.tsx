@@ -2,9 +2,13 @@ import { useGetRecipesQuery } from '../features/recipes/recipesApiSlice';
 import type { Recipe } from '../types';
 import RecipeLinkCard from './RecipeLinkCard';
 import { LOCAL_STORAGE_KEY } from '../constants';
+import TagsList from './TagsList';
+import { useState } from 'react';
 
 const RecipeList = () => {
     const { data, isLoading, isFetching, isError } = useGetRecipesQuery();
+
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     // Get liked recipes from localStorage
     const getLikedRecipeIds = (): string[] => {
@@ -30,10 +34,23 @@ const RecipeList = () => {
     if (recipes.length === 0)
         return <p className='loading-text'>No recipes found</p>;
 
+    const filteredRecipes = recipes.filter((recipe) => {
+        // If no tags are selected, show all recipes
+        if (selectedTags.length === 0) return true;
+
+        // Check if recipe has all of the selected tags
+        return selectedTags.every((tag) => recipe.tags.includes(tag));
+    });
+
     return (
         <div className='recipe-list-container'>
+            <TagsList
+                recipes={filteredRecipes}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+            />
             <div className='recipe-grid'>
-                {recipes.map((recipe) => (
+                {filteredRecipes.map((recipe) => (
                     <RecipeLinkCard
                         key={recipe.id}
                         id={recipe.id as string}
