@@ -1,11 +1,22 @@
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useGetRecipeByIdQuery } from '../features/recipes/recipesApiSlice';
 import LikeButton from './LikeButton';
 import { URL_PREFIX } from '../constants';
 
-const ViewRecipe = () => {
+interface ViewRecipeProps {
+    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const ViewRecipe = ({ setSelectedTags }: ViewRecipeProps) => {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id ?? '');
+    const navigate = useNavigate();
+
+    const handleTagClick = (tag: string) => {
+        setSelectedTags([tag]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate('/', { replace: true });
+    };
 
     if (isLoading) {
         return <p className='loading-text'>Loading...</p>;
@@ -32,11 +43,16 @@ const ViewRecipe = () => {
             <p className='view-recipe-description'>{recipe.description}</p>
             <p className='view-recipe-author'>By {recipe.author}</p>
             {recipe.tags && recipe.tags.length > 0 && (
-                <div className='view-recipe-tags'>
+                <div className='tags-list'>
                     {recipe.tags.map((tag, idx) => (
-                        <span className='view-recipe-tag' key={idx}>
+                        <button
+                            type='button'
+                            onClick={() => handleTagClick(tag)}
+                            className='tags-list-item'
+                            key={idx}
+                        >
                             {tag}
-                        </span>
+                        </button>
                     ))}
                 </div>
             )}

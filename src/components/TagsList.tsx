@@ -49,7 +49,7 @@ const TagsList = ({
                     return (
                         <label
                             key={tag.name}
-                            className={`tags-list-checkbox${checked ? ' checked' : ''}`}
+                            className={`tags-list-item${checked ? ' checked' : ''}`}
                             style={{ cursor: 'pointer' }}
                         >
                             <input

@@ -8,6 +8,7 @@ import { ThemeProvider } from '../context/ThemeContext';
 
 const App = () => {
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     return (
         <ThemeProvider>
@@ -28,14 +29,27 @@ const App = () => {
 
                 <div>
                     <Routes>
-                        <Route path='/' element={<RecipeList />} />
+                        <Route
+                            path='/'
+                            element={
+                                <RecipeList
+                                    selectedTags={selectedTags}
+                                    setSelectedTags={setSelectedTags}
+                                />
+                            }
+                        />
                         <Route
                             path='/add-recipe'
                             element={
                                 <AddRecipe setShowSuccess={setShowSuccess} />
                             }
                         />
-                        <Route path='/recipe/:id' element={<ViewRecipe />} />
+                        <Route
+                            path='/recipe/:id'
+                            element={
+                                <ViewRecipe setSelectedTags={setSelectedTags} />
+                            }
+                        />
                     </Routes>
                 </div>
             </div>

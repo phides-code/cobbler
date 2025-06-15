@@ -3,12 +3,14 @@ import type { Recipe } from '../types';
 import RecipeLinkCard from './RecipeLinkCard';
 import { LOCAL_STORAGE_KEY } from '../constants';
 import TagsList from './TagsList';
-import { useState } from 'react';
 
-const RecipeList = () => {
+interface RecipeListProps {
+    selectedTags: string[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const RecipeList = ({ selectedTags, setSelectedTags }: RecipeListProps) => {
     const { data, isLoading, isFetching, isError } = useGetRecipesQuery();
-
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     // Get liked recipes from localStorage
     const getLikedRecipeIds = (): string[] => {
