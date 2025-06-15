@@ -52,6 +52,7 @@ const TypeaheadSearch = () => {
                     {recipes &&
                         recipes.map((recipe) => (
                             <TypeaheadSearchResult
+                                key={recipe.id}
                                 recipe={recipe}
                                 setQuery={setQuery}
                             />
