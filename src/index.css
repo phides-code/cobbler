@@ -1228,11 +1228,6 @@ input:checked + .slider:before {
     text-decoration: none !important;
 }
 .tags-list-count {
-    color: #b9a07a;
     font-size: 0.95em;
     margin-left: 0.2em;
-}
-
-.dark-mode .tags-list-count {
-    color: #a67c52;
 }
