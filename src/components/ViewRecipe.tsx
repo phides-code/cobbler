@@ -2,14 +2,13 @@ import { useParams, useNavigate } from 'react-router';
 import { useGetRecipeByIdQuery } from '../features/recipes/recipesApiSlice';
 import LikeButton from './LikeButton';
 import { URL_PREFIX } from '../constants';
+import { useContext } from 'react';
+import { SelectedTagsContext } from '../context/SelectedTagsContext';
 
-interface ViewRecipeProps {
-    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-const ViewRecipe = ({ setSelectedTags }: ViewRecipeProps) => {
+const ViewRecipe = () => {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id ?? '');
+    const { setSelectedTags } = useContext(SelectedTagsContext);
     const navigate = useNavigate();
 
     const handleTagClick = (tag: string) => {

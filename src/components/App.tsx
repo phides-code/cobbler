@@ -5,10 +5,10 @@ import { useState } from 'react';
 import ViewRecipe from './ViewRecipe';
 import Header from './Header';
 import { ThemeProvider } from '../context/ThemeContext';
+import { SelectedTagsProvider } from '../context/SelectedTagsContext';
 
 const App = () => {
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     return (
         <ThemeProvider>
@@ -26,32 +26,25 @@ const App = () => {
                         </button>
                     </div>
                 )}
-
-                <div>
-                    <Routes>
-                        <Route
-                            path='/'
-                            element={
-                                <RecipeList
-                                    selectedTags={selectedTags}
-                                    setSelectedTags={setSelectedTags}
-                                />
-                            }
-                        />
-                        <Route
-                            path='/add-recipe'
-                            element={
-                                <AddRecipe setShowSuccess={setShowSuccess} />
-                            }
-                        />
-                        <Route
-                            path='/recipe/:id'
-                            element={
-                                <ViewRecipe setSelectedTags={setSelectedTags} />
-                            }
-                        />
-                    </Routes>
-                </div>
+                <SelectedTagsProvider>
+                    <div>
+                        <Routes>
+                            <Route path='/' element={<RecipeList />} />
+                            <Route
+                                path='/add-recipe'
+                                element={
+                                    <AddRecipe
+                                        setShowSuccess={setShowSuccess}
+                                    />
+                                }
+                            />
+                            <Route
+                                path='/recipe/:id'
+                                element={<ViewRecipe />}
+                            />
+                        </Routes>
+                    </div>
+                </SelectedTagsProvider>
             </div>
         </ThemeProvider>
     );

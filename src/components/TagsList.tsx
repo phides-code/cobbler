@@ -1,17 +1,14 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import type { Recipe, Tag } from '../types';
+import { SelectedTagsContext } from '../context/SelectedTagsContext';
 
 interface TagsListProps {
     recipes: Recipe[];
-    selectedTags: string[];
-    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const TagsList = ({
-    recipes,
-    selectedTags,
-    setSelectedTags,
-}: TagsListProps) => {
+const TagsList = ({ recipes }: TagsListProps) => {
+    const { selectedTags, setSelectedTags } = useContext(SelectedTagsContext);
+
     const tags = useMemo(() => {
         const maxTags = 6;
 

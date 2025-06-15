@@ -3,14 +3,12 @@ import type { Recipe } from '../types';
 import RecipeLinkCard from './RecipeLinkCard';
 import { LOCAL_STORAGE_KEY } from '../constants';
 import TagsList from './TagsList';
+import { useContext } from 'react';
+import { SelectedTagsContext } from '../context/SelectedTagsContext';
 
-interface RecipeListProps {
-    selectedTags: string[];
-    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-const RecipeList = ({ selectedTags, setSelectedTags }: RecipeListProps) => {
+const RecipeList = () => {
     const { data, isLoading, isFetching, isError } = useGetRecipesQuery();
+    const { selectedTags } = useContext(SelectedTagsContext);
 
     // Get liked recipes from localStorage
     const getLikedRecipeIds = (): string[] => {
@@ -46,11 +44,7 @@ const RecipeList = ({ selectedTags, setSelectedTags }: RecipeListProps) => {
 
     return (
         <div className='recipe-list-container'>
-            <TagsList
-                recipes={filteredRecipes}
-                selectedTags={selectedTags}
-                setSelectedTags={setSelectedTags}
-            />
+            <TagsList recipes={filteredRecipes} />
             <div className='recipe-grid'>
                 {filteredRecipes.map((recipe) => (
                     <RecipeLinkCard
