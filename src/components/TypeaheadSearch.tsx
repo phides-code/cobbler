@@ -19,6 +19,14 @@ const TypeaheadSearch = () => {
 
     const recipes = data?.data as Recipe[];
 
+    if (error) {
+        return (
+            <div className='typeahead-search-error'>
+                Error fetching results.
+            </div>
+        );
+    }
+
     return (
         <div className='typeahead-search-container'>
             <input
@@ -36,11 +44,11 @@ const TypeaheadSearch = () => {
                             Searching...
                         </div>
                     )}
-                    {error && (
+                    {/* {error && (
                         <div className='typeahead-search-error'>
                             Error fetching results.
                         </div>
-                    )}
+                    )} */}
                     {!isLoading &&
                         !error &&
                         recipes &&
