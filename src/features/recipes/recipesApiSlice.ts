@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import type { Recipe } from '../../types';
-import { createAwsSignedBaseQuery } from '../../app/awsSignedBaseQuery';
-import { IDENTITY_POOL_ID } from '../../constants';
+import { createAwsSignedBaseQuery } from '../../app/createAwsSignedBaseQuery';
 
 interface RecipesApiResponse {
     data: Recipe[] | null;
@@ -16,16 +15,21 @@ interface RecipeApiResponse {
 export const recipesApiSlice = createApi({
     baseQuery: createAwsSignedBaseQuery({
         baseUrl: import.meta.env.VITE_RECIPES_SERVICE_URL,
-        identityPoolId: IDENTITY_POOL_ID,
     }),
 
     reducerPath: 'recipesApi',
     endpoints: (build) => ({
         getRecipes: build.query<RecipesApiResponse, void>({
-            query: () => 'recipes',
+            query: () => ({
+                url: 'recipes',
+                method: 'GET',
+            }),
         }),
         getRecipeById: build.query<RecipeApiResponse, string>({
-            query: (id) => `recipes/${id}`,
+            query: (id) => ({
+                url: `recipes/${id}`,
+                method: 'GET',
+            }),
         }),
         postRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (newRecipe) => ({

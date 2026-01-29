@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { createAwsSignedBaseQuery } from '../../app/awsSignedBaseQuery';
 import type { ImageDataPayload } from '../../types';
-import { IDENTITY_POOL_ID } from '../../constants';
+import { createAwsSignedBaseQuery } from '../../app/createAwsSignedBaseQuery';
 
 interface ImageApiResponse {
     data: string | null;
@@ -11,7 +10,6 @@ interface ImageApiResponse {
 export const imageApiSlice = createApi({
     baseQuery: createAwsSignedBaseQuery({
         baseUrl: import.meta.env.VITE_IMAGE_SERVICE_URL,
-        identityPoolId: IDENTITY_POOL_ID,
     }),
 
     reducerPath: 'imageApi',
