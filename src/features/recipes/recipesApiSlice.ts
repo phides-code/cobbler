@@ -54,6 +54,7 @@ export const recipesApiSlice = createApi({
         searchRecipes: build.query<RecipesApiResponse, string>({
             query: (searchText) => ({
                 url: `recipes?q=${searchText}`,
+                method: 'GET',
             }),
         }),
     }),
