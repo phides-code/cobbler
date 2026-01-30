@@ -44,11 +44,6 @@ const TypeaheadSearch = () => {
                             Searching...
                         </div>
                     )}
-                    {/* {error && (
-                        <div className='typeahead-search-error'>
-                            Error fetching results.
-                        </div>
-                    )} */}
                     {!isLoading &&
                         !error &&
                         recipes &&
