@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { ImageDataPayload } from '../../types';
-import { createAwsSignedBaseQuery } from '../../app/createAwsSignedBaseQuery';
 
 interface ImageApiResponse {
     data: string | null;
@@ -8,7 +7,7 @@ interface ImageApiResponse {
 }
 
 export const imageApiSlice = createApi({
-    baseQuery: createAwsSignedBaseQuery({
+    baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_IMAGE_SERVICE_URL,
     }),
 

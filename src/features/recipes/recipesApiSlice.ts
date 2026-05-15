@@ -1,6 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Recipe } from '../../types';
-import { createAwsSignedBaseQuery } from '../../app/createAwsSignedBaseQuery';
 
 interface RecipesApiResponse {
     data: Recipe[] | null;
@@ -13,7 +12,7 @@ interface RecipeApiResponse {
 }
 
 export const recipesApiSlice = createApi({
-    baseQuery: createAwsSignedBaseQuery({
+    baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_RECIPES_SERVICE_URL,
     }),
 
