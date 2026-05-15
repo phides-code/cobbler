@@ -11,48 +11,50 @@ interface RecipeApiResponse {
     errorMessage: string | null;
 }
 
+const PATH = 'recipes';
+
 export const recipesApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_RECIPES_SERVICE_URL,
     }),
 
-    reducerPath: 'recipesApi',
+    reducerPath: `${PATH}Api`,
     endpoints: (build) => ({
         getRecipes: build.query<RecipesApiResponse, void>({
             query: () => ({
-                url: 'recipes',
+                url: '',
                 method: 'GET',
             }),
         }),
         getRecipeById: build.query<RecipeApiResponse, string>({
             query: (id) => ({
-                url: `recipes/${id}`,
+                url: `/${id}`,
                 method: 'GET',
             }),
         }),
         postRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (newRecipe) => ({
-                url: 'recipes',
+                url: '',
                 method: 'POST',
                 body: newRecipe,
             }),
         }),
         deleteRecipe: build.mutation<RecipeApiResponse, string>({
             query: (id) => ({
-                url: `recipes/${id}`,
+                url: `/${id}`,
                 method: 'DELETE',
             }),
         }),
         putRecipe: build.mutation<RecipeApiResponse, Partial<Recipe>>({
             query: (updatedRecipe) => ({
-                url: `recipes/${updatedRecipe.id}`,
+                url: `/${updatedRecipe.id}`,
                 method: 'PUT',
                 body: updatedRecipe,
             }),
         }),
         searchRecipes: build.query<RecipesApiResponse, string>({
             query: (searchText) => ({
-                url: `recipes?q=${searchText}`,
+                url: `?q=${searchText}`,
                 method: 'GET',
             }),
         }),

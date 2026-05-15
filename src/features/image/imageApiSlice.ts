@@ -6,23 +6,25 @@ interface ImageApiResponse {
     errorMessage: string | null;
 }
 
+const PATH = 'image';
+
 export const imageApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_IMAGE_SERVICE_URL,
     }),
 
-    reducerPath: 'imageApi',
+    reducerPath: `${PATH}Api`,
     endpoints: (build) => ({
         uploadImage: build.mutation<ImageApiResponse, ImageDataPayload>({
             query: (body) => ({
-                url: 'image',
+                url: '',
                 method: 'POST',
                 body,
             }),
         }),
         deleteImage: build.mutation<ImageApiResponse, string>({
             query: (imageId) => ({
-                url: `image/${imageId}`,
+                url: `/${imageId}`,
                 method: 'DELETE',
             }),
         }),
